@@ -3,6 +3,30 @@ from os import sep
 from os.path import expanduser
 from subprocess import Popen, PIPE
 
+class Event():
+	# Args can contain up to 2 elements.
+	# Event.source and Event.target should always be Card() instances.
+	def __init__(self, kind, owner, *args):
+		if kind not in ['Card Played', 'Life Gained', 'Life Lost', 'Turn End', 'Minion Died', 'Attack', 'Secret Triggered']:
+			raise Exception('Invalid event type:', kind)
+		self.kind = kind
+		if owner not in ['Us', 'Them']:
+			raise Exception('Unknown event owner:', owner)
+		self.owner = owner
+		if kind == 'Attack':
+			self.source = args[0]
+			self.target = args[1]
+		elif kind == 'Life Gained' or kind == 'Life Lost':
+			self.amount = args[0]
+		elif kind == 'Minion Died':
+			self.source = args[0]
+		elif kind == 'Card Played':
+			self.source = args[0]
+			if len(args) > 1:
+				self.target = args[1]
+		elif kind == 'Secret Triggered':
+			self.source = args[0]
+
 try:
 	config = literal_eval(open('config.cfg', 'rb').read())
 except IOError:
