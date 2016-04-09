@@ -115,13 +115,12 @@ while True:
 	if line[:48] == 'GameState.DebugPrintEntityChoices() -   Entities':
 		data = parse(line[53:-2])
 		if data['player'] == '2':
-			print Hand.length(), data['id']
 			if Hand.length() == 4:
-				Hand.draw('The Coin')
+				Hand.draw(68)
+				Hand.associate(68, 'The Coin')
 				Hand.wentFirst = 1
-				print Hand.hand[4].name
 			else:
-				Hand.draw(data['id'])
+				Hand.draw(int(data['id']))
 	# Hand after mulligan
 	if line[:49] == 'GameState.DebugPrintEntitiesChosen() -   Entities':
 		data = parse(line[54:-2])
@@ -129,18 +128,19 @@ while True:
 			Hand.mulligan(int(data['zonePos'])-1, data['id'])
 	if line[:48] == 'PowerTaskList.DebugPrintPower() -     TAG_CHANGE':
 		data = parse(line[48:])
+		if 'Entity' in data and 'name' in data['Entity']:
+			Hand.associate(int(data['Entity']['id']), data['Entity']['name'])
+
 		# Drew a card
 		if data['tag'] == 'ZONE_POSITION':
 			if 'zone' in data['Entity'] and data['Entity']['zone'] == 'DECK':
 				if data['Entity']['player'] == '2':
-					Hand.draw(data['Entity']['id'])
-					print 'Drew a card', data['Entity']
+					Hand.draw(int(data['Entity']['id']))
 		# Played a card
 		elif data['tag'] == 'JUST_PLAYED':
 			if data['Entity']['zone'] == 'HAND':
 				if data['Entity']['player'] == '2':
 					Hand.play(int(data['Entity']['zonePos'])-1)
-					print '<143>Played', data['Entity']
 		# End of turn
 		elif data['tag'] == 'TURN':
 			Hand.turnover()
