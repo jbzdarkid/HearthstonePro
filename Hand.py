@@ -9,18 +9,24 @@ Other: Cursed!, Golden Monkey, King's Elekk, Gnomish Experimenter, Holy Wrath, V
 '''
 
 class card():
-	def __init__(self, name, mulligan=False):
+	def __init__(self, id, mulligan=False):
 		global turn
-		self.name = name
+		self.id = id
 		self.turn = turn/2
 		self.mulligan = mulligan
 
-	def __repr__(self):
-		print 'card(%s%s)' % (self.name, 'mulligan=True' if self.mulligan else '')
+	def name(self):
+		if names[self.id] != '':
+			return names[self.id]
+		else:
+			return self.id
+
+	# def __repr__(self):
+	# 	print 'card(%s%s)' % (self.id, 'mulligan=True' if self.mulligan else '')
 
 turn = 0
 hand = []
-names = [None]*64
+names = [None]*128
 wentFirst = 0
 
 def reset():
@@ -28,7 +34,7 @@ def reset():
 	wentFirst = 0
 	turn = 0
 	hand = []
-	names = [None]*64
+	names = [None]*128
 
 reset()
 
@@ -39,24 +45,25 @@ def draw(id):
 def play(pos):
 	global hand
 	card = hand.pop(pos)
-	print card
-
-	if card.name == 'Unstable Portal':
-		print '<56>'
 
 def mulligan(pos, id):
 	global hand
-	if hand[pos].name != id:
+	if hand[pos].id != id:
 		hand[pos] = card(id, mulligan=True)
+
+def associate(id, name):
+	global names
+	print 'Associating', id, name
+	names[id] = name
 
 def turnover():
 	global turn, hand, wentFirst
 	turn += 1
 	if (turn+wentFirst)%2 == 0:
 		print 'Current Turn:', turn/2
-		print 'Card No. | Drawn on turn | Name | Other notes'
+		print 'Card No. | Turn | Name          | Other notes'
 		for i in range(len(hand)):
-			print '       %d |            %02d |  %s |' % (i, hand[i].turn, str(hand[i].name))
+			print '%s|%s|%s|%s' % ('%d '.rjust(10) % i, '%d '.rjust(7) % hand[i].turn, '%s '.rjust(15) % hand[i].id, '')
 
 def length():
 	global hand
