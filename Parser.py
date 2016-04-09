@@ -125,7 +125,7 @@ while True:
 	if line[:49] == 'GameState.DebugPrintEntitiesChosen() -   Entities':
 		data = parse(line[54:-2])
 		if data['player'] == '2':
-			Hand.mulligan(int(data['zonePos'])-1, data['id'])
+			Hand.mulligan(int(data['zonePos'])-1, int(data['id']))
 	if line[:48] == 'PowerTaskList.DebugPrintPower() -     TAG_CHANGE':
 		data = parse(line[48:])
 		if 'Entity' in data and 'name' in data['Entity']:
