@@ -129,8 +129,7 @@ while True:
 	if line[:48] == 'PowerTaskList.DebugPrintPower() -     TAG_CHANGE':
 		data = parse(line[48:])
 		if 'Entity' in data and 'name' in data['Entity']:
-			Hand.associate(int(data['Entity']['id']), data['Entity']['name'])
-
+			Hand.associate(int(data['Entity']['id']), data['Entity']['name']) # A bit over-aggressive
 		# Drew a card
 		if data['tag'] == 'ZONE_POSITION':
 			if 'zone' in data['Entity'] and data['Entity']['zone'] == 'DECK':

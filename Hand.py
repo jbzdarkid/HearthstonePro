@@ -16,7 +16,7 @@ class card():
 		self.mulligan = mulligan
 
 	def name(self):
-		if names[self.id] != '':
+		if names[self.id]:
 			return names[self.id]
 		else:
 			return self.id
@@ -44,7 +44,7 @@ def draw(id):
 
 def play(pos):
 	global hand
-	card = hand.pop(pos)
+	hand.pop(pos)
 
 def mulligan(pos, id):
 	global hand
@@ -53,7 +53,6 @@ def mulligan(pos, id):
 
 def associate(id, name):
 	global names
-	print 'Associating', id, name
 	names[id] = name
 
 def turnover():
