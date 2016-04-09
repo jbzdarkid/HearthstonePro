@@ -10,31 +10,21 @@ Other: Cursed!, Golden Monkey, King's Elekk, Gnomish Experimenter, Holy Wrath, V
 
 class card():
 	def __init__(self, id, mulligan=False):
-		global turn
+		global turn, notes
 		self.id = id
 		self.turn = turn/2
+		self.notes = notes.pop() if len(notes > 0) else ''
 		self.mulligan = mulligan
-
-	def name(self):
-		if names[self.id]:
-			return names[self.id]
-		else:
-			return self.id
 
 	# def __repr__(self):
 	# 	print 'card(%s%s)' % (self.id, 'mulligan=True' if self.mulligan else '')
 
-turn = 0
-hand = []
-names = [None]*128
-wentFirst = 0
-
 def reset():
-	global turn, hand, names, wentFirst
-	wentFirst = 0
+	global turn, hand, notes, wentFirst
 	turn = 0
 	hand = []
-	names = [None]*128
+	notes = [] # Push to this to signal information about the next draw.
+	wentFirst = 0
 
 reset()
 
@@ -42,7 +32,7 @@ def draw(id):
 	global hand
 	hand.append(card(id))
 
-def play(pos):
+def play(pos, name):
 	global hand
 	hand.pop(pos)
 
@@ -60,9 +50,9 @@ def turnover():
 	turn += 1
 	if (turn+wentFirst)%2 == 0:
 		print 'Current Turn:', turn/2
-		print 'Card No. | Turn | Name          | Other notes'
+		print 'Card No. | Turn | Notes'
 		for i in range(len(hand)):
-			print '%s|%s|%s|%s' % ('%d '.rjust(10) % i, '%d '.rjust(7) % hand[i].turn, '%s '.rjust(15) % hand[i].name(), '')
+			print '%s|%s|%s|%s' % ('%d '.rjust(10) % i, '%d '.rjust(7) % hand[i].turn, '%s '.rjust(15) % hand[i].notes)
 
 def length():
 	global hand
