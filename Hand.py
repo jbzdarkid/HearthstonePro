@@ -13,7 +13,7 @@ class card():
 		global turn, notes
 		self.id = id
 		self.turn = turn/2
-		self.notes = notes.pop() if len(notes > 0) else ''
+		self.notes = notes.pop() if len(notes) > 0 else ''
 		self.mulligan = mulligan
 
 	# def __repr__(self):
@@ -32,18 +32,21 @@ def draw(id):
 	global hand
 	hand.append(card(id))
 
+# When a card is removed from a player's hand
 def play(pos, name):
 	global hand
 	hand.pop(pos)
+
+# When a card hits the board
+def play2(name, player):
+	if player == 2:
+		if name == 'Unstable Portal':
+			notes.append('Costs (3) less')
 
 def mulligan(pos, id):
 	global hand
 	if hand[pos].id != id:
 		hand[pos] = card(id, mulligan=True)
-
-def associate(id, name):
-	global names
-	names[id] = name
 
 def turnover():
 	global turn, hand, wentFirst
@@ -52,7 +55,7 @@ def turnover():
 		print 'Current Turn:', turn/2
 		print 'Card No. | Turn | Notes'
 		for i in range(len(hand)):
-			print '%s|%s|%s|%s' % ('%d '.rjust(10) % i, '%d '.rjust(7) % hand[i].turn, '%s '.rjust(15) % hand[i].notes)
+			print '%s|%s|%s' % ('%d '.rjust(10) % i, '%d '.rjust(7) % hand[i].turn, '%s '.rjust(15) % hand[i].notes)
 
 def length():
 	global hand

@@ -110,38 +110,37 @@ def parse(data, start=0):
 tail = Popen(['tail', '-f', config['log']+'Power.log'], stdout=PIPE)
 while True:
 	line = tail.stdout.readline()
-	line = line[19:]
-	# Initial hand
-	if line[:48] == 'GameState.DebugPrintEntityChoices() -   Entities':
+	line = line[19:] # Strips out timestamp
+	if line[:48] == 'GameState.DebugPrintEntityChoices() -   Entities': # Initial hand
 		data = parse(line[53:-2])
 		if data['player'] == '2':
 			if Hand.length() == 4:
-				Hand.draw(68)
-				Hand.associate(68, 'The Coin')
+				Hand.draw(68) # The Coin
 				Hand.wentFirst = 1
 			else:
 				Hand.draw(int(data['id']))
-	# Hand after mulligan
-	if line[:49] == 'GameState.DebugPrintEntitiesChosen() -   Entities':
+	if line[:49] == 'GameState.DebugPrintEntitiesChosen() -   Entities': # Hand after mulligan
 		data = parse(line[54:-2])
 		if data['player'] == '2':
 			Hand.mulligan(int(data['zonePos'])-1, int(data['id']))
+
+	if line[:46] == 'PowerTaskList.DebugPrintPower() - ACTION_START':
+		data = parse(line[46:])
+		if data['BlockType'] == 'POWER': # When a card actually hits the board
+			Hand.play2(data['Entity']['name'], int(data['Entity']['player']))
 	if line[:48] == 'PowerTaskList.DebugPrintPower() -     TAG_CHANGE':
 		data = parse(line[48:])
-		# Drew a card
 		if data['tag'] == 'ZONE_POSITION':
-			if 'zone' in data['Entity'] and data['Entity']['zone'] == 'DECK':
+			if 'zone' in data['Entity'] and data['Entity']['zone'] == 'DECK': # Drew a card
 				if data['Entity']['player'] == '2':
 					Hand.draw(int(data['Entity']['id']))
-		# Played a card
 		elif data['tag'] == 'JUST_PLAYED':
-			if data['Entity']['zone'] == 'HAND':
+			if data['Entity']['zone'] == 'HAND': # When a card is removed from a player's hand
 				if data['Entity']['player'] == '2':
-					Hand.play(int(data['Entity']['zonePos'])-1)
-		# End of turn
-		elif data['tag'] == 'TURN':
+					Hand.play(int(data['Entity']['zonePos'])-1, '')
+		elif data['tag'] == 'TURN': # End of turn
 			Hand.turnover()
 		elif data['tag'] == 'STEP':
-			if data['value'] == 'FINAL_GAMEOVER':
+			if data['value'] == 'FINAL_GAMEOVER': # End of game
 				Hand.reset()
 				print 'Game Over'
