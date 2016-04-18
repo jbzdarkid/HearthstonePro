@@ -111,38 +111,41 @@ tail = Popen(['tail', '-f', config['log']+'Power.log'], stdout=PIPE)
 while True:
 	line = tail.stdout.readline()
 	line = line[19:] # Strips out timestamp
+	# Start of game player id assignment
+	if line[:40] == 'GameState.DebugPrintPower() - TAG_CHANGE':
+		data = parse(line[40:])
+		if data['tag'] == 'PLAYER_ID':
+			if data['Entity'] == 'darkid':
+				Hand.us = data['value']
+				Secret.us = data['value']
+			else:
+				Hand.them = data['value']
+				Secret.them = data['value']
+
 	if line[:48] == 'GameState.DebugPrintEntityChoices() -   Entities': # Initial hand
 		data = parse(line[53:-2])
-		if data['player'] == '2':
-			if Hand.length() == 4:
-				Hand.draw(68) # The Coin
-				Hand.wentFirst = 1
-			else:
-				Hand.draw(int(data['id']))
+		Hand.draw(data)
 	if line[:49] == 'GameState.DebugPrintEntitiesChosen() -   Entities': # Hand after mulligan
 		data = parse(line[54:-2])
-		if data['player'] == '2':
-			Hand.mulligan(int(data['zonePos'])-1, int(data['id']))
+		Hand.mulligan(data)
 
 	if line[:46] == 'PowerTaskList.DebugPrintPower() - ACTION_START':
 		data = parse(line[46:])
 		if data['BlockType'] == 'POWER': # When a card actually hits the board
-			Hand.play2(data['Entity']['name'], int(data['Entity']['player']))
-		elif data['BlockType'] == 'TRIGGER': # When a secret is triggered
-			print data
-			print data['Entity']
-			if data['Entity']['player'] == '2':
-				Secret.trigger(data['Entity']['name'], int(data['Entity']['zonePos']))
+			Hand.play2(data['Entity'])
 	if line[:48] == 'PowerTaskList.DebugPrintPower() -     TAG_CHANGE':
 		data = parse(line[48:])
 		if data['tag'] == 'ZONE_POSITION':
 			if 'zone' in data['Entity'] and data['Entity']['zone'] == 'DECK': # Drew a card
-				if data['Entity']['player'] == '2':
-					Hand.draw(int(data['Entity']['id']))
+				Hand.draw(data['Entity'])
 		elif data['tag'] == 'JUST_PLAYED':
 			if data['Entity']['zone'] == 'HAND': # When a card is removed from a player's hand
-				if data['Entity']['player'] == '2':
-					Hand.play(int(data['Entity']['zonePos'])-1, '')
+				Hand.play(data['Entity'])
+		elif data['tag'] == 'ZONE':
+			if 'zone' in data['Entity']:
+				if data['Entity']['zone'] == 'SECRET':
+					if data['Entity']['player'] == '2':
+						Secret.trigger(data['Entity']['name'], int(data['Entity']['zonePos']))
 		elif data['tag'] == 'TURN': # End of turn
 			Hand.turnover()
 			Secret.turnover()
