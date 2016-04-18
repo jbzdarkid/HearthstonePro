@@ -5,7 +5,7 @@
 Dragon in hand: Blackwing Corruptor, Blackwing Technician, Twilight Welp, Alexstrasza's Champion, Wyrmrest Agent, Twilight Guardian, Chillmaw, Rend Blackhand
 Spare Part:
 Return to hand: Ancient Brewmaster, Anub'ar Ambusher, Dream, Freezing Trap, Shadowstep, Vanish, Youthful Brewmaster, Alarm-o-Bot, Coliseum Manager, Kidnapper, Anub'arak, The Skeleton Knight
-Other: Cursed!, Golden Monkey, King's Elekk, Gnomish Experimenter, Holy Wrath, Varian Wrynn, Shadowfiend, Chromaggus, Flame Leviathan, Emperor Thaurissan, Headcrack, Unstable Portal, Wild Growth, Mulch
+Other: Cursed!, Golden Monkey, King's Elekk, Gnomish Experimenter, Holy Wrath, Varian Wrynn, Shadowfiend, Chromaggus, Flame Leviathan, Emperor Thaurissan, Headcrack, Unstable Portal, Wild Growth, Mulch, Vanish, Echo of Mediv, 
 '''
 
 class card():
@@ -29,11 +29,13 @@ def reset():
 reset()
 
 def draw(id):
+	print 'Drew card', id
 	global hand
 	hand.append(card(id))
 
 # When a card is removed from a player's hand
-def play(pos, name):
+def play(pos, id):
+	print 'Played card #%d: %s' % (pos, id)
 	global hand
 	hand.pop(pos)
 
