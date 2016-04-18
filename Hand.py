@@ -13,7 +13,7 @@ class card():
 		global turn, notes
 		self.id = id
 		self.turn = turn/2
-		self.notes = notes.pop() if len(notes) > 0 else ''
+		self.notes = (notes.pop()+' ') if len(notes) > 0 else ''
 
 	# def __repr__(self):
 	# 	print 'card(%s)' % (self.id)
@@ -33,10 +33,10 @@ def draw(entity):
 	global hand, wentFirst
 	if entity['player'] == them:
 		id = int(entity['id'])
-		hand.append(card(id))
 		if turn == 0 and id == 68:
-			hand[4].notes = 'The Coin '
+			notes.append('The Coin')
 			wentFirst = 1
+		hand.append(card(id))
 
 # When a card is removed from a player's hand
 def play(entity):
@@ -48,13 +48,22 @@ def play(entity):
 def play2(entity):
 	if entity['player'] == them:
 		if entity['name'] == 'Unstable Portal':
-			notes.append('Costs (3) less')
+			notes.append('Drawn from Unstable Portal')
+			draw(card(-1))
 		elif entity['name'] == 'Toshley':
 			notes.append('Spare Part')
+
+def die(entity):
+	if entity['player'] == them:
+		if entity['name']	== 'Clockwork Gnome':
+			notes.append('Spare Part')
+	if entity['name'] == 'Mechanical Yeti':
+		notes.append('Spare Part')
 
 # Cards that are mulliganed have the same id as the original cards, so for all intents and purposes, I treat them as the same card.
 # The Innkeeper will mulligan every card in their hand, including the coin. Magic!
 def mulligan(entity):
+	print entity
 	global hand
 	if entity['player'] == them:
 		hand[int(entity['zonePos'])-1].notes += 'Mulliganed '
@@ -66,7 +75,7 @@ def turnover():
 		print 'Current Turn:', turn/2
 		print 'Card No. | Turn | Notes'
 		for i in range(len(hand)):
-			print '%s|%s|%s' % ('%d '.rjust(10) % (i+1), '%d '.rjust(7) % hand[i].turn, hand[i].notes)
+			print ' %s | %s | %s' % ('%d'.ljust(9) % (i+1), '%d'.ljust(6) % hand[i].turn, ' %s' % hand[i].notes)
 
 def length():
 	global hand
