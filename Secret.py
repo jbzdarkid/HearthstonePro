@@ -48,11 +48,36 @@ secrets = []
 class Secret():
 	def __init__(self, hero):
 		if hero == 'Mage':
-			self.possibleValues = ['Counterspell', 'Duplicate', 'Effigy', 'Ice Barrier', 'Ice Block', 'Mirror Entity', 'Spellbender', 'Vaporize']
+			self.possibleValues = [
+				'Counterspell',
+				'Duplicate',
+				'Effigy',
+				'Ice Barrier',
+				'Ice Block',
+				'Mirror Entity',
+				'Spellbender',
+				'Vaporize'
+			]
 		elif hero == 'Hunter':
-			self.possibleValues = ['Bear Trap', 'Dart Trap', 'Explosive Trap', 'Freezing Trap', 'Misdirection', 'Snake Trap', 'Snipe']
+			self.possibleValues = [
+				'Bear Trap',
+				'Dart Trap',
+				'Explosive Trap',
+				'Freezing Trap',
+				'Misdirection',
+				'Snake Trap',
+				'Snipe'
+			]
 		elif hero == 'Paladin':
-			self.possibleValues = ['Avenge', 'Competitive Spirit', 'Eye for an Eye', 'Noble Sacrifice', 'Redemption', 'Repentance', 'Sacred Trial']
+			self.possibleValues = [
+				'Avenge',
+				'Competitive Spirit',
+				'Eye for an Eye',
+				'Noble Sacrifice',
+				'Redemption',
+				'Repentance',
+				'Sacred Trial'
+			]
 		else:
 			raise Exception('Invalid hero')
 
