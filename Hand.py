@@ -65,7 +65,7 @@ def turnover():
 		print 'Current Turn:', turn/2
 		print 'Card No. | Turn | Notes'
 		for i in range(len(hand)):
-			print '%s|%s|%s' % ('%d '.rjust(10) % (i+1), '%d '.rjust(7) % hand[i].turn, '%s '.rjust(15) % hand[i].notes)
+			print '%s|%s|%s' % ('%d '.rjust(10) % (i+1), '%d '.rjust(7) % hand[i].turn, hand[i].notes)
 
 def length():
 	global hand
