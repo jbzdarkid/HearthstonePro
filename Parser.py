@@ -2,7 +2,7 @@ from ast import literal_eval
 from os import sep
 from os.path import expanduser
 from subprocess import Popen, PIPE
-import Hand
+import Hand, Secret
 
 try:
 	config = literal_eval(open('config.cfg', 'rb').read())
@@ -128,6 +128,11 @@ while True:
 		data = parse(line[46:])
 		if data['BlockType'] == 'POWER': # When a card actually hits the board
 			Hand.play2(data['Entity']['name'], int(data['Entity']['player']))
+		elif data['BlockType'] == 'TRIGGER': # When a secret is triggered
+			print data
+			print data['Entity']
+			if data['Entity']['player'] == '2':
+				Secret.trigger(data['Entity']['name'], int(data['Entity']['zonePos']))
 	if line[:48] == 'PowerTaskList.DebugPrintPower() -     TAG_CHANGE':
 		data = parse(line[48:])
 		if data['tag'] == 'ZONE_POSITION':
@@ -140,7 +145,9 @@ while True:
 					Hand.play(int(data['Entity']['zonePos'])-1, '')
 		elif data['tag'] == 'TURN': # End of turn
 			Hand.turnover()
+			Secret.turnover()
 		elif data['tag'] == 'STEP':
 			if data['value'] == 'FINAL_GAMEOVER': # End of game
 				Hand.reset()
+				Secret.reset()
 				print 'Game Over'
