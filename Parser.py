@@ -109,48 +109,51 @@ def parse(data, start=0):
 
 tail = Popen(['tail', '-f', config['log']+'Power.log'], stdout=PIPE)
 while True:
-	line = tail.stdout.readline()
-	line = line[19:] # Strips out timestamp
-	# Start of game player id assignment
-	if line[:40] == 'GameState.DebugPrintPower() - TAG_CHANGE':
-		data = parse(line[40:])
-		if data['tag'] == 'PLAYER_ID':
-			if data['Entity'] == 'darkid':
-				Hand.us = data['value']
-				Secret.us = data['value']
-			else:
-				Hand.them = data['value']
-				Secret.them = data['value']
-
-	if line[:48] == 'GameState.DebugPrintEntityChoices() -   Entities': # Initial cards in hand
-		data = parse(line[53:-2])
-		Hand.draw(data)
-	if line[:49] == 'GameState.DebugPrintEntitiesChosen() -   Entities': # Cards that were mulliganed
-		data = parse(line[54:-2])
-		Hand.mulligan(data)
-
-	if line[:46] == 'PowerTaskList.DebugPrintPower() - ACTION_START':
-		data = parse(line[46:])
-		if data['BlockType'] == 'POWER': # When a card actually hits the board
-			Hand.play2(data['Entity'])
-	if line[:48] == 'PowerTaskList.DebugPrintPower() -     TAG_CHANGE':
-		data = parse(line[48:])
-		if data['tag'] == 'ZONE_POSITION':
-			if 'zone' in data['Entity'] and data['Entity']['zone'] == 'DECK': # Drew a card
-				Hand.draw(data['Entity'])
-		elif data['tag'] == 'JUST_PLAYED':
-			if data['Entity']['zone'] == 'HAND': # When a card is removed from a player's hand
-				Hand.play(data['Entity'])
-		elif data['tag'] == 'ZONE':
-			if 'zone' in data['Entity']:
-				if data['Entity']['zone'] == 'SECRET':
-					if data['Entity']['player'] == '2':
-						Secret.trigger(data['Entity']['name'], int(data['Entity']['zonePos']))
-		elif data['tag'] == 'TURN': # End of turn
-			Hand.turnover()
-			Secret.turnover()
-		elif data['tag'] == 'STEP':
-			if data['value'] == 'FINAL_GAMEOVER': # End of game
-				Hand.reset()
-				Secret.reset()
-				print 'Game Over'
+	try:
+		line = tail.stdout.readline()
+		line = line[19:] # Strips out timestamp
+		if line[:40] == 'GameState.DebugPrintPower() - TAG_CHANGE':
+			data = parse(line[40:])
+			if data['tag'] == 'PLAYER_ID':
+				if data['Entity'] == 'darkid':
+					Hand.us = data['value']
+					Secret.us = data['value']
+				else:
+					Hand.them = data['value']
+					Secret.them = data['value']
+		if line[:48] == 'GameState.DebugPrintEntityChoices() -   Entities': # Initial cards in hand
+			entity = parse(line[53:-2])
+			Hand.draw(entity)
+		if line[:49] == 'GameState.DebugPrintEntitiesChosen() -   Entities': # Cards that were mulliganed
+			entity = parse(line[54:-2])
+			Hand.mulligan(entity)
+		if line[:46] == 'PowerTaskList.DebugPrintPower() - ACTION_START':
+			data = parse(line[46:])
+			if data['BlockType'] == 'POWER':
+				Hand.play2(data['Entity']) # When a card actually hits the board
+		if line[:48] == 'PowerTaskList.DebugPrintPower() -     TAG_CHANGE':
+			data = parse(line[48:])
+			if data['tag'] == 'ZONE_POSITION':
+				if 'zone' in data['Entity'] and data['Entity']['zone'] == 'DECK':
+					Hand.draw(data['Entity'])
+			elif data['tag'] == 'JUST_PLAYED':
+				if data['Entity']['zone'] == 'HAND':
+					Hand.play(data['Entity']) # When a card is removed from a player's hand
+			elif data['tag'] == 'ZONE':
+				if 'zone' in data['Entity']:
+					if data['Entity']['zone'] == 'SECRET':
+						Secret.trigger(data['Entity'])
+					if data['tag'] == 'CLASS': # From mad scientist, maybe others sources?
+						Secret.play(data['Entity'], data['value'])
+			elif data['tag'] == 'TURN':
+				Hand.turnover()
+				Secret.turnover()
+			elif data['tag'] == 'STEP':
+				if data['value'] == 'FINAL_GAMEOVER':
+					Hand.reset()
+					Secret.reset()
+					print 'Game Over'
+	except KeyboardInterrupt:
+		break
+	except e:
+		e.printStackTrace()
