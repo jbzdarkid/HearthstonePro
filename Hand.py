@@ -32,10 +32,10 @@ reset()
 def draw(entity):
 	global hand, wentFirst
 	if entity['player'] == them:
-		hand.append(card(int(entity['id'])))
-		if turn == 0 and len(hand) == 4:
-			hand.append(card(68))
-			hand[4].notes = 'The Coin'
+		id = int(entity['id'])
+		hand.append(card(id))
+		if turn == 0 and id == 68:
+			hand[4].notes = 'The Coin '
 			wentFirst = 1
 
 # When a card is removed from a player's hand
