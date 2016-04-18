@@ -122,10 +122,10 @@ while True:
 				Hand.them = data['value']
 				Secret.them = data['value']
 
-	if line[:48] == 'GameState.DebugPrintEntityChoices() -   Entities': # Initial hand
+	if line[:48] == 'GameState.DebugPrintEntityChoices() -   Entities': # Initial cards in hand
 		data = parse(line[53:-2])
 		Hand.draw(data)
-	if line[:49] == 'GameState.DebugPrintEntitiesChosen() -   Entities': # Hand after mulligan
+	if line[:49] == 'GameState.DebugPrintEntitiesChosen() -   Entities': # Cards that were mulliganed
 		data = parse(line[54:-2])
 		Hand.mulligan(data)
 
