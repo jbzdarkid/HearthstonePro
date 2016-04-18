@@ -53,6 +53,7 @@ def play2(entity):
 			notes.append('Spare Part')
 
 # Cards that are mulliganed have the same id as the original cards, so for all intents and purposes, I treat them as the same card.
+# The Innkeeper will mulligan every card in their hand, including the coin. Magic!
 def mulligan(entity):
 	global hand
 	if entity['player'] == them:
