@@ -2,7 +2,7 @@ from ast import literal_eval
 from os import sep
 from os.path import expanduser
 from subprocess import Popen, PIPE
-import Hand, Secret
+import Hand
 
 try:
 	config = literal_eval(open('config.cfg', 'rb').read())
@@ -117,10 +117,8 @@ while True:
 			if data['tag'] == 'PLAYER_ID':
 				if data['Entity'] == 'darkid':
 					Hand.us = data['value']
-					Secret.us = data['value']
 				else:
 					Hand.them = data['value']
-					Secret.them = data['value']
 		if line[:48] == 'GameState.DebugPrintEntityChoices() -   Entities': # Initial cards in hand
 			entity = parse(line[53:-2])
 			Hand.draw(entity)
@@ -139,19 +137,11 @@ while True:
 			elif data['tag'] == 'JUST_PLAYED':
 				if data['Entity']['zone'] == 'HAND':
 					Hand.play(data['Entity']) # When a card is removed from a player's hand
-			elif data['tag'] == 'ZONE':
-				if 'zone' in data['Entity']:
-					if data['Entity']['zone'] == 'SECRET':
-						Secret.trigger(data['Entity'])
-					if data['tag'] == 'CLASS': # From mad scientist, maybe others sources?
-						Secret.play(data['Entity'], data['value'])
 			elif data['tag'] == 'TURN':
 				Hand.turnover()
-				Secret.turnover()
 			elif data['tag'] == 'STEP':
 				if data['value'] == 'FINAL_GAMEOVER':
 					Hand.reset()
-					Secret.reset()
 					print 'Game Over'
 	except KeyboardInterrupt:
 		break
