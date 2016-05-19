@@ -119,9 +119,9 @@ while True:
 					Hand.us = data['value']
 				else:
 					Hand.them = data['value']
-		if line[:48] == 'GameState.DebugPrintEntityChoices() -   Entities': # Initial cards in hand
-			entity = parse(line[53:-2])
-			Hand.draw(entity)
+		# if line[:48] == 'GameState.DebugPrintEntityChoices() -   Entities': # Initial cards in hand
+		# 	entity = parse(line[53:-2])
+		# 	Hand.draw(entity)
 		if line[:49] == 'GameState.DebugPrintEntitiesChosen() -   Entities': # Cards that were mulliganed
 			entity = parse(line[54:-2])
 			Hand.mulligan(entity)
@@ -133,7 +133,7 @@ while True:
 			data = parse(line[48:])
 			if data['tag'] == 'ZONE_POSITION':
 				if 'zone' in data['Entity'] and data['Entity']['zone'] == 'DECK':
-					Hand.draw(data['Entity'])
+					Hand.draw(data['Entity'], int(data['value'])-1)
 			elif data['tag'] == 'JUST_PLAYED':
 				if data['Entity']['zone'] == 'HAND':
 					Hand.play(data['Entity']) # When a card is removed from a player's hand

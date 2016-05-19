@@ -29,20 +29,25 @@ def reset():
 
 reset()
 
-def draw(entity):
+def draw(entity, position):
 	global hand, wentFirst
 	if entity['player'] == them:
+		print '<33>', hand, entity['id']
 		id = int(entity['id'])
 		if turn == 0 and id == 68:
 			notes.append('The Coin')
 			wentFirst = 1
-		hand.append(card(id))
+		# Extend hand. [None]*-2 = [], so this won't extend unnecessarily.
+		hand.extend([None]*(position - len(hand) + 1))
+		hand[position] = card(id)
 
 # When a card is removed from a player's hand
 def play(entity):
 	global hand
 	if entity['player'] == them:
+		print '<45>', hand, entity['id']
 		hand.pop(int(entity['zonePos'])-1)
+		print '<47>', hand
 
 # When a card hits the board
 def play2(entity):
@@ -63,10 +68,12 @@ def die(entity):
 # Cards that are mulliganed have the same id as the original cards, so for all intents and purposes, I treat them as the same card.
 # The Innkeeper will mulligan every card in their hand, including the coin. Magic!
 def mulligan(entity):
-	print entity
 	global hand
 	if entity['player'] == them:
-		hand[int(entity['zonePos'])-1].notes += 'Mulliganed '
+		print hand
+		index = int(entity['zonePos'])-1
+		hand[index].notes += 'Mulliganed '
+		print hand
 
 def turnover():
 	global turn, hand, wentFirst
