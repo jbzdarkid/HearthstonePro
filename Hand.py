@@ -15,8 +15,8 @@ class card():
 		self.turn = turn/2
 		self.notes = (notes.pop()+' ') if len(notes) > 0 else ''
 
-	# def __repr__(self):
-	# 	print 'card(%s)' % (self.id)
+	def __repr__(self):
+		return 'card(%s)' % (self.id)
 
 def reset():
 	global turn, hand, notes, wentFirst, us, them
@@ -34,7 +34,7 @@ def draw(entity, position):
 	if entity['player'] == them:
 		print '<33>', hand, entity['id']
 		id = int(entity['id'])
-		if turn == 0 and id == 68:
+		if turn == 0 and len(hand) == 4:
 			notes.append('The Coin')
 			wentFirst = 1
 		# Extend hand. [None]*-2 = [], so this won't extend unnecessarily.
@@ -53,7 +53,7 @@ def play(entity):
 def play2(entity):
 	if entity['player'] == them:
 		if entity['name'] == 'Unstable Portal':
-			notes.append('Drawn from Unstable Portal')
+			notes.append('Random minion that costs 3 less')
 			draw(card(-1))
 		elif entity['name'] == 'Toshley':
 			notes.append('Spare Part')
@@ -82,7 +82,7 @@ def turnover():
 		print 'Current Turn:', turn/2
 		print 'Card No. | Turn | Notes'
 		for i in range(len(hand)):
-			print ' %s | %s | %s' % ('%d'.ljust(9) % (i+1), '%d'.ljust(6) % hand[i].turn, ' %s' % hand[i].notes)
+			print ' %s | %s | %s' % ('%d'.ljust(8) % (i+1), '%d'.ljust(4) % hand[i].turn, ' %s' % hand[i].notes)
 
 def length():
 	global hand

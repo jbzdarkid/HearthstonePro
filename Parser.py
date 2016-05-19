@@ -145,5 +145,5 @@ while True:
 					print 'Game Over'
 	except KeyboardInterrupt:
 		break
-	except e:
-		e.printStackTrace()
+	except Exception as e:
+		print e, type(e)
