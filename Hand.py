@@ -18,37 +18,44 @@ class card():
 		return 'card(%s)' % (self.id)
 
 def reset():
-	global turn, hand, notes, wentFirst, us, them
+	global turn, hand, notes, us, them
 	turn = 0
 	hand = []
 	notes = [] # Push to this to signal information about the next draw.
-	wentFirst = 0
 	us = '0' # player id
 	them = '0' # player id
 
 reset()
 
-def draw(entity, position):
-	global hand, wentFirst
+def wentFirst(truth):
+	global us, them, notes, hand
+	if truth:
+		us = '1'
+		them = '2'
+		notes = ['The Coin', 'Mulliganned', 'Mulliganned', 'Mulliganned', 'Mulliganned']
+		hand = [card(-1) for _ in range(5)]
+	else:
+		us = '2'
+		them = '1'
+		notes = ['Mulliganned', 'Mulliganned', 'Mulliganned']
+		hand = [card(-1) for _ in range(3)]
+
+def draw(entity, position=None):
+	global hand, them
 	if entity['player'] == them:
-		print '<33>', hand, entity['id']
-		id = int(entity['id'])
-		if turn == 0 and len(hand) == 4:
-			notes.append('The Coin')
-			wentFirst = 1
-		# Extend hand. [None]*-2 = [], so this won't extend unnecessarily.
-		hand.extend([None]*(position - len(hand) + 1))
-		hand[position] = card(id)
+		# Ovewriting a card because it was mulliganned
+		if position < len(hand):
+			hand[position].id = entity['id']
+		else:
+			hand.append(card(int(entity['id'])))
 
 # When a card is removed from a player's hand
 def play(entity):
 	global hand
 	if entity['player'] == them:
-		print '<45>', hand, entity['id']
 		hand.pop(int(entity['zonePos'])-1)
-		print '<47>', hand
 
-# When a card hits the board
+# When a card hits the board, and we can see what it's name is
 def play2(entity):
 	if entity['player'] == them:
 		if entity['name'] == 'Unstable Portal':
@@ -64,24 +71,21 @@ def die(entity):
 	if entity['name'] == 'Mechanical Yeti':
 		notes.append('Spare Part')
 
-# Cards that are mulliganed have the same id as the original cards, so for all intents and purposes, I treat them as the same card.
-# The Innkeeper will mulligan every card in their hand, including the coin. Magic!
-def mulligan(entity):
+# The mulligan works backwards, with cards that are kept appearing in the log file. Thus I initialize the cards in hand to be 'Mulliganned', and replace them if they appear.
+def keep(entity):
 	global hand
 	if entity['player'] == them:
-		print hand
-		index = int(entity['zonePos'])-1
-		hand[index].notes += 'Mulliganed '
-		print hand
+		print '<79>', entity, hand
+		hand[int(entity['zonePos'])-1] = card(entity['id'])
 
 def turnover():
-	global turn, hand, wentFirst
 	turn += 1
-	if (turn+wentFirst)%2 == 0:
+	offset = 0 if us == '2' else 1
+	if turn%2 == offset:
 		print 'Current Turn:', turn/2
 		print 'Card No. | Turn | Notes'
 		for i in range(len(hand)):
-			print ' %s | %s | %s' % ('%d'.ljust(8) % (i+1), '%d'.ljust(4) % hand[i].turn, ' %s' % hand[i].notes)
+			print ' %s | %s | %s' % ('%d'.ljust(8) % (i+1), '%d'.ljust(5) % hand[i].turn, ' %s' % hand[i].notes)
 
 def length():
 	global hand

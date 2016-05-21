@@ -109,41 +109,34 @@ def parse(data, start=0):
 
 tail = Popen(['tail', '-f', config['log']+'Power.log'], stdout=PIPE)
 while True:
-	try:
-		line = tail.stdout.readline()
-		line = line[19:] # Strips out timestamp
-		if line[:40] == 'GameState.DebugPrintPower() - TAG_CHANGE':
-			data = parse(line[40:])
-			if data['tag'] == 'PLAYER_ID':
-				if data['Entity'] == 'darkid':
-					Hand.us = data['value']
-				else:
-					Hand.them = data['value']
-		# if line[:48] == 'GameState.DebugPrintEntityChoices() -   Entities': # Initial cards in hand
-		# 	entity = parse(line[53:-2])
-		# 	Hand.draw(entity)
-		if line[:49] == 'GameState.DebugPrintEntitiesChosen() -   Entities': # Cards that were mulliganed
-			entity = parse(line[54:-2])
-			Hand.mulligan(entity)
-		if line[:46] == 'PowerTaskList.DebugPrintPower() - ACTION_START':
-			data = parse(line[46:])
-			if data['BlockType'] == 'POWER':
-				Hand.play2(data['Entity']) # When a card actually hits the board
-		if line[:48] == 'PowerTaskList.DebugPrintPower() -     TAG_CHANGE':
-			data = parse(line[48:])
-			if data['tag'] == 'ZONE_POSITION':
-				if 'zone' in data['Entity'] and data['Entity']['zone'] == 'DECK':
-					Hand.draw(data['Entity'], int(data['value'])-1)
-			elif data['tag'] == 'JUST_PLAYED':
-				if data['Entity']['zone'] == 'HAND':
-					Hand.play(data['Entity']) # When a card is removed from a player's hand
-			elif data['tag'] == 'TURN':
-				Hand.turnover()
-			elif data['tag'] == 'STEP':
-				if data['value'] == 'FINAL_GAMEOVER':
-					Hand.reset()
-					print 'Game Over'
-	except KeyboardInterrupt:
-		break
-	except Exception as e:
-		print e, type(e)
+	line = tail.stdout.readline()
+	line = line[19:] # Strips out timestamp
+	if line[:40] == 'GameState.DebugPrintPower() - TAG_CHANGE':
+		data = parse(line[40:])
+		if data['tag'] == 'FIRST_PLAYER':
+			Hand.wentFirst(data['Entity'] == 'darkid')
+	if line[:49] == 'GameState.DebugPrintEntitiesChosen() -   Entities': # Cards that were not mulliganed
+		entity = parse(line[54:-2])
+		Hand.keep(entity)
+	if line[:49] == 'PowerTaskList.DebugPrintPower() -     SHOW_ENTITY':
+		data = parse(line[52:])
+		print '<123>', data
+		#Hand.discard(data['Entity'])
+	if line[:46] == 'PowerTaskList.DebugPrintPower() - ACTION_START':
+		data = parse(line[46:])
+		if data['BlockType'] == 'POWER':
+			Hand.play2(data['Entity']) # When a card actually hits the board
+	if line[:48] == 'PowerTaskList.DebugPrintPower() -     TAG_CHANGE':
+		data = parse(line[48:])
+		if data['tag'] == 'ZONE_POSITION':
+			if 'zone' in data['Entity'] and data['Entity']['zone'] == 'DECK':
+				Hand.draw(data['Entity'], int(data['value'])-1)
+		elif data['tag'] == 'JUST_PLAYED':
+			if data['Entity']['zone'] == 'HAND':
+				Hand.play(data['Entity']) # When a card is removed from a player's hand
+		elif data['tag'] == 'TURN':
+			Hand.turnover()
+		elif data['tag'] == 'STEP':
+			if data['value'] == 'FINAL_GAMEOVER':
+				Hand.reset()
+				print 'Game Over'
