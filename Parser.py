@@ -108,8 +108,10 @@ def parse(data, start=0):
 # print 'A', parse('a=[b=c d=e] f=g')
 
 tail = Popen(['tail', '-f', config['log']+'Power.log'], stdout=PIPE)
+# f = open(config['log']+'Power.log')
 while True:
 	line = tail.stdout.readline()
+	# line = f.readline()
 	line = line[19:] # Strips out timestamp
 	if line[:40] == 'GameState.DebugPrintPower() - TAG_CHANGE':
 		data = parse(line[40:])
@@ -125,7 +127,7 @@ while True:
 		data = parse(line[40:])
 		if data['Source'] != 'GameEntity': # Not the mulligan choices
 			Cards.discover(data['Source'])
-	if line[:46] == 'PowerTaskList.DebugPrintPower() - ACTION_START':
+	if line[:45] == 'PowerTaskList.DebugPrintPower() - BLOCK_START':
 		data = parse(line[46:])
 		if data['BlockType'] == 'POWER':
 			Cards.play2(data['Entity']) # When a card actually hits the board
