@@ -2,7 +2,7 @@ from ast import literal_eval
 from os import sep
 from os.path import expanduser
 from subprocess import Popen, PIPE
-import Hand
+import Hand, Cards
 
 try:
 	config = literal_eval(open('config.cfg', 'rb').read())
@@ -118,19 +118,17 @@ while True:
 	if line[:49] == 'GameState.DebugPrintEntitiesChosen() -   Entities': # Cards that were not mulliganed
 		entity = parse(line[54:-2])
 		Hand.keep(entity)
-	if line[:49] == 'PowerTaskList.DebugPrintPower() -     SHOW_ENTITY':
-		data = parse(line[52:])
-		print '<123>', data
-		#Hand.discard(data['Entity'])
-	if line[:35] == 'GameState.DebugPrintEntityChoices()':
-		print line[40:]
+	# if line[:49] == 'PowerTaskList.DebugPrintPower() -     SHOW_ENTITY':
+	# 	data = parse(line[52:])
+	# 	Hand.discard(data['Entity'])
+	if line[:46] == 'GameState.DebugPrintEntityChoices() -   Source':
 		data = parse(line[40:])
 		if data['Source'] != 'GameEntity': # Not the mulligan choices
-			Hand.discover(data['Source'])
+			Cards.discover(data['Source'])
 	if line[:46] == 'PowerTaskList.DebugPrintPower() - ACTION_START':
 		data = parse(line[46:])
 		if data['BlockType'] == 'POWER':
-			Hand.play2(data['Entity']) # When a card actually hits the board
+			Cards.play2(data['Entity']) # When a card actually hits the board
 	if line[:48] == 'PowerTaskList.DebugPrintPower() -     TAG_CHANGE':
 		data = parse(line[48:])
 		if data['tag'] == 'ZONE_POSITION':
@@ -141,6 +139,7 @@ while True:
 				Hand.play(data['Entity']) # When a card is removed from a player's hand
 		elif data['tag'] == 'TURN':
 			Hand.turnover()
+			Cards.turnover()
 		elif data['tag'] == 'STEP':
 			if data['value'] == 'FINAL_GAMEOVER':
 				Hand.reset()
