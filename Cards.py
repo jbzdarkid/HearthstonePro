@@ -1,8 +1,8 @@
+# Special: King's Elekk, Sea Reaver, Flame Leviathan, Holy Wrath, Archmage Antonidas, Ysera, Chromaggus, Tinkertown Technician, Thistle Tea, Cutpurse, Infest, Headcrack, Varian Wrynn, Gnomish Experimenter, Far Sight, Captain's Parrot, Mech-Bear-Cat, Blood Warriors, Lock and Load, Gazlowe
 # Dragons: Blackwing Corruptor, Blackwing Technician, Twilight Whelp, Alextrasza's Champion, Wyrmrest Agent, Twilight Guardian, Rend Blackhand, Chillmaw
-# Deathrattle: Clockwork Gnome, Mechanical Yeti, Tomb Pillager, Webspinner, Infest*, Shifting Shade, Undercity Huckster, Rhonin, Toshley, Xaril. Poisoned Mind
-# Shadowstep effects: Bloodthistle Toxin, Dream, Time Rewinder, Sap, Ancient Brewmaster, Anub'ar Ambusher, Freezing Trap, Shadowstep, Vanish*, Youthful Brewmaster, Alarm-o-Bot, Coliseum Manager, Kidnapper, Tentacles for Arms, Anub'arak, The Skeleton Knight
-# Important specific cards: King's Elekk, Sea Reaver, Flame Leviathan, Holy Wrath, Varian Wrynn, Ancient Harbinger, Nefarian, Archmage Antonidas, Ysera, Chromaggus, Unstable Portal
-# Unimportant specific cards: Call Pet, Gnomish Experimenter, Thistle Tea, Far Sight, Sense Demons, Captain's Parrot, Headcrack, Trade Prince Gallywix, Lorewalker Cho
+# Inspire: Recruiter, Nexus-Champion Saraad
+# Targetted: Bloodthistle Toxin, Dream, Time Rewinder, Sap, Ancient Brewmaster, Anub'ar Ambusher, Freezing Trap, Shadowstep, Vanish*, Youthful Brewmaster, Alarm-o-Bot, Coliseum Manager, Kidnapper, Anub'arak, The Skeleton Knight, Shadowcaster, Echo of Mediv, Convert, Trade Prince Gallywix, Lorewalker Cho
+# Deathrattle: Webspinner, Infest*, Shifting Shade, Undercity Huckster, Rhonin, Explorer's Hat, Undercity Huckster, Tentacles for Arms
 
 import Hand
 
@@ -27,17 +27,91 @@ def play2(entity):
 		elif entity['name'] in ['Lava Shock', 'Eternal Sentinel']:
 			overload = 0
 
-		# if entity['name'] == 'Unstable Portal':
-		# 	Hand.notes.append('Random minion that costs 3 less')
-		# 	Hand.draw(entity)
-		# elif entity['name'] == 'Toshley':
-		# 	Hand.notes.append('Spare Part')
-		#		Hand.draw(entity)
+		elif entity['name'] == 'Burgle':
+			Hand.notes.append('A random card from your class')
+			Hand.notes.append('A random card from your class')
+			Hand.draw(entity)
+			Hand.draw(entity)
+		elif entity['name'] == 'Cabalist\'s Tomb':
+			Hand.notes.append('A random Mage spell')
+			Hand.notes.append('A random Mage spell')
+			Hand.notes.append('A random Mage spell')
+			Hand.draw(entity)
+			Hand.draw(entity)
+			Hand.draw(entity)
+		elif entity['name'] == 'Call Pet':
+			Hand.notes.append('If it\'s a beast, cost -4')
+		elif entity['name'] == 'Grand Crusader':
+			Hand.notes.append('A random Paladin card')
+			Hand.draw(entity)
+		elif entity['name'] == 'Mind Vision':
+			Hand.notes.append('A card from your hand')
+			Hand.draw(entity)
+		elif entity['name'] == 'Mukla, Tyrant of the Vale':
+			Hand.notes.append('A Banana')
+			Hand.notes.append('A Banana')
+			Hand.draw(entity)
+			Hand.draw(entity)
+		elif entity['name'] == 'Neptulon':
+			Hand.notes.append('A random Murloc')
+			Hand.notes.append('A random Murloc')
+			Hand.notes.append('A random Murloc')
+			Hand.notes.append('A random Murloc')
+			Hand.draw(entity)
+			Hand.draw(entity)
+			Hand.draw(entity)
+			Hand.draw(entity)
+		elif entity['name'] == 'Nefarian':
+			Hand.notes.append('A random card from your class')
+			Hand.notes.append('A random card from your class')
+			Hand.draw(entity)
+			Hand.draw(entity)
+		elif entity['name'] == 'Sense Demons':
+			Hand.notes.append('A demon')
+			Hand.notes.append('A demon')
+			Hand.draw(entity)
+			Hand.draw(entity)
+		elif entity['name'] == 'Thoughsteal':
+			Hand.notes.append('A card from your deck')
+			Hand.notes.append('A card from your deck')
+			Hand.draw(entity)
+			Hand.draw(entity)
+		elif entity['name'] == 'Toshley':
+		 	Hand.notes.append('Spare Part')
+			Hand.draw(entity)
+		elif entity['name'] == 'Unstable Portal':
+		 	Hand.notes.append('Random minion that costs 3 less')
+		 	Hand.draw(entity)
+		elif entity['name'] == 'Wild Growth':
+			Hand.notes.append('Excess Mana')
+			Hand.draw(entity)
+		elif entity['name'] == 'Xaril, Poisoned Mind':
+			Hand.notes.append('A random toxin')
+			Hand.draw(entity)
+	elif entity['player'] == Hand.us:
+		if entity['name'] == 'King Mukla':
+			Hand.notes.append('A Banana')
+			Hand.notes.append('A Banana')
+			Hand.draw(entity)
+			Hand.draw(entity)
+		elif entity['name'] == 'Mulch':
+			Hand.notes.append('A random minion')
+			Hand.draw(entity)
+	# if entity['player'] in [Hand.us, Hand.them]:
+	if entity['name'] == 'Spellslinger':
+		Hand.notes.append('A random spell')
+		Hand.draw(entity)
+	elif entity['name'] == 'Elite Tauren Chieftain':
+		Hand.notes.append('A Power Chord card')
+		Hand.draw(entity)
 
 def die(entity):
 	if entity['player'] == Hand.them:
 		if entity['name']	== 'Clockwork Gnome':
 			Hand.notes.append('Spare Part')
+			Hand.draw(entity)
+		elif entity['name'] == 'Tomb Pillager':
+			Hand.notes.append('The Coin')
 			Hand.draw(entity)
 	if entity['name'] == 'Mechanical Yeti':
 		Hand.notes.append('Spare Part')
