@@ -99,10 +99,11 @@ def parseFile(line_generator, config, *args):
 		if source == 'PowerTaskList.DebugPrintPower()':
 			if type == 'BLOCK_START':
 				if data['BlockType'] == 'TRIGGER':
-					if 'zone' in data['Entity'] and data['Entity']['zone'] == 'GRAVEYARD':
-						Cards.die(data['Entity'])
-					if isinstance(data['Entity'], dict):
-						Cards.trigger(data['Entity'])
+					if 'zone' in data['Entity']:
+						if data['Entity']['zone'] == 'GRAVEYARD':
+							Cards.die(data['Entity'])
+						elif data['Entity']['zone'] == 'PLAY':
+							Cards.trigger(data['Entity'])
 				elif data['BlockType'] == 'POWER':
 					Cards.play2(data['Entity']) # When a card actually hits the board
 			elif type == 'TAG_CHANGE':
