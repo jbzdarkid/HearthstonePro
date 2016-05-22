@@ -9,16 +9,8 @@ python:
   # - "3.5"
 os:
   - windows
-  - osx
+  # - osx
   - linux
-# https://github.com/travis-ci/travis-ci/issues/2312#issuecomment-195620855
-before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install python; fi
-  #   brew install python; \
-  #   # brew install python3; \
-  #   # virtualenv venv -p python3; \
-  #   source venv/bin/activate; \
 script: python Tester.py
 after_success:
   - echo Success
