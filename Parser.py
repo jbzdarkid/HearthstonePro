@@ -13,25 +13,34 @@ except SyntaxError:
 	# Config corrupt, somehow. Recreate.
 	config = {}
 
-if 'logconfig' not in config:
+if any(key not in config for key in ['logconfig', 'log', 'username']):
+	print 'Config incomplete or corrupted, (re)generating. This might take a while...'
 	from platform import system
+	from os import walk
 	if system() == 'Windows':
 		config['logconfig'] = '%LocalAppData%'
 	elif system() == 'Darwin': # Mac OSX
 		config['logconfig'] = expanduser('~')+'/Library/Preferences'
-		name = 'Hearthstone.app'
+		appName = 'Hearthstone.app'
 	else:
 		raise Exception('Unknown platform:', system())
 	config['logconfig'] += '/Blizzard/Hearthstone/log.config'
 
-if 'log' not in config:
-	from os import walk
 	for root, dirs, files in walk(expanduser('~')):
-		if name in dirs+files:
+		if appName in dirs+files:
 			config['log'] = root + sep + 'Logs' + sep
-	if 'log' not in config:
-		raise Exception('Couldn\'t find Hearthstone install!')
-	print config['log']
+			if 'username' in config:
+				break
+		if root.rsplit(sep)[-1] == 'Logs':
+			for f in files:
+				if 'battle.net' in f:
+					from re import search
+					f = open(root+sep+files[0]).read()
+					m = search('m_battleTag: (.*?)#', f)
+					config['username'] = m.group(1)
+					break
+			if 'log' in config and 'username' in config:
+				break
 
 c = open('config.cfg', 'wb')
 c.write(str(config))
@@ -109,6 +118,8 @@ def parse(data, start=0):
 
 tail = Popen(['tail', '-f', config['log']+'Power.log'], stdout=PIPE)
 # f = open(config['log']+'Power.log')
+print 'Startup complete.'
+
 while True:
 	line = tail.stdout.readline()
 	# line = f.readline()
@@ -116,7 +127,7 @@ while True:
 	if line[:40] == 'GameState.DebugPrintPower() - TAG_CHANGE':
 		data = parse(line[40:])
 		if data['tag'] == 'FIRST_PLAYER':
-			Hand.wentFirst(data['Entity'] == 'darkid')
+			Hand.wentFirst(data['Entity'] == config['username'])
 	if line[:49] == 'GameState.DebugPrintEntitiesChosen() -   Entities': # Cards that were not mulliganed
 		entity = parse(line[54:-2])
 		Hand.keep(entity)
