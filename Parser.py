@@ -131,6 +131,11 @@ while True:
 	if line[:49] == 'GameState.DebugPrintEntitiesChosen() -   Entities': # Cards that were not mulliganed
 		entity = parse(line[54:-2])
 		Hand.keep(entity)
+	if line[:45] == 'PowerTaskList.DebugPrintPower() - BLOCK_START':
+		data = parse(line[45:])
+		if data['BlockType'] == 'TRIGGER':
+			if 'zone' in data['Entity'] and data['Entity']['zone'] == 'GRAVEYARD':
+				Cards.die(data['Entity'])
 	# if line[:49] == 'PowerTaskList.DebugPrintPower() -     SHOW_ENTITY':
 	# 	data = parse(line[52:])
 	# 	Hand.discard(data['Entity'])

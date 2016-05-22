@@ -113,6 +113,9 @@ def die(entity):
 		elif entity['name'] == 'Tomb Pillager':
 			Hand.notes.append('The Coin')
 			Hand.draw(entity)
+		elif entity['name'] == 'Xaril, Poisoned Mind':
+			Hand.notes.append('A random toxin')
+			Hand.draw(entity)
 	if entity['name'] == 'Mechanical Yeti':
 		Hand.notes.append('Spare Part')
 		Hand.draw(entity)
