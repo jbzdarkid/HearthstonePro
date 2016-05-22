@@ -1,4 +1,4 @@
-# Special: King's Elekk, Sea Reaver, Flame Leviathan, Holy Wrath, Archmage Antonidas, Ysera, Chromaggus, Tinkertown Technician, Thistle Tea, Cutpurse, Infest, Headcrack, Varian Wrynn, Gnomish Experimenter, Far Sight, Captain's Parrot, Mech-Bear-Cat, Blood Warriors, Lock and Load, Gazlowe
+# Special: King's Elekk, Sea Reaver, Flame Leviathan, Holy Wrath, Archmage Antonidas, Chromaggus, Tinkertown Technician, Thistle Tea, Cutpurse, Infest, Headcrack, Varian Wrynn, Gnomish Experimenter, Far Sight, Captain's Parrot, Mech-Bear-Cat, Blood Warriors, Lock and Load, Gazlowe
 # Dragons: Blackwing Corruptor, Blackwing Technician, Twilight Whelp, Alextrasza's Champion, Wyrmrest Agent, Twilight Guardian, Rend Blackhand, Chillmaw
 # Inspire: Recruiter, Nexus-Champion Saraad
 # Targetted: Bloodthistle Toxin, Dream, Time Rewinder, Sap, Ancient Brewmaster, Anub'ar Ambusher, Freezing Trap, Shadowstep, Vanish*, Youthful Brewmaster, Alarm-o-Bot, Coliseum Manager, Kidnapper, Anub'arak, The Skeleton Knight, Shadowcaster, Echo of Mediv, Convert, Trade Prince Gallywix, Lorewalker Cho
@@ -174,6 +174,16 @@ def discover(source):
 		elif source['name'] == 'Sir Finley Mrrgglton':
 			return
 		Hand.draw(source) # Not the real id of the discovered card, but ids aren't ever repeated anyways. Only a potential id duplicate with Brann.
+
+# This isn't very well encapsulated, but it's also the extreme edge-case cards that are hard to deal with otherwise.
+def trigger(entity):
+	if entity['player'] == Hand.them:
+		if entity['name'] == 'Emperor Thaurissan':
+			for card in Hand.hand:
+				card.cost -= 1
+		elif entity['name'] == 'Ysera':
+			Hand.notes.append('A Dream card')
+			Hand.draw(entity)
 
 def turnover(turn):
 	global overload

@@ -101,6 +101,8 @@ def parseFile(line_generator, config, *args):
 				if data['BlockType'] == 'TRIGGER':
 					if 'zone' in data['Entity'] and data['Entity']['zone'] == 'GRAVEYARD':
 						Cards.die(data['Entity'])
+					if isinstance(data['Entity'], dict):
+						Cards.trigger(data['Entity'])
 				elif data['BlockType'] == 'POWER':
 					Cards.play2(data['Entity']) # When a card actually hits the board
 			elif type == 'TAG_CHANGE':
@@ -109,7 +111,6 @@ def parseFile(line_generator, config, *args):
 						Hand.play(data['Entity']) # When a card is removed from a player's hand
 				elif data['tag'] == 'RESOURCES':
 					if data['Entity'] != config['username']:
-						print '<74>', data['value']
 						Cards.resources = data['value']
 				elif data['tag'] == 'STEP':
 					if data['value'] == 'FINAL_GAMEOVER':
