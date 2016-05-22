@@ -2,21 +2,21 @@ language: python
 python:
   - "2.6"
   - "2.7"
-  - "3.5"
+  # - "3.5"
 os:
   - windows
-  - osx
+  # - osx
   - linux
 # https://github.com/travis-ci/travis-ci/issues/2312#issuecomment-195620855
 before_install:
   - pip install coverage
-  # - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then \
-  #   brew update; \
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then \
+    brew update; \
   #   brew install python; \
   #   # brew install python3; \
   #   # virtualenv venv -p python3; \
   #   source venv/bin/activate; \
-  # fi
+  fi
 script: python Tester.py
 after_success:
   - bash <(curl -s https://codecov.io/bash)
