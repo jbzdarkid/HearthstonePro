@@ -2,7 +2,7 @@
 # Dragons: Blackwing Corruptor, Blackwing Technician, Twilight Whelp, Alextrasza's Champion, Wyrmrest Agent, Twilight Guardian, Rend Blackhand, Chillmaw
 # Inspire: Recruiter, Nexus-Champion Saraad
 # Targetted: Bloodthistle Toxin, Dream, Time Rewinder, Sap, Ancient Brewmaster, Anub'ar Ambusher, Freezing Trap, Shadowstep, Vanish*, Youthful Brewmaster, Alarm-o-Bot, Coliseum Manager, Kidnapper, Anub'arak, The Skeleton Knight, Shadowcaster, Echo of Mediv, Convert, Trade Prince Gallywix, Lorewalker Cho
-# Deathrattle: Webspinner, Infest*, Shifting Shade, Undercity Huckster, Rhonin, Explorer's Hat, Undercity Huckster, Tentacles for Arms
+# Deathrattle: Infest*, Explorer's Hat, Voidcaller, The Skeleton Knight
 
 import Hand
 
@@ -107,15 +107,41 @@ def play2(entity):
 
 def die(entity):
 	if entity['player'] == Hand.them:
-		if entity['name']	== 'Clockwork Gnome':
+		if entity['name'] == 'Anub\'arak':
+			Hand.notes.append('Anub\'arak')
+			Hand.draw(entity)
+		elif entity['name']	== 'Clockwork Gnome':
 			Hand.notes.append('Spare Part')
+			Hand.draw(entity)
+		elif entity['name'] == 'Rhonin':
+			Hand.notes.append('Arcane Missles')
+			Hand.notes.append('Arcane Missles')
+			Hand.notes.append('Arcane Missles')
+			Hand.draw(entity)
+			Hand.draw(entity)
+			Hand.draw(entity)
+		elif entity['name'] == 'Shifting Shade':
+			Hand.notes.append('A card from your deck')
+			Hand.draw(entity)
+		elif entity['name'] == 'Tentacles for Arms':
+			Hand.notes.append('Tentacles for Arms')
 			Hand.draw(entity)
 		elif entity['name'] == 'Tomb Pillager':
 			Hand.notes.append('The Coin')
 			Hand.draw(entity)
+		elif entity['name'] == 'Toshley':
+			Hand.notes.append('Spare Part')
+			Hand.draw(entity)
+		elif entity['name'] == 'Undercity Huckster':
+			Hand.notes.append('A card from your class')
+			Hand.draw(entity)
 		elif entity['name'] == 'Xaril, Poisoned Mind':
 			Hand.notes.append('A random toxin')
 			Hand.draw(entity)
+		elif entity['name'] == 'Webspinner':
+			Hand.notes.append('A random beast')
+			Hand.draw(entity)
+	# if entity['player'] in [Hand.us, Hand.them]:
 	if entity['name'] == 'Mechanical Yeti':
 		Hand.notes.append('Spare Part')
 		Hand.draw(entity)
