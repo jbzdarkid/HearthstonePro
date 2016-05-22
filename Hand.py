@@ -7,6 +7,7 @@ class card():
 		self.id = id
 		self.turn = turn/2
 		self.notes = (notes.pop()+' ') if len(notes) > 0 else ''
+		self.cost = 0
 
 	def __repr__(self):
 		return 'card(%s)' % (self.id)
