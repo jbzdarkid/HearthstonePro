@@ -172,10 +172,10 @@ def discover(source):
 			return
 		Hand.draw(source) # Not the real id of the discovered card, but ids aren't ever repeated anyways. Only a potential id duplicate with Brann.
 
-def turnover():
+def turnover(turn):
 	global overload
-	offset = 0 if Hand.us == '2' else 1
-	if Hand.turn%2 == offset:
+	offset = 0 if Hand.wentFirst else 1
+	if turn%2 == offset:
 		if overload != 0:
 			print 'Overload next turn:', overload
 			overload = 0

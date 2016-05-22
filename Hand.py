@@ -23,7 +23,7 @@ def reset():
 reset()
 
 def wentFirst(truth):
-	global notes, hand
+	global notes, hand, wentFirst
 	if truth:
 		notes = ['The Coin', 'Mulliganned', 'Mulliganned', 'Mulliganned', 'Mulliganned']
 		hand = [card(-1) for _ in range(5)]
@@ -54,9 +54,9 @@ def keep(entity):
 	if entity['player'] == them:
 		hand[int(entity['zonePos'])-1] = card(entity['id'])
 
-def turnover():
-	global turn, hand
-	turn += 1
+def turnover(turn):
+	globals()['turn'] = turn # https://docs.python.org/2/library/functions.html#globals
+	global hand
 	offset = 0 if wentFirst else 1
 	if turn%2 == offset:
 		print 'Current Turn:', turn/2

@@ -42,8 +42,8 @@ def parseFile(line_generator, config):
 				if data['Entity']['zone'] == 'HAND':
 					Hand.play(data['Entity']) # When a card is removed from a player's hand
 			elif data['tag'] == 'TURN':
-				Hand.turnover()
-				Cards.turnover()
+				Cards.turnover(int(data['value']))
+				Hand.turnover(int(data['value']))
 			elif data['tag'] == 'STEP':
 				if data['value'] == 'FINAL_GAMEOVER':
 					Hand.reset()
