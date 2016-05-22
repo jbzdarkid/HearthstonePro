@@ -7,8 +7,9 @@
 import Hand
 
 def reset():
-	global overload
+	global overload, resources
 	overload = 0
+	resources = None
 
 reset()
 
@@ -83,8 +84,9 @@ def play2(entity):
 		 	Hand.notes.append('Random minion that costs 3 less')
 		 	Hand.draw(entity)
 		elif entity['name'] == 'Wild Growth':
-			Hand.notes.append('Excess Mana')
-			Hand.draw(entity)
+			if resources == '10':
+				Hand.notes.append('Excess Mana')
+				Hand.draw(entity)
 		elif entity['name'] == 'Xaril, Poisoned Mind':
 			Hand.notes.append('A random toxin')
 			Hand.draw(entity)
