@@ -1,7 +1,9 @@
 from sys import argv
+from os import getcwd, sep
 import Parser
 
 def line_generator(file):
+	print file
 	f = open(file, 'rb')
 	for line in f:
 		yield line
@@ -17,7 +19,7 @@ else:
 config = {'username':'darkid'}
 for file in files:
 	try:
-		Parser.parseFile(line_generator, {'username':'darkid'})
+		Parser.parseFile(line_generator, {'username':'darkid'}, getcwd()+sep+'tests'+sep+file)
 	except Exception as e:
 		from traceback import print_exc
 		print 'Failed for file', file

@@ -1,11 +1,68 @@
 import Hand, Cards
+# This function parses the Hearthstone log files, and converts them into dictionaries
+# Python throws some errors here about 'key not defined'. It is defined in the data[i] = '=' block, which will be called (on properly formatted input) before 'key' is referenced.
+# There are scenarios where this error will be thrown during execution, but only on invalid log data.
+def parse(data, start=0):
+	def debug(string):
+		# print string
+		return
+	data = data.strip()
+	debug(data)
+	out = {}
+	index = start
+	possible = start
+	i = start
+	recursed = True
+	while i < len(data):
+		debug(str(i)+' '+str(data[i]))
+		if data[i] == '[':
+			debug('Recursing...')
+			out[key], i = parse(data, i+1)
+			possible = start
+			recursed = True
+			debug('Recursion returned: '+str(out[key]))
+		elif data[i] == ']':
+			value = data[index:i]
+			debug('<1>Value: data['+str(index)+':'+str(i)+']='+str(value))
+			out[key] = value
+			return (out, i)
+		elif data[i] == ' ':
+			possible = i+1
+			debug('Possible key: data['+str(i+1)+':'+str(i+2)+']='+str(data[i+1:i+2]))
+		elif data[i] == '=':
+			if not recursed:
+				out[key] = data[index:possible-1]
+				debug('<2>Value: data['+str(index)+':'+str(possible-1)+']='+str(out[key]))
+			key = data[possible:i]
+			debug('Key: data['+str(possible)+':'+str(i)+']='+str(key))
+			index = i+1
+			recursed = False
+		i += 1
+	if not recursed: # The last k,v pair
+		out[key] = data[index:]
+		debug('<3>Value: data['+str(index)+':]='+str(out[key]))
+	return out
+
+# print '1', parse('')
+# print '2', parse('a=b')
+# print '3', parse('a=b c')
+# print '4', parse('a=[b=c]')
+# print '5', parse('a=b c=d')
+# print '6', parse('a=[b=c d]')
+# print '7', parse('a=[b=c] d=e')
+# print '8', parse('a=[b=c d=e]')
+# print '9', parse('a=b c d=e')
+# print '0', parse('a=b c=[d=e] f=g')
+# print 'A', parse('a=[b=c d=e] f=g')
+
 # Main parsing function. line_generator can be a tail for live execution, or a file object for testing.
-def parseFile(line_generator, config):
-	for line in line_generator():
+def parseFile(line_generator, config, *args):
+	for line in line_generator(*args):
 		line = line[19:] # Strips out timestamp
 		if line[:40] == 'GameState.DebugPrintPower() - TAG_CHANGE':
 			data = parse(line[40:])
 			if data['tag'] == 'PLAYER_ID':
+				print data
 				if data['Entity'] == config['username']:
 					Hand.us = data['value']
 				else:
@@ -42,6 +99,7 @@ def parseFile(line_generator, config):
 				if data['Entity']['zone'] == 'HAND':
 					Hand.play(data['Entity']) # When a card is removed from a player's hand
 			elif data['tag'] == 'TURN':
+				print line
 				Cards.turnover(int(data['value']))
 				Hand.turnover(int(data['value']))
 			elif data['tag'] == 'STEP':
@@ -112,62 +170,6 @@ if __name__ == '__main__':
 		g = open(config['logconfig'], 'wb')
 		g.write(f)
 		g.close()
-
-	def debug(string):
-		# print string
-		return
-
-	# Python throws some errors here about 'key not defined'. It is defined in the data[i] = '=' block, which will be called (on properly formatted input) before 'key' is referenced.
-	# There are scenarios where this error will be thrown during execution, but only on invalid log data.
-	def parse(data, start=0):
-		data = data.strip()
-		debug(data)
-		out = {}
-		index = start
-		possible = start
-		i = start
-		recursed = True
-		while i < len(data):
-			debug(str(i)+' '+str(data[i]))
-			if data[i] == '[':
-				debug('Recursing...')
-				out[key], i = parse(data, i+1)
-				possible = start
-				recursed = True
-				debug('Recursion returned: '+str(out[key]))
-			elif data[i] == ']':
-				value = data[index:i]
-				debug('<1>Value: data['+str(index)+':'+str(i)+']='+str(value))
-				out[key] = value
-				return (out, i)
-			elif data[i] == ' ':
-				possible = i+1
-				debug('Possible key: data['+str(i+1)+':'+str(i+2)+']='+str(data[i+1:i+2]))
-			elif data[i] == '=':
-				if not recursed:
-					out[key] = data[index:possible-1]
-					debug('<2>Value: data['+str(index)+':'+str(possible-1)+']='+str(out[key]))
-				key = data[possible:i]
-				debug('Key: data['+str(possible)+':'+str(i)+']='+str(key))
-				index = i+1
-				recursed = False
-			i += 1
-		if not recursed: # The last k,v pair
-			out[key] = data[index:]
-			debug('<3>Value: data['+str(index)+':]='+str(out[key]))
-		return out
-
-	# print '1', parse('')
-	# print '2', parse('a=b')
-	# print '3', parse('a=b c')
-	# print '4', parse('a=[b=c]')
-	# print '5', parse('a=b c=d')
-	# print '6', parse('a=[b=c d]')
-	# print '7', parse('a=[b=c] d=e')
-	# print '8', parse('a=[b=c d=e]')
-	# print '9', parse('a=b c d=e')
-	# print '0', parse('a=b c=[d=e] f=g')
-	# print 'A', parse('a=[b=c d=e] f=g')
 
 	print 'Startup complete.'
 
