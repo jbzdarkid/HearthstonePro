@@ -10,13 +10,13 @@ os:
 # https://github.com/travis-ci/travis-ci/issues/2312#issuecomment-195620855
 before_install:
   - pip install coverage
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then \
-    brew update; \
-    brew install python; \
-    # brew install python3; \
-    # virtualenv venv -p python3; \
-    source venv/bin/activate; \
-  fi
+  # - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then \
+  #   brew update; \
+  #   brew install python; \
+  #   # brew install python3; \
+  #   # virtualenv venv -p python3; \
+  #   source venv/bin/activate; \
+  # fi
 # http://stackoverflow.com/questions/29295965/python-coverage-badges-how-to-get-them
 script:
   - from PIL import Image, ImageDraw, ImageFont
