@@ -9,7 +9,7 @@ os:
   - linux
 # https://github.com/travis-ci/travis-ci/issues/2312#issuecomment-195620855
 before_install:
-  - pip install tester
+  - pip install coverage
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then \
     brew update; \
     brew install python; \
