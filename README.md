@@ -1,5 +1,5 @@
 [![Travis](https://img.shields.io/travis/jbzdarkid/HearthstonePro.svg)](https://travis-ci.org/jbzdarkid/HearthstonePro)
-[![Codecov](https://img.shields.io/codecov/c/github/jbzdarkid/HearthstonePro.svg)]()
+[![Codecov](https://img.shields.io/codecov/c/github/jbzdarkid/HearthstonePro.svg)](https://codecov.io/gh/jbzdarkid/HearthstonePro)
 [![license](https://img.shields.io/github/license/jbzdarkid/HearthstonePro.svg)](https://github.com/jbzdarkid/HearthstonePro/blob/master/LICENSE)
 
 # HearthstonePro
