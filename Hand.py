@@ -12,27 +12,26 @@ class card():
 		return 'card(%s)' % (self.id)
 
 def reset():
-	global turn, hand, notes, us, them
+	global turn, hand, notes, us, them, wentFirst
 	turn = 0
 	hand = []
 	notes = [] # Push to this to signal information about the next draw.
 	us = '0' # player id
 	them = '0' # player id
+	wentFirst = None
 
 reset()
 
 def wentFirst(truth):
-	global us, them, notes, hand
+	global notes, hand
 	if truth:
-		us = '1'
-		them = '2'
 		notes = ['The Coin', 'Mulliganned', 'Mulliganned', 'Mulliganned', 'Mulliganned']
 		hand = [card(-1) for _ in range(5)]
+		wentFirst = True
 	else:
-		us = '2'
-		them = '1'
 		notes = ['Mulliganned', 'Mulliganned', 'Mulliganned']
 		hand = [card(-1) for _ in range(3)]
+		wentFirst = False
 
 def draw(entity, position=None):
 	global hand, them
@@ -58,10 +57,11 @@ def keep(entity):
 def turnover():
 	global turn, hand
 	turn += 1
-	offset = 0 if us == '2' else 1
+	offset = 0 if wentFirst else 1
 	if turn%2 == offset:
 		print 'Current Turn:', turn/2
-		print 'Card No. | Turn | Notes'
+		if len(hand) > 0:
+			print 'Card No. | Turn | Notes'
 		for i in range(len(hand)):
 			print ' %s | %s | %s' % (
 			('%d' % (i+1)).ljust(7),

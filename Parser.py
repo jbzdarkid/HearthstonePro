@@ -5,7 +5,12 @@ def parseFile(line_generator, config):
 		line = line[19:] # Strips out timestamp
 		if line[:40] == 'GameState.DebugPrintPower() - TAG_CHANGE':
 			data = parse(line[40:])
-			if data['tag'] == 'FIRST_PLAYER':
+			if data['tag'] == 'PLAYER_ID':
+				if data['Entity'] == config['username']:
+					Hand.us = data['value']
+				else:
+					Hand.them = data['value']
+			elif data['tag'] == 'FIRST_PLAYER':
 				Hand.wentFirst(data['Entity'] == config['username'])
 		if line[:49] == 'GameState.DebugPrintEntitiesChosen() -   Entities': # Cards that were not mulliganed
 			entity = parse(line[54:-2])
