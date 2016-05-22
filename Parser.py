@@ -15,17 +15,18 @@ def parse(data, start=0):
 	recursed = True
 	while i < len(data):
 		debug(str(i)+' '+str(data[i]))
-		if data[i] == '[':
+		if data[i] == '[' and data[i-1] == '=':
 			debug('Recursing...')
 			out[key], i = parse(data, i+1)
 			possible = start
 			recursed = True
 			debug('Recursion returned: '+str(out[key]))
 		elif data[i] == ']':
-			value = data[index:i]
-			debug('<1>Value: data['+str(index)+':'+str(i)+']='+str(value))
-			out[key] = value
-			return (out, i)
+			if not recursed:
+				value = data[index:i]
+				debug('<1>Value: data['+str(index)+':'+str(i)+']='+str(value))
+				out[key] = value
+				return (out, i)
 		elif data[i] == ' ':
 			possible = i+1
 			debug('Possible key: data['+str(i+1)+':'+str(i+2)+']='+str(data[i+1:i+2]))
@@ -43,17 +44,24 @@ def parse(data, start=0):
 		debug('<3>Value: data['+str(index)+':]='+str(out[key]))
 	return out
 
-# print '1', parse('')
-# print '2', parse('a=b')
-# print '3', parse('a=b c')
-# print '4', parse('a=[b=c]')
-# print '5', parse('a=b c=d')
-# print '6', parse('a=[b=c d]')
-# print '7', parse('a=[b=c] d=e')
-# print '8', parse('a=[b=c d=e]')
-# print '9', parse('a=b c d=e')
-# print '0', parse('a=b c=[d=e] f=g')
-# print 'A', parse('a=[b=c d=e] f=g')
+# print '1', parse('') # {}
+# print '2', parse('a=b') # {'a':'b'}
+# print '3', parse('a=b c') # {'a':'b c'}
+# print '4', parse('a=[b=c]') # {'a':{'b':'c'}}
+# print '5', parse('a=b c=d') # {'a':'b', 'c':'d'}
+# print '6', parse('a=[b=c d]') # {'a':{'b':'c d'}}
+# print '7', parse('a=[b=c] d=e') # {'a':{'b':'c'}, 'd':'e'}
+# print '8', parse('a=[b=c d=e]') # {'a':{'b':c', 'd':'e'}}
+# print '9', parse('a=b c d=e') # {'a':'b c', 'd':'e'}
+# print '0', parse('a=b c=[d=e] f=g') # {'a':'b', 'c':'{'d':'e'}, 'f':'g'}
+# print 'A', parse('a=[b=c d=e] f=g') # {'a':{'b':'c', 'd':'e'}, 'f':'g'}
+# print 'B', parse('a[b]=c') # {'a[b]':'c'}
+# print 'C', parse('a[b]=c d') # {'a[b]':'c d'}
+# print 'D', parse('a[b]=c d=e') # {'a[b]':'c', 'd':'e'}
+# print 'E', parse('a[b]=c d e=f') # {'a[b]':'c d', 'e':'f'}
+# print 'F', parse('a[b]=c d=[e=f]') # {'a[b]':'c', 'd':{'e':'f'}}
+
+raw_input()
 
 # Main parsing function. line_generator can be a tail for live execution, or a file object for testing.
 def parseFile(line_generator, config, *args):
