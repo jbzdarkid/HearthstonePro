@@ -35,6 +35,8 @@ def wentFirst(truth):
 
 def draw(entity, position=None):
 	global hand, them
+	if len(hand) == 10:
+		return
 	if entity['player'] == them:
 		# Ovewriting a card because it was mulliganned
 		if position and position < len(hand):
