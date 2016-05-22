@@ -17,19 +17,6 @@ before_install:
   #   # virtualenv venv -p python3; \
   #   source venv/bin/activate; \
   # fi
-# http://stackoverflow.com/questions/29295965/python-coverage-badges-how-to-get-them
-script:
-  - from PIL import Image, ImageDraw, ImageFont
-  - from coverage import coverage
-  - cov = coverage()
-  - cov.start()
-  - python Tester.py
-  - cov.stop()
-  - total = cov.report()
-  - im = Image.new("RGB", (120, 20))
-  - fnt = ImageFont.load_default()
-  - d = ImageDraw.Draw(im)
-
-  - d.text((10, 5), "coverage:", fill=(255, 255, 255), font=fnt)
-  - d.rectangle([(80, 0), (150, 20)], fill=(220, 0, 0))
-  - d.text((90, 5), "{:.0f}%".format(total), fill=(0, 0, 0), font=fnt)
+script: python Tester.py
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
