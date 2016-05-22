@@ -61,59 +61,68 @@ def parse(data, start=0):
 # print 'E', parse('a[b]=c d e=f') # {'a[b]':'c d', 'e':'f'}
 # print 'F', parse('a[b]=c d=[e=f]') # {'a[b]':'c', 'd':{'e':'f'}}
 
-raw_input()
-
 # Main parsing function. line_generator can be a tail for live execution, or a file object for testing.
 def parseFile(line_generator, config, *args):
+	from re import match
 	for line in line_generator(*args):
-		line = line[19:] # Strips out timestamp
-		if line[:40] == 'GameState.DebugPrintPower() - TAG_CHANGE':
-			data = parse(line[40:])
+		line_parts = match('^D \d{2}:\d{2}:\d{2}\.\d{7} ([a-zA-Z]*\.[a-zA-Z]*\(\)) -\s*([A-Z_]*) (.*)', line)
+		if line_parts is None: # Any of the error messages won't match
+			continue
+			print line
+			raw_input()
+		source = line_parts.group(1)
+		type = line_parts.group(2)
+		data = parse(line_parts.group(3))
+
+		if source == 'GameState.DebugPrintPower()' and type =='TAG_CHANGE':
 			if data['tag'] == 'PLAYER_ID':
 				print data
+				print config
 				if data['Entity'] == config['username']:
 					Hand.us = data['value']
 				else:
 					Hand.them = data['value']
 			elif data['tag'] == 'FIRST_PLAYER':
 				Hand.wentFirst(data['Entity'] == config['username'])
-		if line[:49] == 'GameState.DebugPrintEntitiesChosen() -   Entities': # Cards that were not mulliganed
-			entity = parse(line[54:-2])
-			Hand.keep(entity)
-		if line[:45] == 'PowerTaskList.DebugPrintPower() - BLOCK_START':
-			data = parse(line[45:])
-			if data['BlockType'] == 'TRIGGER':
-				if 'zone' in data['Entity'] and data['Entity']['zone'] == 'GRAVEYARD':
-					Cards.die(data['Entity'])
-		# if line[:49] == 'PowerTaskList.DebugPrintPower() -     SHOW_ENTITY':
-		# 	data = parse(line[52:])
+		if source == 'GameState.DebugPrintEntitiesChosen()':
+# Cards that were not mulliganed
+			if data.keys()[0][:8] == 'Entities': # Entities[0], e.g.
+				Hand.keep(data.values()[0])
+		# if source == 'PowerTaskList.DebugPrintPower()' and type == 'SHOW_ENTITY':
 		# 	Hand.discard(data['Entity'])
-		if line[:46] == 'GameState.DebugPrintEntityChoices() -   Source':
-			data = parse(line[40:])
-			if data['Source'] != 'GameEntity': # Not the mulligan choices
+		if source == 'GameState.DebugPrintEntityChoices()':
+			if 'Source' in data and data['Source'] != 'GameEntity': # Not the mulligan choices
 				Cards.discover(data['Source'])
-		if line[:49] == 'PowerTaskList.DebugPrintPower() -     HIDE_ENTITY':
-			print '<26>', line[49:]
-		if line[:45] == 'PowerTaskList.DebugPrintPower() - BLOCK_START':
-			data = parse(line[46:])
-			if data['BlockType'] == 'POWER':
-				Cards.play2(data['Entity']) # When a card actually hits the board
-		if line[:48] == 'PowerTaskList.DebugPrintPower() -     TAG_CHANGE':
-			data = parse(line[48:])
-			if data['tag'] == 'ZONE_POSITION':
-				if 'zone' in data['Entity'] and data['Entity']['zone'] == 'DECK':
-					Hand.draw(data['Entity'], int(data['value'])-1)
-			elif data['tag'] == 'JUST_PLAYED':
-				if data['Entity']['zone'] == 'HAND':
-					Hand.play(data['Entity']) # When a card is removed from a player's hand
-			elif data['tag'] == 'TURN':
-				print line
-				Cards.turnover(int(data['value']))
-				Hand.turnover(int(data['value']))
-			elif data['tag'] == 'STEP':
-				if data['value'] == 'FINAL_GAMEOVER':
-					Hand.reset()
-					print 'Game Over'
+		# if source == 'PowerTaskList.DebugPrintPower()' and type == 'HIDE_ENTITY':
+		# 	print '<26>', data
+		# Vanish?
+		if source == 'PowerTaskList.DebugPrintPower()':
+			if type == 'BLOCK_START':
+				if data['BlockType'] == 'TRIGGER':
+					if 'zone' in data['Entity'] and data['Entity']['zone'] == 'GRAVEYARD':
+						Cards.die(data['Entity'])
+				elif data['BlockType'] == 'POWER':
+					Cards.play2(data['Entity']) # When a card actually hits the board
+			elif type == 'TAG_CHANGE':
+				if data['tag'] == 'JUST_PLAYED':
+					if data['Entity']['zone'] == 'HAND':
+						Hand.play(data['Entity']) # When a card is removed from a player's hand
+				elif data['tag'] == 'RESOURCES':
+					if data['Entity'] != config['username']:
+						print '<74>', data['value']
+						Cards.resources = data['value']
+				elif data['tag'] == 'STEP':
+					if data['value'] == 'FINAL_GAMEOVER':
+						Cards.reset()
+						Hand.reset()
+						print 'Game Over'
+				elif data['tag'] == 'TURN':
+					# print line
+					Cards.turnover(int(data['value']))
+					Hand.turnover(int(data['value']))
+				elif data['tag'] == 'ZONE_POSITION':
+					if 'zone' in data['Entity'] and data['Entity']['zone'] == 'DECK':
+						Hand.draw(data['Entity'], int(data['value'])-1)
 
 # Setup scripts.
 if __name__ == '__main__':
