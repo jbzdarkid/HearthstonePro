@@ -22,4 +22,5 @@ before_install:
   #   source venv/bin/activate; \
 script: python Tester.py
 after_success:
+  - echo Success
   - bash <(curl -s https://codecov.io/bash)
