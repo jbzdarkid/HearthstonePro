@@ -63,14 +63,14 @@ def parse(data, start=0):
 
 # Main parsing function. line_generator can be a tail for live execution, or a file object for testing.
 def parseFile(line_generator, config, *args):
+    lineNo = 0
     from re import match
     showEntity = None    
     for line in line_generator(*args):
-        line_parts = match('^D \d{2}:\d{2}:\d{2}\.\d{7} ([a-zA-Z]*\.[a-zA-Z]*\(\)) -\s*([A-Z_]*)(.*)', line)
-        if line_parts is None: # Any of the error messages won't match
+        lineNo += 1
+        line_parts = match('^D \d{2}:\d{2}:\d{2}\.\d{7} ([a-zA-Z]*\.[a-zA-Z]*\(\)) -\s*([A-Z_]{2,}|)(.*)', line)
+        if line_parts is None: # Any of the error messages won't match, but it's not safe to use them
             continue
-            print line
-            raw_input()
         source = line_parts.group(1)
         type = line_parts.group(2)
         data = parse(line_parts.group(3))
@@ -89,7 +89,8 @@ def parseFile(line_generator, config, *args):
                 Hand.keep(data.values()[0])
         if source == 'GameState.DebugPrintEntityChoices()':
             if 'Source' in data and data['Source'] != 'GameEntity': # Not the mulligan choices
-                Cards.discover(data['Source'])
+                if 'name' in data['Source']: # Not Sir Finley Mrrgglton
+                    Cards.discover(data['Source'])
         # if source == 'PowerTaskList.DebugPrintPower()' and type == 'HIDE_ENTITY':
             # print '<26>', data
         # Vanish?

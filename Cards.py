@@ -171,8 +171,9 @@ def discover(source):
             Hand.notes.append('A deathrattle card')
         elif source['name'] == 'Arch-Thief Rafaam':
             Hand.notes.append('A powerful artifact')
-        elif source['name'] == 'Sir Finley Mrrgglton':
-            return
+        # Mrrgglton isn't revealed before the discover hits, so this branch will never be called.
+        # elif source['name'] == 'Sir Finley Mrrgglton':
+        #     return
         Hand.draw(source) # Not the real id of the discovered card, but ids aren't ever repeated anyways. Only a potential id duplicate with Brann.
 
 # This isn't very well encapsulated, but it's also the extreme edge-case cards that are hard to deal with otherwise.
