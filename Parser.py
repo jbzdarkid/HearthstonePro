@@ -128,7 +128,7 @@ def parseFile(line_generator, config, *args):
 if __name__ == '__main__':
 	from ast import literal_eval
 	from os import sep
-	from os.path import expanduser
+	from os.path import expanduser, exists
 	from subprocess import Popen, PIPE
 
 	try:
@@ -145,7 +145,8 @@ if __name__ == '__main__':
 		from platform import system
 		from os import walk
 		if system() == 'Windows':
-			config['logconfig'] = '%LocalAppData%'
+			config['logconfig'] = expanduser('~')+'\AppData\Local'
+			appName = 'Hearthstone.exe'
 		elif system() == 'Darwin': # Mac OSX
 			config['logconfig'] = expanduser('~')+'/Library/Preferences'
 			appName = 'Hearthstone.app'
@@ -154,10 +155,6 @@ if __name__ == '__main__':
 		config['logconfig'] += '/Blizzard/Hearthstone/log.config'
 
 		for root, dirs, files in walk(expanduser('~')):
-			if appName in dirs+files:
-				config['log'] = root + sep + 'Logs' + sep
-				if 'username' in config:
-					break
 			if root.rsplit(sep)[-1] == 'Logs':
 				for f in files:
 					if 'battle.net' in f:
@@ -166,8 +163,14 @@ if __name__ == '__main__':
 						m = search('m_battleTag: (.*?)#', f)
 						config['username'] = m.group(1)
 						break
-				if 'log' in config and 'username' in config:
-					break
+			if appName in dirs+files:
+				config['log'] = root + sep + 'Logs' + sep
+			if 'username' in config and 'log' in config:
+				break
+	if 'log' not in config:
+		config['log'] = raw_input('Please locate your Hearthstone.exe install:').rpartition(sep)[0]+sep+'Logs'+sep
+	if 'username' not in config:
+		config['username'] = raw_input('Please input your battle.net name, without the #1234:')
 
 	c = open('config.cfg', 'wb')
 	c.write(str(config))
@@ -191,8 +194,21 @@ if __name__ == '__main__':
 	print 'Startup complete.'
 
 	def tail():
-		tail = Popen(['tail', '-f', config['log']+'Power.log'], stdout=PIPE)
-		while True:
-			yield tail.stdout.readline()
+		from time import sleep
+		if not exists(config['log']+'Power.log'):
+			from sys import exit
+			print 'Please (re)start Hearthstone before running this script.'
+			sys.exit(-1)
+		try: # Create the file if it doesn't exist
+			open(config['log']+'Power.log', 'w')
+		except:
+			pass
+		with open(config['log']+'Power.log') as f:
+			f.seek(0, 2)
+			while True:
+				lastLine = f.readline()
+				if not lastLine:
+					sleep(0.1)
+				yield f.readline()
 
 	parseFile(tail, config)
