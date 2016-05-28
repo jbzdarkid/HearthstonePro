@@ -64,8 +64,9 @@ def parse(data, start=0):
 # Main parsing function. line_generator can be a tail for live execution, or a file object for testing.
 def parseFile(line_generator, config, *args):
 	from re import match
+	showEntity = None	
 	for line in line_generator(*args):
-		line_parts = match('^D \d{2}:\d{2}:\d{2}\.\d{7} ([a-zA-Z]*\.[a-zA-Z]*\(\)) -\s*([A-Z_]*) (.*)', line)
+		line_parts = match('^D \d{2}:\d{2}:\d{2}\.\d{7} ([a-zA-Z]*\.[a-zA-Z]*\(\)) -\s*([A-Z_]*)(.*)', line)
 		if line_parts is None: # Any of the error messages won't match
 			continue
 			print line
@@ -83,17 +84,20 @@ def parseFile(line_generator, config, *args):
 			elif data['tag'] == 'FIRST_PLAYER':
 				Hand.wentFirstFunc(data['Entity'] == config['username'])
 		if source == 'GameState.DebugPrintEntitiesChosen()':
-# Cards that were not mulliganed
+            # Cards that were not mulliganed
 			if data.keys()[0][:8] == 'Entities': # Entities[0], e.g.
 				Hand.keep(data.values()[0])
-		# if source == 'PowerTaskList.DebugPrintPower()' and type == 'SHOW_ENTITY':
-		# 	Hand.discard(data['Entity'])
 		if source == 'GameState.DebugPrintEntityChoices()':
 			if 'Source' in data and data['Source'] != 'GameEntity': # Not the mulligan choices
 				Cards.discover(data['Source'])
 		# if source == 'PowerTaskList.DebugPrintPower()' and type == 'HIDE_ENTITY':
 		# 	print '<26>', data
 		# Vanish?
+        if showEntity is not None:
+            if type:
+                showEntity = None
+            elif data['tag'] == 'ZONE' and data['value'] == 'GRAVEYARD':
+                Hand.discard(showEntity)
 		if source == 'PowerTaskList.DebugPrintPower()':
 			if type == 'BLOCK_START':
 				if data['BlockType'] == 'TRIGGER':
@@ -104,6 +108,8 @@ def parseFile(line_generator, config, *args):
 							Cards.trigger(data['Entity'])
 				elif data['BlockType'] == 'POWER':
 					Cards.play2(data['Entity']) # When a card actually hits the board
+            elif type == 'SHOW_ENTITY': # Start of a SHOW_ENTITY block of data
+                showEntity = data['Entity']
 			elif type == 'TAG_CHANGE':
 				if data['tag'] == 'JUST_PLAYED':
 					if data['Entity']['zone'] == 'HAND':
