@@ -151,7 +151,9 @@ def die(entity):
 
 def discover(source):
     if source['player'] == Hand.them:
-        if source['name'] == 'A Light in the Darkness':
+        if 'name' not in source: # Sir Finley Mrrgglton
+            return
+        elif source['name'] == 'A Light in the Darkness':
             Hand.notes.append('A random minion with +1/+1')
         elif source['name'] == 'Dark Peddler':
             Hand.notes.append('A 1-cost card')
@@ -171,9 +173,6 @@ def discover(source):
             Hand.notes.append('A deathrattle card')
         elif source['name'] == 'Arch-Thief Rafaam':
             Hand.notes.append('A powerful artifact')
-        # Mrrgglton isn't revealed before the discover hits, so this branch will never be called.
-        # elif source['name'] == 'Sir Finley Mrrgglton':
-        #     return
         Hand.draw(source) # Not the real id of the discovered card, but ids aren't ever repeated anyways. Only a potential id duplicate with Brann.
 
 # This isn't very well encapsulated, but it's also the extreme edge-case cards that are hard to deal with otherwise.
