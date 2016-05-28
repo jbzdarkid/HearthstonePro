@@ -195,20 +195,21 @@ if __name__ == '__main__':
 
 	def tail():
 		from time import sleep
-		if not exists(config['log']+'Power.log'):
-			from sys import exit
-			print 'Please (re)start Hearthstone before running this script.'
-			sys.exit(-1)
 		try: # Create the file if it doesn't exist
 			open(config['log']+'Power.log', 'w')
 		except:
 			pass
+		if not exists(config['log']+'Power.log'):
+			from sys import exit
+			print 'Please (re)start Hearthstone before running this script.'
+			sys.exit(-1)
 		with open(config['log']+'Power.log') as f:
 			f.seek(0, 2)
 			while True:
 				lastLine = f.readline()
 				if not lastLine:
-					sleep(0.1)
-				yield f.readline()
+					sleep(0.01)
+					continue
+				yield lastLine
 
 	parseFile(tail, config)
