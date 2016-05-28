@@ -91,7 +91,7 @@ def parseFile(line_generator, config, *args):
             if 'Source' in data and data['Source'] != 'GameEntity': # Not the mulligan choices
                 Cards.discover(data['Source'])
         # if source == 'PowerTaskList.DebugPrintPower()' and type == 'HIDE_ENTITY':
-        #     print '<26>', data
+            # print '<26>', data
         # Vanish?
         if showEntity is not None:
             if type:

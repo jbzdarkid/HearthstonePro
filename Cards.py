@@ -78,12 +78,12 @@ def play2(entity):
             Hand.draw(entity)
             Hand.draw(entity)
         elif entity['name'] == 'Toshley':
-             Hand.notes.append('Spare Part')
+            Hand.notes.append('Spare Part')
             Hand.draw(entity)
         elif entity['name'] == 'Unstable Portal':
-             Hand.notes.append('Random minion')
-             Hand.draw(entity)
-             Hand.hand[-1].cost -= 3
+            Hand.notes.append('Random minion')
+            Hand.draw(entity)
+            Hand.hand[-1].cost -= 3
         elif entity['name'] == 'Wild Growth':
             if resources == '10':
                 Hand.notes.append('Excess Mana')
