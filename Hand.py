@@ -23,7 +23,7 @@ def reset():
 
 reset()
 
-def wentFirst(truth):
+def wentFirstFunc(truth):
 	global notes, hand, wentFirst
 	if truth:
 		notes = ['The Coin', 'Mulliganned', 'Mulliganned', 'Mulliganned', 'Mulliganned']

@@ -76,14 +76,12 @@ def parseFile(line_generator, config, *args):
 
 		if source == 'GameState.DebugPrintPower()' and type =='TAG_CHANGE':
 			if data['tag'] == 'PLAYER_ID':
-				print data
-				print config
 				if data['Entity'] == config['username']:
 					Hand.us = data['value']
 				else:
 					Hand.them = data['value']
 			elif data['tag'] == 'FIRST_PLAYER':
-				Hand.wentFirst(data['Entity'] == config['username'])
+				Hand.wentFirstFunc(data['Entity'] == config['username'])
 		if source == 'GameState.DebugPrintEntitiesChosen()':
 # Cards that were not mulliganed
 			if data.keys()[0][:8] == 'Entities': # Entities[0], e.g.
