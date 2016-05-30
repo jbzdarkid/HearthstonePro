@@ -96,7 +96,7 @@ def parseFile(line_generator, config, *args):
         if showEntity is not None:
             if type:
                 showEntity = None
-            elif data['tag'] == 'ZONE' and data['value'] == 'GRAVEYARD':
+            elif 'tag' in data and data['tag'] == 'ZONE' and data['value'] == 'GRAVEYARD':
                 Hand.discard(showEntity)
         if source == 'PowerTaskList.DebugPrintPower()':
             if type == 'BLOCK_START':
@@ -136,7 +136,9 @@ if __name__ == '__main__':
     from os import sep
     from os.path import expanduser, exists
     from subprocess import Popen, PIPE
-    rootDir = __file__.rpartition(sep)[0]+sep
+    rootDir = __file__.rpartition(sep)[0]
+    if rootDir: # If rootDir is nothing, then ''+'/' = '/', which is not the current directory.
+        rootDir += sep
 
     try:
         config = load(open(rootDir+'config.cfg'))

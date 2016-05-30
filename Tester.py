@@ -2,7 +2,9 @@ from sys import argv
 from os import sep
 import Parser
 
-rootDir = __file__.rpartition(sep)[0]+sep
+rootDir = __file__.rpartition(sep)[0]
+if rootDir: # If rootDir is nothing, then ''+'/' = '/', which is not the current directory.
+    rootDir += sep
 
 def line_generator(file):
     global lineNo
