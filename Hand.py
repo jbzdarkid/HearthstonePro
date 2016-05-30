@@ -2,16 +2,16 @@
 # Use Toplevel() in construction, and root.lift() as a backup
 
 class card():
-    def __init__(self, id, notes=None, cost=0):
+    def __init__(self, id, note=None, cost=0):
         global turn, notes
         self.id = id
         self.turn = turn/2
-        if notes:
-            self.notes = notes
+        if note:
+            self.note = note
         elif len(notes) > 0:
-            self.notes = notes.pop() + ' '
+            self.note = notes.pop() + ' '
         else:
-            self.notes = ''
+            self.note = ''
         self.cost = cost
 
     def __repr__(self):
@@ -79,6 +79,6 @@ def turnover(turn):
             print ' %s | %s | %s %s' % (
             ('%d' % (i+1)).ljust(7),
             ('%d' % hand[i].turn).ljust(4),
-            hand[i].notes,
+            hand[i].note,
             '' if hand[i].cost == 0 else 'cost %d' % hand[i].cost)
             # print ' %s | %s | %s' % ('%d'.ljust(8) % (i+1), '%d'.ljust(5) % hand[i].turn, ' %s' % hand[i].notes)
