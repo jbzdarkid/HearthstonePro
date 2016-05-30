@@ -70,7 +70,8 @@ def keep(entity):
 def turnover(turn):
     globals()['turn'] = turn # https://docs.python.org/2/library/functions.html#globals
     global hand
-    offset = 0 if wentFirst else 1
+    offset = 1 if wentFirst else 0
+    # Works for going first
     if turn%2 == offset:
         print 'Current Turn:', turn/2
         if len(hand) > 0:
