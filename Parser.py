@@ -140,7 +140,8 @@ if __name__ == '__main__': # pragma: no cover
     from os.path import expanduser, exists
     from subprocess import Popen, PIPE
     rootDir = __file__.rpartition(sep)[0]
-    if rootDir: # If rootDir is nothing, then ''+'/' = '/', which is not the current directory.
+    # If rootDir is nothing, then ''+'/' = '/', which is not the current directory.
+    if rootDir:
         rootDir += sep
 
     try:
@@ -187,7 +188,7 @@ if __name__ == '__main__': # pragma: no cover
     with open(rootDir+'config.cfg', 'wb') as f:
         dump(config, f)
 
-    f = open(rootDir+sep+'log.config', 'rb').read()
+    f = open(rootDir+'log.config', 'rb').read()
     try:
         g = open(config['logconfig'], 'rb').read()
         if f != g:

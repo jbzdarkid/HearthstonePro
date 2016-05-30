@@ -107,7 +107,7 @@ def die(entity):
     if entity['player'] == Hand.them:
         if entity['name'] == 'Anub\'arak':
             Hand.draw(entity, note='Anub\'arak')
-        elif entity['name']    == 'Clockwork Gnome':
+        elif entity['name'] == 'Clockwork Gnome':
             Hand.draw(entity, note='Spare Part')
         elif entity['name'] == 'Rhonin':
             Hand.draw(entity, note='Arcane Missles')
