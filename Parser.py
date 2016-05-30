@@ -107,7 +107,10 @@ def parseFile(line_generator, config, *args):
                         elif data['Entity']['zone'] == 'PLAY':
                             Cards.trigger(data['Entity'])
                 elif data['BlockType'] == 'POWER':
-                    Cards.play2(data['Entity']) # When a card actually hits the board
+                    if 'Target' not in data:
+                        Cards.play2(data['Entity']) # When a card actually hits the board
+                    else:
+                        Cards.play3(data['Entity'], data['Target']) # A card targets another card.
             elif type == 'SHOW_ENTITY': # Start of a SHOW_ENTITY block of data
                 showEntity = data['Entity']
             elif type == 'TAG_CHANGE':
