@@ -72,11 +72,11 @@ def keep(entity):
     if entity['player'] == them:
         hand[int(entity['zonePos'])-1] = card(entity['id'])
 
+# TODO: Delay going first until after mulligan resolves, since the mulligan labels are wrong
 def turnover(turn):
     globals()['turn'] = turn # https://docs.python.org/2/library/functions.html#globals
     global hand
     offset = 1 if wentFirst else 0
-    # Works for going first
     if turn%2 == offset:
         print 'Current Turn:', turn/2
         if len(hand) > 0:
