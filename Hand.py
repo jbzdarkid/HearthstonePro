@@ -15,7 +15,12 @@ class card():
         self.cost = cost
 
     def __repr__(self):
-        return 'card(%s)' % (self.id)
+        params = ''
+        if self.note:
+            params += ', note=\'%s\'' % self.note
+        if self.cost:
+            params += ', cost=%d' % self.cost
+        return 'card(%s%s)' % (self.id, params)
 
 def reset():
     global turn, hand, notes, us, them, wentFirst
@@ -39,7 +44,7 @@ def wentFirstFunc(truth):
         hand = [card(-1) for _ in range(3)]
         wentFirst = False
 
-def draw(entity, position=None):
+def draw(entity, position=None, note=None, cost=0):
     global hand, them
     if len(hand) == 10:
         return
@@ -48,7 +53,7 @@ def draw(entity, position=None):
         if position and position < len(hand):
             hand[position].id = entity['id']
         else:
-            hand.append(card(int(entity['id'])))
+            hand.append(card(int(entity['id']), note=note, cost=cost))
 
 # When a card is removed from a player's hand
 def play(entity):

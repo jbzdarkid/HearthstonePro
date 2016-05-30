@@ -121,7 +121,6 @@ def discover(source):
         elif source['name'] == 'Gorillabot A-3':
             Hand.draw(source, note='A mech')
         elif source['name'] == 'Jeweled Scarab':
-            print '165'
             Hand.draw(source, note='A 3-cost card')
         elif source['name'] == 'Museum Curator':
             Hand.draw(source, note='A deathrattle card')
