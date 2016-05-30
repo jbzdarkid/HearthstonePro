@@ -29,151 +29,110 @@ def play2(entity):
             overload = 0
 
         elif entity['name'] == 'Burgle':
-            Hand.notes.append('A random card from your class')
-            Hand.notes.append('A random card from your class')
-            Hand.draw(entity)
-            Hand.draw(entity)
+            Hand.draw(entity, notes='A random card from your class')
+            Hand.draw(entity, notes='A random card from your class')
         elif entity['name'] == 'Cabalist\'s Tomb':
-            Hand.notes.append('A random Mage spell')
-            Hand.notes.append('A random Mage spell')
-            Hand.notes.append('A random Mage spell')
-            Hand.draw(entity)
-            Hand.draw(entity)
-            Hand.draw(entity)
+            Hand.draw(entity, notes='A random Mage spell')
+            Hand.draw(entity, notes='A random Mage spell')
+            Hand.draw(entity, notes='A random Mage spell')
         elif entity['name'] == 'Call Pet':
-            Hand.notes.append('If it\'s a beast, cost -4')
+            Hand.draw(entity, notes='If it\'s a beast, cost -4')
         elif entity['name'] == 'Grand Crusader':
-            Hand.notes.append('A random Paladin card')
-            Hand.draw(entity)
+            Hand.draw(entity, notes='A random Paladin card')
         elif entity['name'] == 'Mind Vision':
-            Hand.notes.append('A card from your hand')
-            Hand.draw(entity)
+            Hand.draw(entity, notes='A card from your hand')
         elif entity['name'] == 'Mukla, Tyrant of the Vale':
-            Hand.notes.append('A Banana')
-            Hand.notes.append('A Banana')
-            Hand.draw(entity)
-            Hand.draw(entity)
+            Hand.draw(entity, notes='A Banana')
+            Hand.draw(entity, notes='A Banana')
         elif entity['name'] == 'Neptulon':
-            Hand.notes.append('A random Murloc')
-            Hand.notes.append('A random Murloc')
-            Hand.notes.append('A random Murloc')
-            Hand.notes.append('A random Murloc')
-            Hand.draw(entity)
-            Hand.draw(entity)
-            Hand.draw(entity)
-            Hand.draw(entity)
+            Hand.draw(entity, notes='A random Murloc')
+            Hand.draw(entity, notes='A random Murloc')
+            Hand.draw(entity, notes='A random Murloc')
+            Hand.draw(entity, notes='A random Murloc')
         elif entity['name'] == 'Nefarian':
-            Hand.notes.append('A random card from your class')
-            Hand.notes.append('A random card from your class')
-            Hand.draw(entity)
-            Hand.draw(entity)
+            Hand.draw(entity, notes='A random card from your class')
+            Hand.draw(entity, notes='A random card from your class')
         elif entity['name'] == 'Sense Demons':
-            Hand.notes.append('A demon')
-            Hand.notes.append('A demon')
-            Hand.draw(entity)
-            Hand.draw(entity)
-        elif entity['name'] == 'Thoughsteal':
-            Hand.notes.append('A card from your deck')
-            Hand.notes.append('A card from your deck')
-            Hand.draw(entity)
-            Hand.draw(entity)
+            Hand.draw(entity, notes='A demon')
+            Hand.draw(entity, notes='A demon')
+        elif entity['name'] == 'Thoughtsteal':
+            Hand.draw(entity, notes='A card from your deck')
+            Hand.draw(entity, notes='A card from your deck')
         elif entity['name'] == 'Toshley':
-            Hand.notes.append('Spare Part')
-            Hand.draw(entity)
+            Hand.draw(entity, notes='Spare Part')
         elif entity['name'] == 'Unstable Portal':
-            Hand.notes.append('Random minion')
-            Hand.draw(entity)
-            Hand.hand[-1].cost -= 3
+            Hand.draw(entity, notes='Random minion', cost=-3)
         elif entity['name'] == 'Wild Growth':
             if resources == '10':
-                Hand.notes.append('Excess Mana')
-                Hand.draw(entity)
+                Hand.draw(entity, notes='Excess Mana')
         elif entity['name'] == 'Xaril, Poisoned Mind':
-            Hand.notes.append('A random toxin')
-            Hand.draw(entity)
+            Hand.draw(entity, notes='A random toxin')
     elif entity['player'] == Hand.us:
         if entity['name'] == 'King Mukla':
-            Hand.notes.append('A Banana')
-            Hand.notes.append('A Banana')
-            Hand.draw(entity)
-            Hand.draw(entity)
+            Hand.draw(entity, notes='A Banana')
+            Hand.draw(entity, notes='A Banana')
         elif entity['name'] == 'Mulch':
-            Hand.notes.append('A random minion')
-            Hand.draw(entity)
+            Hand.draw(entity, notes='A random minion')
     # if entity['player'] in [Hand.us, Hand.them]:
     if entity['name'] == 'Spellslinger':
-        Hand.notes.append('A random spell')
-        Hand.draw(entity)
+        Hand.draw(entity, notes='A random spell')
     elif entity['name'] == 'Elite Tauren Chieftain':
-        Hand.notes.append('A Power Chord card')
-        Hand.draw(entity)
+        Hand.draw(entity, notes='A Power Chord card')
 
 def die(entity):
     if entity['player'] == Hand.them:
         if entity['name'] == 'Anub\'arak':
-            Hand.notes.append('Anub\'arak')
-            Hand.draw(entity)
+            Hand.draw(entity, notes='Anub\'arak')
         elif entity['name']    == 'Clockwork Gnome':
-            Hand.notes.append('Spare Part')
-            Hand.draw(entity)
+            Hand.draw(entity, notes='Spare Part')
         elif entity['name'] == 'Rhonin':
-            Hand.notes.append('Arcane Missles')
-            Hand.notes.append('Arcane Missles')
-            Hand.notes.append('Arcane Missles')
-            Hand.draw(entity)
-            Hand.draw(entity)
-            Hand.draw(entity)
+            Hand.draw(entity, notes='Arcane Missles')
+            Hand.draw(entity, notes='Arcane Missles')
+            Hand.draw(entity, notes='Arcane Missles')
         elif entity['name'] == 'Shifting Shade':
-            Hand.notes.append('A card from your deck')
-            Hand.draw(entity)
+            Hand.draw(entity, notes='A card from your deck')
         elif entity['name'] == 'Tentacles for Arms':
-            Hand.notes.append('Tentacles for Arms')
-            Hand.draw(entity)
+            Hand.draw(entity, notes='Tentacles for Arms')
         elif entity['name'] == 'Tomb Pillager':
-            Hand.notes.append('The Coin')
-            Hand.draw(entity)
+            Hand.draw(entity, notes='The Coin')
         elif entity['name'] == 'Toshley':
-            Hand.notes.append('Spare Part')
+            Hand.draw(entity, notes='Spare Part')
             Hand.draw(entity)
         elif entity['name'] == 'Undercity Huckster':
-            Hand.notes.append('A card from your class')
-            Hand.draw(entity)
+            Hand.draw(entity, notes='A card from your class')
         elif entity['name'] == 'Xaril, Poisoned Mind':
-            Hand.notes.append('A random toxin')
-            Hand.draw(entity)
+            Hand.draw(entity, notes='A random toxin')
         elif entity['name'] == 'Webspinner':
-            Hand.notes.append('A random beast')
-            Hand.draw(entity)
+            Hand.draw(entity, notes='A random beast')
     # if entity['player'] in [Hand.us, Hand.them]:
     if entity['name'] == 'Mechanical Yeti':
-        Hand.notes.append('Spare Part')
-        Hand.draw(entity)
+        Hand.draw(entity, notes='Spare Part')
 
 def discover(source):
     if source['player'] == Hand.them:
         if 'name' not in source: # Sir Finley Mrrgglton
             return
         elif source['name'] == 'A Light in the Darkness':
-            Hand.notes.append('A random minion with +1/+1')
+            Hand.draw(source, notes='A random minion with +1/+1')
         elif source['name'] == 'Dark Peddler':
-            Hand.notes.append('A 1-cost card')
+            Hand.draw(source, notes='A 1-cost card')
         elif source['name'] == 'Ethereal Conjurer':
-            Hand.notes.append('A spell')
+            Hand.draw(source, notes='A spell')
         elif source['name'] == 'Gorillabot A-3':
-            Hand.notes.append('A mech')
+            Hand.draw(source, notes='A mech')
         elif source['name'] == 'Jeweled Scarab':
-            Hand.notes.append('A 3-cost card')
+            print '165'
+            Hand.draw(source, notes='A 3-cost card')
         elif source['name'] == 'Museum Curator':
-            Hand.notes.append('A deathrattle card')
+            Hand.draw(source, notes='A deathrattle card')
         elif source['name'] == 'Raven Idol':
-            Hand.notes.append('A minion or a spell')
+            Hand.draw(source, notes='A minion or a spell')
         elif source['name'] == 'Tomb Spider':
-            Hand.notes.append('A beast')
+            Hand.draw(source, notes='A beast')
         elif source['name'] == 'Journey Below':
-            Hand.notes.append('A deathrattle card')
+            Hand.draw(source, notes='A deathrattle card')
         elif source['name'] == 'Arch-Thief Rafaam':
-            Hand.notes.append('A powerful artifact')
-        Hand.draw(source) # Not the real id of the discovered card, but ids aren't ever repeated anyways. Only a potential id duplicate with Brann.
+            Hand.draw(source, notes='A powerful artifact')
 
 # This isn't very well encapsulated, but it's also the extreme edge-case cards that are hard to deal with otherwise.
 def trigger(entity):
@@ -182,12 +141,11 @@ def trigger(entity):
             for card in Hand.hand:
                 card.cost -= 1
         elif entity['name'] == 'Ysera':
-            Hand.notes.append('A Dream card')
-            Hand.draw(entity)
+            Hand.draw(source, notes='A Dream card')
 
 def turnover(turn):
     global overload
-    offset = 0 if Hand.wentFirst else 1
+    offset = 1 if Hand.wentFirst else 0
     if turn%2 == offset:
         if overload != 0:
             print 'Overload next turn:', overload
