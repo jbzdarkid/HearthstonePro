@@ -1,6 +1,8 @@
 from sys import argv
-from os import getcwd, sep
+from os import sep
 import Parser
+
+rootDir = __file__.rpartition(sep)[0]+sep
 
 def line_generator(file):
     global lineNo
@@ -12,7 +14,7 @@ def line_generator(file):
 
 if len(argv) == 1 or argv[1] == 'all':
     from os import listdir
-    files = listdir('tests')
+    files = listdir(rootDir+'tests')
 # elif argv[1] == 'latest':
 #   from os.path import getmtime
 else:
@@ -20,7 +22,7 @@ else:
 
 config = {'username':'darkid'}
 for file in files:
-    fullName = getcwd()+sep+'tests'+sep+file
+    fullName = rootDir+'tests'+sep+file
     try:
         Parser.parseFile(line_generator, {'username':'darkid'}, fullName)
     except Exception as e:

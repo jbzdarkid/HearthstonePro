@@ -132,13 +132,14 @@ def parseFile(line_generator, config, *args):
 
 # Setup scripts.
 if __name__ == '__main__':
-    from ast import literal_eval
+    from json import load, dump
     from os import sep
     from os.path import expanduser, exists
     from subprocess import Popen, PIPE
+    rootDir = __file__.rpartition(sep)[0]+sep
 
     try:
-        config = literal_eval(open('config.cfg', 'rb').read())
+        config = load(open(rootDir+'config.cfg'))
     except IOError:
         # Config not defined, somehow. Recreate.
         config = {}
@@ -178,11 +179,10 @@ if __name__ == '__main__':
     if 'username' not in config:
         config['username'] = raw_input('Please input your battle.net name, without the #1234:')
 
-    c = open('config.cfg', 'wb')
-    c.write(str(config))
-    c.close()
+    with open(rootDir+'config.cfg', 'wb') as f:
+        dump(config, f)
 
-    f = open('log.config', 'rb').read()
+    f = open(rootDir+sep+'log.config', 'rb').read()
     try:
         g = open(config['logconfig'], 'rb').read()
         if f != g:
