@@ -134,7 +134,7 @@ def parseFile(line_generator, config, *args):
                         Hand.draw(data['Entity'], int(data['value'])-1)
 
 # Setup scripts.
-if __name__ == '__main__':
+if __name__ == '__main__': # pragma: no cover
     from json import load, dump
     from os import sep
     from os.path import expanduser, exists

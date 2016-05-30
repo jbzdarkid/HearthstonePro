@@ -14,7 +14,7 @@ class card():
             self.note = ''
         self.cost = cost
 
-    def __repr__(self):
+    def __repr__(self): # pragma: no cover
         params = ''
         if self.note:
             params += ', note=\'%s\'' % self.note
