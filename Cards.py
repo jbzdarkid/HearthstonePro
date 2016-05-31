@@ -5,29 +5,21 @@
 # Inspire: Recruiter, Nexus-Champion Saraad, Colliseum Manager
 # Deathrattle: Infest, Explorer's Hat, Voidcaller, The Skeleton Knight
 
-import Hand
-
-def reset():
-    global overload, resources
-    overload = 0
-    resources = None
-
-reset()
+import Hand, Utilities
 
 # When a card hits the board, and we can see what it's name is
 def play2(entity):
-    global overload
-    if entity['player'] == Hand.them:
         if entity['name'] in ['Crackle', 'Fireguard Destroyer', 'Lightning Bolt', 'Stormcrack', 'Stormforged Axe', 'Totem Golem', 'Dunemaul Shaman', 'Siltfin Spiritwalker']:
-            overload += 1
         elif entity['name'] in ['Ancestral Knowledge', 'Dust Devil', 'Flamewreathed Faceless', 'Forked Lightning', 'Feral Spirit', 'Lava Burst', 'Lightning Storm', 'Doomhammer']:
-            overload += 2
         elif entity['name'] in ['Earth Elemental', 'Neptulon']:
-            overload += 3
         elif entity['name'] in ['Elemental Destruction']:
-            overload += 5
         elif entity['name'] in ['Lava Shock', 'Eternal Sentinel']:
-            overload = 0
+    if entity['player'] == Utilities.them:
+            Utilities.overload += 1
+            Utilities.overload += 2
+            Utilities.overload += 3
+            Utilities.overload += 5
+            Utilities.overload = 0
 
         elif entity['name'] == 'Burgle':
             Hand.draw(entity, note='A random card from your class')
@@ -66,18 +58,18 @@ def play2(entity):
         elif entity['name'] == 'Unstable Portal':
             Hand.draw(entity, note='Random minion', cost=-3)
         elif entity['name'] == 'Wild Growth':
-            if resources == '10':
+            if Utilities.resources == '10':
                 Hand.draw(entity, note='Excess Mana')
         elif entity['name'] == 'Xaril, Poisoned Mind':
             Hand.draw(entity, note='A random toxin')
-    elif entity['player'] == Hand.us:
         if entity['name'] == 'King Mukla':
+    elif entity['player'] == Utilities.us:
             Hand.draw(entity, note='A Banana')
             Hand.draw(entity, note='A Banana')
         elif entity['name'] == 'Mulch':
             Hand.draw(entity, note='A random minion')
-    # if entity['player'] in [Hand.us, Hand.them]:
     if entity['name'] == 'Spellslinger':
+    # if entity['player'] in [Utilities.us, Utilities.them]:
         Hand.draw(entity, note='A random spell')
     elif entity['name'] == 'Elite Tauren Chieftain':
         Hand.draw(entity, note='A Power Chord card')
@@ -85,8 +77,8 @@ def play2(entity):
 
 # When a card hits the board and we can see what its name and its target's name is.
 def play3(entity, target):
-    if entity['player'] == Hand.them:
         if entity['name'] in ['Ancient Brewmaster', 'Convert', 'Time Rewinder', 'Youthful Brewmaster']:
+    if entity['player'] == Utilities.them:
             Hand.draw(target, note=target['name'])
         elif entity['name'] in ['Bloodthistle Toxin', 'Shadowstep']:
             Hand.draw(target, note=target['name'], cost=-2)
@@ -99,13 +91,13 @@ def play3(entity, target):
             Hand.draw(target, note=target['name'], cost=+2)
         elif entity['name'] == 'Sap':
             Hand.draw(target, note=target['name'])
-    # if entity['player'] in [Hand.us, Hand.them]:
     if entity['name'] == 'Dream':
+    # if entity['player'] in [Utilities.us, Utilities.them]:
         Hand.draw(target, note=target['name'])
 
 def die(entity):
-    if entity['player'] == Hand.them:
         if entity['name'] == 'Anub\'arak':
+    if entity['player'] == Utilities.them:
             Hand.draw(entity, note='Anub\'arak')
         elif entity['name'] == 'Clockwork Gnome':
             Hand.draw(entity, note='Spare Part')
@@ -127,14 +119,14 @@ def die(entity):
             Hand.draw(entity, note='A random toxin')
         elif entity['name'] == 'Webspinner':
             Hand.draw(entity, note='A random beast')
-    # if entity['player'] in [Hand.us, Hand.them]:
     if entity['name'] == 'Mechanical Yeti':
+    # if entity['player'] in [Utilities.us, Utilities.them]:
         Hand.draw(entity, note='Spare Part')
 
 # Safe from Brann
 def discover(entity):
-    if entity['player'] == Hand.them:
         if 'name' not in entity: # Sir Finley Mrrgglton
+    if entity['player'] == Utilities.them:
             return
         elif entity['name'] == 'A Light in the Darkness':
             Hand.draw(entity, note='A random minion with +1/+1')
@@ -160,10 +152,10 @@ def discover(entity):
 # Be careful of Blessing of Wisdom (others?) which can 'trigger' an effect on a card that already has a triggered effect.
 # This isn't very well encapsulated, but it's also the extreme edge-case cards that are hard to deal with otherwise.
 def trigger(entity):
-    if entity['player'] == Hand.them:
         if entity['name'] == 'Alarm-o-Bot':
             Hand.draw(entity, note='Alarm-o-Bot')
         elif entity['name'] == 'Archmage Antonidas':
+    if entity['player'] == Utilities.them:
             Hand.draw(entity, note='Fireball')
         elif entity['name'] == 'Emperor Thaurissan':
             for card in Hand.hand:
@@ -171,10 +163,7 @@ def trigger(entity):
         elif entity['name'] == 'Ysera':
             Hand.draw(entity, note='A Dream card')
 
-def turnover(turn):
-    global overload
-    offset = 1 if Hand.wentFirst else 0
-    if turn%2 == offset:
-        if overload != 0:
-            print 'Overload next turn:', overload
-            overload = 0
+def turnover():
+    if Utilities.overload != 0:
+        print 'Overload next turn:', Utilities.overload
+        Utilities.overload = 0

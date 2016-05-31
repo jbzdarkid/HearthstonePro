@@ -1,4 +1,4 @@
-import Hand, Cards
+import Cards, Hand, Legendaries, Utilities
 # This function parses the Hearthstone log files, and converts them into dictionaries
 # Python throws some errors here about 'key not defined'. It is defined in the data[i] = '=' block, which will be called (on properly formatted input) before 'key' is referenced.
 # There are scenarios where this error will be thrown during execution, but only on invalid log data.
@@ -78,11 +78,11 @@ def parseFile(line_generator, config, *args):
         if source == 'GameState.DebugPrintPower()' and type =='TAG_CHANGE':
             if data['tag'] == 'PLAYER_ID':
                 if data['Entity'] == config['username']:
-                    Hand.us = data['value']
+                    Utilities.us = data['value']
                 else:
-                    Hand.them = data['value']
+                    Utilities.them = data['value']
             elif data['tag'] == 'FIRST_PLAYER':
-                Hand.wentFirstFunc(data['Entity'] == config['username'])
+                Utilities.wentFirst(data['Entity'] == config['username'])
         if source == 'GameState.DebugPrintEntitiesChosen()':
             # Cards that were not mulliganed
             if data.keys()[0][:8] == 'Entities': # Entities[0], e.g.
@@ -106,11 +106,11 @@ def parseFile(line_generator, config, *args):
                             Cards.die(data['Entity'])
                         elif data['Entity']['zone'] == 'PLAY':
                             Cards.trigger(data['Entity'])
-                elif data['BlockType'] == 'POWER':
+                elif data['BlockType'] == 'POWER': # When a card actually hits the board
                     if 'Target' in data and isinstance(data['Target'], dict):
                         Cards.play3(data['Entity'], data['Target']) # A card targets another card.
                     else:
-                        Cards.play2(data['Entity']) # When a card actually hits the board
+                        Cards.play2(data['Entity']) 
             elif type == 'SHOW_ENTITY': # Start of a SHOW_ENTITY block of data
                 showEntity = data['Entity']
             elif type == 'TAG_CHANGE':
@@ -126,9 +126,10 @@ def parseFile(line_generator, config, *args):
                         Hand.reset()
                         print 'Game Over'
                 elif data['tag'] == 'TURN':
-                    # print line
-                    Cards.turnover(int(data['value']))
-                    Hand.turnover(int(data['value']))
+                    # TODO: Delay going first until after mulligan resolves, since the mulligan labels are wrong
+                    if (int(data['value']) + Utilities.turnOffset)%2 == 0:
+                        Cards.turnover()
+                        Hand.turnover()
                 elif data['tag'] == 'ZONE_POSITION':
                     if 'zone' in data['Entity'] and data['Entity']['zone'] == 'DECK':
                         Hand.draw(data['Entity'], int(data['value'])-1)

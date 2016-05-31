@@ -5,7 +5,7 @@ class card():
     def __init__(self, id, note=None, cost=0):
         global turn, notes
         self.id = id
-        self.turn = turn/2
+        self.turn = Utilities.turn/2
         if note:
             self.note = note
         elif len(notes) > 0:
