@@ -1,3 +1,6 @@
+# Displaying with tk:
+# Use Toplevel() in construction, and root.lift() as a backup
+
 import Cards, Hand, Legendaries, Utilities
 # This function parses the Hearthstone log files, and converts them into dictionaries
 # Python throws some errors here about 'key not defined'. It is defined in the data[i] = '=' block, which will be called (on properly formatted input) before 'key' is referenced.
@@ -99,7 +102,9 @@ def parseFile(line_generator, config, *args):
             elif 'tag' in data and data['tag'] == 'ZONE' and data['value'] == 'GRAVEYARD':
                 Hand.discard(showEntity)
         if source == 'PowerTaskList.DebugPrintPower()':
-            if type == 'BLOCK_START':
+            if type == 'BLOCK_END':
+                Utilities.blockEnd()
+            elif type == 'BLOCK_START':
                 if data['BlockType'] == 'TRIGGER':
                     if 'zone' in data['Entity']:
                         if data['Entity']['zone'] == 'GRAVEYARD':
@@ -119,11 +124,12 @@ def parseFile(line_generator, config, *args):
                         Hand.play(data['Entity']) # When a card is removed from a player's hand
                 elif data['tag'] == 'RESOURCES':
                     if data['Entity'] != config['username']:
-                        Cards.resources = data['value']
+                        Utilities.resources = data['value']
                 elif data['tag'] == 'STEP':
                     if data['value'] == 'FINAL_GAMEOVER':
                         Cards.reset()
                         Hand.reset()
+                        Utilities.reset()
                         print 'Game Over'
                 elif data['tag'] == 'TURN':
                     # TODO: Delay going first until after mulligan resolves, since the mulligan labels are wrong

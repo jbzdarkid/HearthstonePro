@@ -10,9 +10,14 @@ def reset():
     turnOffset = None # Only tell the user what's happening before their turn
     us = '0' # player id
     them = '0' # player id
+    varianWrynn = False # Start of a Varian Wrynn block, where minions are put directly into play.
+    numMinions = 0 # If the board is full, Varian will put minions into hand
 
 reset()
 
+def blockEnd():
+    global varianWrynn
+    varianWrynn = False
 
 def wentFirst(truth):
     global turnOffset

@@ -25,6 +25,9 @@ def play2(entity):
         elif entity['name'] in ["Lava Shock", "Eternal Sentinel"]:
             Utilities.overload = 0
 
+        elif entity['name'] == "Varian Wrynn":
+            Utilities.varianWrynn = True
+        
         elif entity['name'] == "Burgle":
             Hand.draw(entity, note='A random card from your class')
             Hand.draw(entity, note='A random card from your class')
