@@ -97,8 +97,7 @@ def play3(entity, target):
             Hand.draw(target, note=target['name'], cost=+2)
         elif entity['name'] == "Sap":
             Hand.draw(target, note=target['name'])
-    # if entity['player'] in [Utilities.us, Utilities.them]:
-    if entity['name'] == "Dream":
+    if entity['name'] == "Dream" and target['player'] == Utilities.them:
         Hand.draw(target, note=target['name'])
 
 def die(entity):
