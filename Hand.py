@@ -8,7 +8,7 @@ class card():
         if note:
             self.note = note
         elif len(notes) > 0:
-            self.note = notes.pop() + ' '
+            self.note = notes.pop()
         else:
             self.note = ''
         self.cost = 0
@@ -25,6 +25,7 @@ def reset():
     global hand, notes
     hand = []
     notes = [] # Push to this to signal information about the next draw.
+    # N.B. notes is only used for Far Sight, at present. Other cards do affect it though.
 
 reset()
 
@@ -41,7 +42,7 @@ def draw(entity, position=None, note=None, cost=None):
             if note:
                 c.note += note
             if Utilities.varianWrynn and Utilities.numMinions != 7:
-                c.note += ' Not a minion'
+                c.note += ', Not a minion'
             if cost:
                 c.cost += cost
             hand.append(c)

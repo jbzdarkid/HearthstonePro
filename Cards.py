@@ -1,5 +1,5 @@
 # Special: "King's Elekk", "Sea Reaver", "Flame Leviathan", "Holy Wrath", "Chromaggus", "Tinkertown Technician", "Thistle Tea", "Cutpurse",
-#   "Infest", "Headcrack", "Varian Wrynn", "Gnomish Experimenter", "Captain's Parrot", "Mech-Bear-Cat", "Blood Warriors", "Lock and Load", "Gazlowe",
+#   "Infest", "Headcrack", "Gnomish Experimenter", "Captain's Parrot", "Mech-Bear-Cat", "Blood Warriors", "Lock and Load", "Gazlowe",
 #   "Shadowfiend", "Wilfred Fizzlebang", "Anub'ar Ambusher", "Vanish", "Kidnapper", "Echo of Mediv", "Trade Prince Gallywix", "Lorewalker Cho"
 # Dragons: "Blackwing Corruptor", "Blackwing Technician", "Twilight Whelp", "Alextrasza's Champion", "Wyrmrest Agent",
 #   "Twilight Guardian", "Rend Blackhand", "Chillmaw"

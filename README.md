@@ -6,9 +6,11 @@
 Keeping track of the little things so you don't have to
 
 Current Features:
-- Tracks cards in hand (Turn drawn, and some simple information like spare parts)
+- Tracks cards in hand (Turn drawn, and known information like Spare Parts or cards bounced with Sap)
 - Tracks overload
 
 Planned Features:
-- Tracking Old God counts
+- Tracking Old God counts (Cards summoned with N'Zoth, Cthun health, etc)
+- Tracking Reno Jackson
+- Tracking which cards aren't (or might be) dragons
 - Tracking secrets

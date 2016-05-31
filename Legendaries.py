@@ -1,3 +1,5 @@
+# Contains more long-term tracking cards.
+
 def reset():
     global reno, renoDuplicates, cthun, nzoth, yogg
     reno = []
