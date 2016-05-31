@@ -109,6 +109,7 @@ def parseFile(line_generator, config, *args):
                     if 'zone' in data['Entity']:
                         if data['Entity']['zone'] == 'GRAVEYARD':
                             Cards.die(data['Entity'])
+                            Legendaries.die(data['Entity'])
                         elif data['Entity']['zone'] == 'PLAY':
                             Cards.trigger(data['Entity'])
                 elif data['BlockType'] == 'POWER': # When a card actually hits the board
@@ -116,6 +117,7 @@ def parseFile(line_generator, config, *args):
                         Cards.play3(data['Entity'], data['Target']) # A card targets another card.
                     else:
                         Cards.play2(data['Entity']) 
+                        Legendaries.play2(data['Entity'])
             elif type == 'SHOW_ENTITY': # Start of a SHOW_ENTITY block of data
                 showEntity = data['Entity']
             elif type == 'TAG_CHANGE':
@@ -130,12 +132,14 @@ def parseFile(line_generator, config, *args):
                         Cards.reset()
                         Hand.reset()
                         Utilities.reset()
+                        Legendaries.reset()
                         print 'Game Over'
                 elif data['tag'] == 'TURN':
                     # TODO: Delay going first until after mulligan resolves, since the mulligan labels are wrong
                     if (int(data['value']) + Utilities.turnOffset)%2 == 0:
                         Cards.turnover()
                         Hand.turnover()
+                        Legendaries.turnover()
                 elif data['tag'] == 'ZONE_POSITION':
                     if 'zone' in data['Entity'] and data['Entity']['zone'] == 'DECK':
                         Hand.draw(data['Entity'], int(data['value'])-1)
