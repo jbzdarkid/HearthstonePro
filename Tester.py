@@ -33,3 +33,20 @@ for file in files:
         with open(fullName, 'rb') as f:
             print f.read().split('\n')[lineNo]
         raise
+
+assert Parser.parse('') == {}
+assert Parser.parse('a=b') == {'a':'b'}
+assert Parser.parse('a=b c') == {'a':'b c'}
+assert Parser.parse('a=[b=c]') == {'a':{'b':'c'}}
+assert Parser.parse('a=b c=d') == {'a':'b', 'c':'d'}
+assert Parser.parse('a=[b=c d]') == {'a':{'b':'c d'}}
+assert Parser.parse('a=[b=c] d=e') == {'a':{'b':'c'}, 'd':'e'}
+assert Parser.parse('a=[b=c d=e]') == {'a':{'b':c', 'd':'e'}}
+assert Parser.parse('a=b c d=e') == {'a':'b c', 'd':'e'}
+assert Parser.parse('a=b c=[d=e] f=g') == {'a':'b', 'c':'{'d':'e'}, 'f':'g'}
+assert Parser.parse('a=[b=c d=e] f=g') == {'a':{'b':'c', 'd':'e'}, 'f':'g'}
+assert Parser.parse('a[b]=c') == {'a[b]':'c'}
+assert Parser.parse('a[b]=c d') == {'a[b]':'c d'}
+assert Parser.parse('a[b]=c d=e') == {'a[b]':'c', 'd':'e'}
+assert Parser.parse('a[b]=c d e=f') == {'a[b]':'c d', 'e':'f'}
+assert Parser.parse('a[b]=c d=[e=f]') == {'a[b]':'c', 'd':{'e':'f'}}

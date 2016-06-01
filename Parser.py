@@ -47,23 +47,6 @@ def parse(data, start=0):
         debug('<3>Value: data['+str(index)+':]='+str(out[key]))
     return out
 
-# print '1', parse('') # {}
-# print '2', parse('a=b') # {'a':'b'}
-# print '3', parse('a=b c') # {'a':'b c'}
-# print '4', parse('a=[b=c]') # {'a':{'b':'c'}}
-# print '5', parse('a=b c=d') # {'a':'b', 'c':'d'}
-# print '6', parse('a=[b=c d]') # {'a':{'b':'c d'}}
-# print '7', parse('a=[b=c] d=e') # {'a':{'b':'c'}, 'd':'e'}
-# print '8', parse('a=[b=c d=e]') # {'a':{'b':c', 'd':'e'}}
-# print '9', parse('a=b c d=e') # {'a':'b c', 'd':'e'}
-# print '0', parse('a=b c=[d=e] f=g') # {'a':'b', 'c':'{'d':'e'}, 'f':'g'}
-# print 'A', parse('a=[b=c d=e] f=g') # {'a':{'b':'c', 'd':'e'}, 'f':'g'}
-# print 'B', parse('a[b]=c') # {'a[b]':'c'}
-# print 'C', parse('a[b]=c d') # {'a[b]':'c d'}
-# print 'D', parse('a[b]=c d=e') # {'a[b]':'c', 'd':'e'}
-# print 'E', parse('a[b]=c d e=f') # {'a[b]':'c d', 'e':'f'}
-# print 'F', parse('a[b]=c d=[e=f]') # {'a[b]':'c', 'd':{'e':'f'}}
-
 # Main parsing function. line_generator can be a tail for live execution, or a file object for testing.
 def parseFile(line_generator, config, *args):
     lineNo = 0
@@ -129,7 +112,6 @@ def parseFile(line_generator, config, *args):
                         Utilities.resources = data['value']
                 elif data['tag'] == 'STEP':
                     if data['value'] == 'FINAL_GAMEOVER':
-                        Cards.reset()
                         Hand.reset()
                         Utilities.reset()
                         Legendaries.reset()
