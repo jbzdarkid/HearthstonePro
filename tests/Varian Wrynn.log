@@ -13794,4 +13794,5 @@ D 18:33:34.9006093 PowerTaskList.DebugPrintPower() - BLOCK_END
 D 18:33:34.9006093 PowerProcessor.PrepareHistoryForCurrentTaskList() - m_currentTaskList=733
 D 18:33:34.9006093 PowerProcessor.EndCurrentTaskList() - m_currentTaskList=733
 D 18:33:34.9006093 PowerTaskList.DebugDump() - ID=734 ParentID=0 PreviousID=0 TaskCount=2
-D 18:33:34.9006093 PowerTaskList.DebugDump() - Block Start=(null)
+D 18:33:34.9006093 PowerTaskList.DebugDump() - Block Start=(null)
+D 18:33:34.9006093 PowerTaskList.DebugPrintPower() -     TAG_CHANGE Entity=GameEntity tag=STEP value=FINAL_GAMEOVER

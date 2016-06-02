@@ -7336,4 +7336,5 @@ D 16:14:49.3081949 PowerTaskList.DebugPrintPower() - BLOCK_START BlockType=TRIGG
 D 16:14:49.3081949 PowerTaskList.DebugPrintPower() -     TAG_CHANGE Entity=GameEntity tag=NEXT_STEP value=FINAL_GAMEOVER
 D 16:14:49.3081949 PowerTaskList.DebugPrintPower() - BLOCK_END
 D 16:14:49.3081949 PowerTaskList.DebugDump() - ID=378 ParentID=0 PreviousID=0 TaskCount=2
-D 16:14:49.3081949 PowerTaskList.DebugDump() - Block Start=(null)
+D 16:14:49.3081949 PowerTaskList.DebugDump() - Block Start=(null)
+D 16:14:49.3081949 PowerTaskList.DebugPrintPower() -     TAG_CHANGE Entity=GameEntity tag=STEP value=FINAL_GAMEOVER

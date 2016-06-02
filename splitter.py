@@ -15,12 +15,12 @@ if __name__ == '__main__': # pragma: no cover
         with open(rootDir+'tests'+sep+file, 'rb') as f:
             data = f.read().split('\n')
             for i in range(len(data)):
+                buffer += '\n'+data[i]
                 if 'PowerTaskList.DebugPrintPower() -     TAG_CHANGE Entity=GameEntity tag=STEP value=FINAL_GAMEOVER' in data[i]:
                     name = ', '.join(sorted(card for card in cards if '"'+card+'"' in cardspy))
                     with open(rootDir+'tests'+sep+name+'.log', 'wb') as g:
                         g.write(buffer)
                 else:
-                    buffer += '\n'+data[i]
                     if 'PLAYER_ID' in data[i] and 'GameState.DebugPrintPower()' in data[i]:
                         if config['username'] not in data[i]:
                             them = data[i][-2]
