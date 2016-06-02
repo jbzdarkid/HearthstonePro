@@ -28,6 +28,27 @@ def play2(entity):
         elif entity['name'] == "Varian Wrynn":
             Utilities.varianWrynn = True
         
+        elif entity['name'] == "A Light in the Darkness":
+            Hand.draw(entity, note='A random minion with +1/+1')
+        elif entity['name'] == "Dark Peddler":
+            Hand.draw(entity, note='A 1-cost card')
+        elif entity['name'] == "Ethereal Conjurer":
+            Hand.draw(entity, note='A spell')
+        elif entity['name'] == "Gorillabot A-3":
+            Hand.draw(entity, note='A mech')
+        elif entity['name'] == "Jeweled Scarab":
+            Hand.draw(entity, note='A 3-cost card')
+        elif entity['name'] == "Museum Curator":
+            Hand.draw(entity, note='A deathrattle card')
+        elif entity['name'] == "Raven Idol":
+            Hand.draw(entity, note='A minion or a spell')
+        elif entity['name'] == "Tomb Spider":
+            Hand.draw(entity, note='A beast')
+        elif entity['name'] == "Journey Below":
+            Hand.draw(entity, note='A deathrattle card')
+        elif entity['name'] == "Arch-Thief Rafaam":
+            Hand.draw(entity, note='A powerful artifact')
+
         elif entity['name'] == "Burgle":
             Hand.draw(entity, note='A random card from your class')
             Hand.draw(entity, note='A random card from your class')
@@ -127,32 +148,6 @@ def die(entity):
     # if entity['player'] in [Utilities.us, Utilities.them]:
     if entity['name'] == "Mechanical Yeti":
         Hand.draw(entity, note='Spare Part')
-
-# Safe from Brann
-def discover(entity):
-    if entity['player'] == Utilities.them:
-        if 'name' not in entity: # "Sir Finley Mrrgglton"
-            return
-        elif entity['name'] == "A Light in the Darkness":
-            Hand.draw(entity, note='A random minion with +1/+1')
-        elif entity['name'] == "Dark Peddler":
-            Hand.draw(entity, note='A 1-cost card')
-        elif entity['name'] == "Ethereal Conjurer":
-            Hand.draw(entity, note='A spell')
-        elif entity['name'] == "Gorillabot A-3":
-            Hand.draw(entity, note='A mech')
-        elif entity['name'] == "Jeweled Scarab":
-            Hand.draw(entity, note='A 3-cost card')
-        elif entity['name'] == "Museum Curator":
-            Hand.draw(entity, note='A deathrattle card')
-        elif entity['name'] == "Raven Idol":
-            Hand.draw(entity, note='A minion or a spell')
-        elif entity['name'] == "Tomb Spider":
-            Hand.draw(entity, note='A beast')
-        elif entity['name'] == "Journey Below":
-            Hand.draw(entity, note='A deathrattle card')
-        elif entity['name'] == "Arch-Thief Rafaam":
-            Hand.draw(entity, note='A powerful artifact')
 
 # Be careful of Blessing of Wisdom (others?) which can 'trigger' an effect on a card that already has a triggered effect.
 # This isn't very well encapsulated, but it's also the extreme edge-case cards that are hard to deal with otherwise.

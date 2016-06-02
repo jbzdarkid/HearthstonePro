@@ -73,12 +73,6 @@ def parseFile(line_generator, config, *args):
             # Cards that were not mulliganed
             if data.keys()[0][:8] == 'Entities': # Entities[0], e.g.
                 Hand.keep(data.values()[0])
-        if source == 'GameState.DebugPrintEntityChoices()':
-            if 'Source' in data and data['Source'] != 'GameEntity': # Not the mulligan choices
-                Cards.discover(data['Source'])
-        # if source == 'PowerTaskList.DebugPrintPower()' and type == 'HIDE_ENTITY':
-            # print '<26>', data
-        # Vanish?
         if showEntity is not None:
             if type:
                 showEntity = None
