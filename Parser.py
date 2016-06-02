@@ -117,6 +117,7 @@ def parseFile(line_generator, config, *args):
                         Legendaries.reset()
                         print 'Game Over'
                 elif data['tag'] == 'TURN':
+                    Utilities.turn = int(data['value'])
                     # TODO: Delay going first until after mulligan resolves, since the mulligan labels are wrong
                     if (int(data['value']) + Utilities.turnOffset)%2 == 0:
                         Cards.turnover()
