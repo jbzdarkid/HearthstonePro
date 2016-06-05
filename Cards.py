@@ -27,7 +27,7 @@ def play2(entity):
 
         elif entity['name'] == "Varian Wrynn":
             Utilities.varianWrynn = True
-        
+
         elif entity['name'] == "A Light in the Darkness":
             Hand.draw(entity, note='A random minion with +1/+1')
         elif entity['name'] == "Dark Peddler":

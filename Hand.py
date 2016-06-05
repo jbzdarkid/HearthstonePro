@@ -57,7 +57,7 @@ def discard(entity):
     global hand
     if entity['player'] == Utilities.them:
         hand.pop(int(entity['zonePos'])-1)
-        
+
 # The mulligan works backwards, with cards that are kept appearing in the log file. Thus I initialize the cards in hand to be 'Mulliganned', and replace them if they appear.
 def keep(entity):
     global hand

@@ -51,7 +51,7 @@ def parse(data, start=0):
 def parseFile(line_generator, config, *args):
     lineNo = 0
     from re import match
-    showEntity = None    
+    showEntity = None
     for line in line_generator(*args):
         lineNo += 1
         line_parts = match('^D \d{2}:\d{2}:\d{2}\.\d{7} ([a-zA-Z]*\.[a-zA-Z]*\(\)) -\s*([A-Z_]{2,}|)(.*)', line)
@@ -93,7 +93,7 @@ def parseFile(line_generator, config, *args):
                     if 'Target' in data and isinstance(data['Target'], dict):
                         Cards.play3(data['Entity'], data['Target']) # A card targets another card.
                     else:
-                        Cards.play2(data['Entity']) 
+                        Cards.play2(data['Entity'])
                         Legendaries.play2(data['Entity'])
             elif type == 'SHOW_ENTITY': # Start of a SHOW_ENTITY block of data
                 showEntity = data['Entity']
@@ -137,7 +137,7 @@ if __name__ == '__main__': # pragma: no cover
     except IOError:
         # Config not defined, somehow. Recreate.
         config = {}
-    except SyntaxError:
+    except (SyntaxError, ValueError):
         # Config corrupt, somehow. Recreate.
         config = {}
 
