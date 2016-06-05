@@ -72,7 +72,8 @@ def parseFile(line_generator, config, *args):
         if source == 'GameState.DebugPrintEntitiesChosen()':
             # Cards that were not mulliganed
             if data.keys()[0][:8] == 'Entities': # Entities[0], e.g.
-                Hand.keep(data.values()[0])
+                if data.values()[0]['zone'] == 'HAND':
+                    Hand.keep(data.values()[0])
         if showEntity is not None:
             if type:
                 showEntity = None

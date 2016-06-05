@@ -7,7 +7,7 @@ def reset():
     resources = '0' # Relevant for Wild Growth, which gives a card if at full.
     combo = False # Relevant for Rogues, where Combo can change how cards work
     turn = 0
-    turnOffset = None # Only tell the user what's happening before their turn
+    turnOffset = 0 # Only tell the user what's happening before their turn
     us = '0' # player id
     them = '0' # player id
     varianWrynn = False # Start of a Varian Wrynn block, where minions are put directly into play.
@@ -22,7 +22,7 @@ def blockEnd():
 def wentFirst(truth):
     global turnOffset
     if truth:
-        Hand.hand = [Hand.card(-1, note='The Coin')]+[Hand.card(-1, note='Mulliganned') for _ in range(4)]
+        Hand.hand = [Hand.card(-1, note='Mulliganned') for _ in range(4)] + [Hand.card(-1, note='The Coin')]
         turnOffset = 1
     else:
         Hand.hand = [Hand.card(-1, note='Mulliganned') for _ in range(3)]
