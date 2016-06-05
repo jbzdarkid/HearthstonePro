@@ -1,13 +1,19 @@
 # Contains more long-term tracking cards.
 
 def reset():
-    global reno, renoDuplicates, cthun, nzoth, yogg
+    global reno, renoDuplicates, cthun, nzoth, yogg, varianWrynn
     reno = []
     renoDuplicates = 0
     cthun = 6
     nzoth = []
     yogg = 0
+    varianWrynn = False # Start of a Varian Wrynn block, where minions are put directly into play.
+
 reset()
+
+def blockEnd():
+    global varianWrynn
+    varianWrynn = False
 
 def die(entity):
     global nzoth

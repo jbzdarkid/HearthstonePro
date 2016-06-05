@@ -2,7 +2,7 @@
 
 import Hand
 def reset():
-    global overload, resources, combo, numMinions, turn, turnOffset, us, them, varianWrynn
+    global overload, resources, combo, numMinions, turn, turnOffset, us, them
     overload = 0
     resources = '0' # Relevant for Wild Growth, which gives a card if at full.
     combo = False # Relevant for Rogues, where Combo can change how cards work
@@ -10,14 +10,9 @@ def reset():
     turnOffset = 0 # Only tell the user what's happening before their turn
     us = '0' # player id
     them = '0' # player id
-    varianWrynn = False # Start of a Varian Wrynn block, where minions are put directly into play.
-    numMinions = 0 # If the board is full, Varian will put minions into hand
+    numMinions = 0
 
 reset()
-
-def blockEnd():
-    global varianWrynn
-    varianWrynn = False
 
 def wentFirst(truth):
     global turnOffset

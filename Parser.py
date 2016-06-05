@@ -81,7 +81,7 @@ def parseFile(line_generator, config, *args):
                 Hand.discard(showEntity)
         if source == 'PowerTaskList.DebugPrintPower()':
             if type == 'BLOCK_END':
-                Utilities.blockEnd()
+                Legendaries.blockEnd()
             elif type == 'BLOCK_START':
                 if data['BlockType'] == 'TRIGGER':
                     if 'zone' in data['Entity']:

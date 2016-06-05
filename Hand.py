@@ -41,7 +41,7 @@ def draw(entity, position=None, note=None, cost=None):
             c = card(int(entity['id']))
             if note:
                 c.note += note
-            if Utilities.varianWrynn and Utilities.numMinions != 7:
+            if Legendaries.varianWrynn and Utilities.numMinions != 7:
                 c.note += ', Not a minion'
             if cost:
                 c.cost += cost
