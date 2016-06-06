@@ -88,13 +88,17 @@ def parseFile(line_generator, config, *args):
                         if data['Entity']['zone'] == 'GRAVEYARD':
                             Cards.die(data['Entity'])
                             Legendaries.die(data['Entity'])
+                            Dragons.die(data['Entity'])
                         elif data['Entity']['zone'] == 'PLAY':
                             Cards.trigger(data['Entity'])
                 elif data['BlockType'] == 'POWER': # When a card actually hits the board
                     if 'Target' in data and isinstance(data['Target'], dict):
                         Cards.play3(data['Entity'], data['Target']) # A card targets another card.
+                        Dragons.play3(data['Entity'])
+                        Legendaries.play3(data['Entity'])
                     else:
                         Cards.play2(data['Entity'])
+                        Dragons.play2(data['Entity'])
                         Legendaries.play2(data['Entity'])
             elif type == 'SHOW_ENTITY': # Start of a SHOW_ENTITY block of data
                 showEntity = data['Entity']
