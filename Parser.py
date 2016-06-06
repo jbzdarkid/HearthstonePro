@@ -94,8 +94,8 @@ def parseFile(line_generator, config, *args):
                 elif data['BlockType'] == 'POWER': # When a card actually hits the board
                     if 'Target' in data and isinstance(data['Target'], dict):
                         Cards.play3(data['Entity'], data['Target']) # A card targets another card.
-                        Dragons.play3(data['Entity'])
-                        Legendaries.play3(data['Entity'])
+                        Dragons.play3(data['Entity'], data['Target'])
+                        Legendaries.play3(data['Entity'], data['Target'])
                     else:
                         Cards.play2(data['Entity'])
                         Dragons.play2(data['Entity'])

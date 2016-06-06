@@ -53,6 +53,9 @@ def play2(entity):
         renoDuplicates.append(entity['name'])
     reno.append(entity['name'])
 
+def play3(entity, target):
+    return play2(entity)
+
 def turnover():
     pass
     '''

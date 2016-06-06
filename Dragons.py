@@ -12,13 +12,13 @@ reset()
 
 def play2(entity):
     if entity['player'] == Utilities.them:
-        removeEntity(card.id)
+        removeEntity(entity['id'])
         if entity['name'] in ["Blackwing Corruptor", "Rend Blackhand"]:
             noDragon()
 
-def play3(entity):
+def play3(entity, target):
     if entity['player'] == Utilities.them:
-        removeEntity(card.id)
+        removeEntity(entity['id'])
         if entity['name'] == ["Blackwing Corruptor", "Rend Blackhand"]:
             hasDragon()
 
@@ -28,7 +28,6 @@ def play4(entity):
         # "Alextrasza's Champion", "Wyrmrest Agent", "Blackwing Technician", "Twilight Guardian", "Twilight Whelp"
         if entity['name'] in ["Alexstrasza's Boon", "Bring it on!", "Dragon Blood", "Twilight's Embrace", "Twilight Endurance"]:
             hasDragon()
-        elif entity['name']
 
 def die(entity):
     pass
@@ -36,7 +35,7 @@ def die(entity):
 def removeEntity(id):
     for i in range(len(sets)):
         for j in range(len(sets[i])):
-            if sets[i][j].id == id:
+            if sets[i][j] == id:
                 del sets[i][j]
                 if sets[i] == []:
                     del sets[i]
