@@ -1,7 +1,7 @@
 # Displaying with tk:
 # Use Toplevel() in construction, and root.lift() as a backup
 
-import Cards, Hand, Legendaries, Utilities
+import Cards, Dragons, Hand, Legendaries, Utilities
 # This function parses the Hearthstone log files, and converts them into dictionaries
 # Python throws some errors here about 'key not defined'. It is defined in the data[i] = '=' block, which will be called (on properly formatted input) before 'key' is referenced.
 # There are scenarios where this error will be thrown during execution, but only on invalid log data.
@@ -102,6 +102,9 @@ def parseFile(line_generator, config, *args):
                 if data['tag'] == 'JUST_PLAYED':
                     if data['Entity']['zone'] == 'HAND':
                         Hand.play(data['Entity']) # When a card is removed from a player's hand
+                elif data['tag'] == 'NUM_TURNS_IN_PLAY':
+                    if data['value'] == '1':
+                        Dragons.play4(data['Entity'])
                 elif data['tag'] == 'RESOURCES':
                     if data['Entity'] != config['username']:
                         Utilities.resources = data['value']
