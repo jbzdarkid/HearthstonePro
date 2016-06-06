@@ -1,12 +1,14 @@
 # Contains more long-term tracking cards.
 
+import Utilities
+
 def reset():
     global reno, renoDuplicates, cthun, nzoth, yogg, varianWrynn
     reno = []
-    renoDuplicates = 0
-    cthun = 6
-    nzoth = []
-    yogg = 0
+    renoDuplicates = []
+    cthun = [6, 6]
+    nzoth = [[], []]
+    yogg = [0, 0]
     varianWrynn = False # Start of a Varian Wrynn block, where minions are put directly into play.
 
 reset()
@@ -53,4 +55,14 @@ def play2(entity):
 
 def turnover():
     pass
-    # print 'Reno: %s, C'Thun: %d/%d, Yogg-Saron: %d spells\nN'Zoth: %s' % (', '.join(sorted(renoDuplicates)), cthun, cthun, yogg, ', '.join(sorted(nzoth)))
+    '''
+    if len(reno) > 5 and len(renoDuplicates) < 3:
+        print 'Opponent has played %d cards with the following duplicates: %s' % (len(reno), ', '.join(sorted(renoDuplicates)))
+    # Resources for both players!
+    if Utilities.resources >= 7:
+        print '(Opponent):'
+        print '\tC\'Thun: %d, Yogg-Saron: %d, N\'Zoth: %s' % (cthun[0], yogg[0], ', '.join(sorted(nzoth[0])))
+    if Utilities.resources >= 7:
+        print '(Yourself):'
+        print '\tC\'Thun: %d, Yogg-Saron: %d, N\'Zoth: %s' % (cthun[1], yogg[1], ', '.join(sorted(nzoth[1])))
+    '''
