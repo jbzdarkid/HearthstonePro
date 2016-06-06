@@ -1,4 +1,4 @@
-import Utilities
+import Utilities, Legendaries
 
 class card():
     def __init__(self, id, note=None):
@@ -42,7 +42,9 @@ def draw(entity, position=None, note=None, cost=None):
             if note:
                 c.note += note
             if Legendaries.varianWrynn and Utilities.numMinions != 7:
-                c.note += ', Not a minion'
+                if note:
+                    c.note += ', '
+                c.note += 'Not a minion'
             if cost:
                 c.cost += cost
             hand.append(c)

@@ -9,7 +9,7 @@
 
 # Within this file, I've separated out names of cards in "double quotes", so that I can search for them via splitter.py.
 # It also means there won't be any \'s in card names.
-import Hand, Utilities
+import Hand, Utilities, Legendaries
 
 # When a card hits the board, and we can see what it's name is
 def play2(entity):
