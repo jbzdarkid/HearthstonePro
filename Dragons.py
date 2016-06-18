@@ -60,5 +60,4 @@ def noDragon():
 def turnover():
     for set in sets:
         if len(set) < 2:
-            
-    pass
+            pass
