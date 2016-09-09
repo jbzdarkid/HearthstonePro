@@ -6,9 +6,6 @@ import Cards, Dragons, Hand, Legendaries, Utilities
 # Python throws some errors here about 'key not defined'. It is defined in the data[i] = '=' block, which will be called (on properly formatted input) before 'key' is referenced.
 # There are scenarios where this error will be thrown during execution, but only on invalid log data.
 def parse(data, start=0):
-    def debug(string):
-        # print string
-        return
     data = data.strip()
     debug(data)
     out = {}
@@ -17,34 +14,46 @@ def parse(data, start=0):
     i = start
     recursed = True
     while i < len(data):
-        debug(str(i)+' '+str(data[i]))
+        if __debug__:
+            print i, data[i]
         if data[i] == '[' and data[i-1] == '=':
-            debug('Recursing...')
+            if __debug__:
+                print 'Recursing...'
             out[key], i = parse(data, i+1)
             possible = start
             recursed = True
-            debug('Recursion returned: '+str(out[key]))
+            if __debug__:
+                print 'Recursion returned:', out[key]
         elif data[i] == ']':
             if not recursed:
                 value = data[index:i]
-                debug('<1>Value: data['+str(index)+':'+str(i)+']='+str(value))
+                if __debug__:
+                    print '<1>Value: data[%d:%d]=%s' \
+                        % (index, i, value)
                 out[key] = value
                 return (out, i)
         elif data[i] == ' ':
             possible = i+1
-            debug('Possible key: data['+str(i+1)+':'+str(i+2)+']='+str(data[i+1:i+2]))
+            if __debug__:
+                print 'Possible key: data[%d:%d]=%s' \
+                    % (i+1, i+2, data[i+1:i+2])
         elif data[i] == '=':
             if not recursed:
                 out[key] = data[index:possible-1]
-                debug('<2>Value: data['+str(index)+':'+str(possible-1)+']='+str(out[key]))
+                if __debug__:
+                    print '<2>Value: data[%d:%d]=%s' \
+                        % (index, possible-1, out[key])
             key = data[possible:i]
-            debug('Key: data['+str(possible)+':'+str(i)+']='+str(key))
+            if __debug__:
+                print 'Key: data[%d:%d]=%s' \
+                    % (possible, i, key)
             index = i+1
             recursed = False
         i += 1
     if not recursed: # The last k,v pair
         out[key] = data[index:]
-        debug('<3>Value: data['+str(index)+':]='+str(out[key]))
+        if __debug__:
+            print '<3>Value: data[%d:]=%s' % (index, out[key])
     return out
 
 # Main parsing function. line_generator can be a tail for live execution, or a file object for testing.
