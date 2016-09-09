@@ -7,7 +7,8 @@ import Cards, Dragons, Hand, Legendaries, Utilities
 # There are scenarios where this error will be thrown during execution, but only on invalid log data.
 def parse(data, start=0):
     data = data.strip()
-    debug(data)
+    if __debug__:
+        print data
     out = {}
     index = start
     possible = start
