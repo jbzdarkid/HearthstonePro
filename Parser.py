@@ -2,12 +2,17 @@
 # Use Toplevel() in construction, and root.lift() as a backup
 
 import Cards, Dragons, Hand, Legendaries, Utilities
-# This function parses the Hearthstone log files, and converts them into dictionaries
-# Python throws some errors here about 'key not defined'. It is defined in the data[i] = '=' block, which will be called (on properly formatted input) before 'key' is referenced.
-# There are scenarios where this error will be thrown during execution, but only on invalid log data.
-def parse(data, start=0):
+def parse(data, start=0, DEBUG=False):
+    '''
+    This function parses a hearthstone line and returns
+    a dictionary.
+    Python throws some warnings here about
+    'key may not be defined', but an error will only be
+    thrown on improperly formatted input.
+    '''
     data = data.strip()
-    if __debug__:
+    if DEBUG:
+        print 'Parsing line:'
         print data
     out = {}
     index = start
@@ -15,37 +20,37 @@ def parse(data, start=0):
     i = start
     recursed = True
     while i < len(data):
-        if __debug__:
+        if DEBUG:
             print i, data[i]
         if data[i] == '[' and data[i-1] == '=':
-            if __debug__:
+            if DEBUG:
                 print 'Recursing...'
             out[key], i = parse(data, i+1)
             possible = start
             recursed = True
-            if __debug__:
+            if DEBUG:
                 print 'Recursion returned:', out[key]
         elif data[i] == ']':
             if not recursed:
                 value = data[index:i]
-                if __debug__:
+                if DEBUG:
                     print '<1>Value: data[%d:%d]=%s' \
                         % (index, i, value)
                 out[key] = value
                 return (out, i)
         elif data[i] == ' ':
             possible = i+1
-            if __debug__:
-                print 'Possible key: data[%d:%d]=%s' \
-                    % (i+1, i+2, data[i+1:i+2])
+            if DEBUG:
+                print 'Possible value: data[%d:%d]=%s' \
+                    % (index, possible-1, data[index:possible-1])
         elif data[i] == '=':
             if not recursed:
                 out[key] = data[index:possible-1]
-                if __debug__:
+                if DEBUG:
                     print '<2>Value: data[%d:%d]=%s' \
                         % (index, possible-1, out[key])
             key = data[possible:i]
-            if __debug__:
+            if DEBUG:
                 print 'Key: data[%d:%d]=%s' \
                     % (possible, i, key)
             index = i+1
@@ -53,12 +58,19 @@ def parse(data, start=0):
         i += 1
     if not recursed: # The last k,v pair
         out[key] = data[index:]
-        if __debug__:
+        if DEBUG:
             print '<3>Value: data[%d:]=%s' % (index, out[key])
+    if DEBUG:
+        print 'Finished parsing, result:'
+        print out
     return out
 
-# Main parsing function. line_generator can be a tail for live execution, or a file object for testing.
 def parseFile(line_generator, config, *args):
+    '''
+    Main parsing function.
+    line_generator can be a tail for live execution,
+    or a file object for testing.
+    '''
     lineNo = 0
     from re import match
     showEntity = None
@@ -144,7 +156,7 @@ if __name__ == '__main__': # pragma: no cover
     from json import load, dump
     from os import sep
     from os.path import expanduser, exists
-    from subprocess import Popen, PIPE
+    from subprocess import PIPE
     rootDir = __file__.rpartition(sep)[0]
     # If rootDir is nothing, then ''+'/' = '/', which is not the current directory.
     if rootDir:
@@ -218,9 +230,8 @@ if __name__ == '__main__': # pragma: no cover
         except:
             pass
         if not exists(config['log']+'Power.log'):
-            from sys import exit
             print 'Please (re)start Hearthstone before running this script.'
-            sys.exit(-1)
+            exit(-1)
         with open(config['log']+'Power.log') as f:
             f.seek(0, 2)
             while True:
