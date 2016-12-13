@@ -86,14 +86,14 @@ def parseFile(line_generator, config, *args):
         type = line_parts.group(2)
         data = parse(line_parts.group(3))
 
-        if source == 'GameState.DebugPrintPower()' and type =='TAG_CHANGE':
-            if data['tag'] == 'PLAYER_ID':
-                if data['Entity'] == config['username']:
-                    logging.debug('You are player %s' % data['value'])
-                    Utilities.us = data['value']
+        if source == 'GameState.DebugPrintEntityChoices()':
+            if 'ChoiceType' in data and data['ChoiceType'] == 'MULLIGAN':
+                if data['Player'] == config['username']:
+                    logging.debug('You are player id %s' % data['id'])
+                    Utilities.us = data['id']
                 else:
-                    logging.debug('Opponent is player %s' % data['value'])
-                    Utilities.them = data['value']
+                    logging.debug('Opponent is player id %s' % data['id'])
+                    Utilities.them = data['id']
         if source == 'GameState.DebugPrintEntitiesChosen()':
             # Cards that were not mulliganed
             if data.keys()[0][:8] == 'Entities': # Entities[0], e.g.
