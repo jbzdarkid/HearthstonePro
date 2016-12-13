@@ -92,8 +92,6 @@ def parseFile(line_generator, config, *args):
                     Utilities.us = data['value']
                 else:
                     Utilities.them = data['value']
-            elif data['tag'] == 'FIRST_PLAYER':
-                Utilities.wentFirst(data['Entity'] == config['username'])
         if source == 'GameState.DebugPrintEntitiesChosen()':
             # Cards that were not mulliganed
             if data.keys()[0][:8] == 'Entities': # Entities[0], e.g.
@@ -128,6 +126,9 @@ def parseFile(line_generator, config, *args):
             elif type == 'SHOW_ENTITY': # Start of a SHOW_ENTITY block of data
                 showEntity = data['Entity']
             elif type == 'TAG_CHANGE':
+                if data['tag'] == 'FIRST_PLAYER':
+                    logging.warning('New game started')
+                    Utilities.wentFirst(data['Entity'] == config['username'])
                 if data['tag'] == 'JUST_PLAYED':
                     if data['Entity']['zone'] == 'HAND':
                         Hand.play(data['Entity']) # When a card is removed from a player's hand
