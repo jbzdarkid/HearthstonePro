@@ -144,13 +144,13 @@ def parseFile(line_generator, config, *args):
                         Utilities.reset()
                         Legendaries.reset()
                         print 'Game Over'
+                    if data['value'] == 'MAIN_READY':
+                        if Utilities.ourTurn():
+                            Hand.turnover()
+                            Cards.turnover()
+                            Legendaries.turnover()
                 elif data['tag'] == 'TURN':
                     Utilities.turn = int(data['value'])
-                    # TODO: Delay going first until after mulligan resolves, since the mulligan labels are wrong
-                    if (int(data['value']) + Utilities.turnOffset)%2 == 0:
-                        Cards.turnover()
-                        Hand.turnover()
-                        Legendaries.turnover()
                 elif data['tag'] == 'ZONE_POSITION':
                     if 'zone' in data['Entity'] and data['Entity']['zone'] == 'DECK':
                         Hand.draw(data['Entity'], int(data['value'])-1)

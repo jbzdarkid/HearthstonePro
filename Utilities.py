@@ -2,7 +2,7 @@
 import logging
 import Hand
 def reset():
-    global overload, resources, combo, numMinions, turn, turnOffset, us, them
+    global overload, resources, combo, turn, turnOffset, us, them, numMinions
     overload = 0
     resources = '0' # Relevant for Wild Growth, which gives a card if at full.
     combo = False # Relevant for Rogues, where Combo can change how cards work
@@ -14,13 +14,17 @@ def reset():
 
 reset()
 
+def ourTurn():
+    global turn, turnOffset
+    return (turn + 1*turnOffset)%2 == 0
+
 def wentFirst(truth):
     global turnOffset
     if truth:
-        logging.info("We are going first")
+        logging.info("You are going first")
         Hand.hand = [Hand.card(-1, note='Mulliganned') for _ in range(4)] + [Hand.card(-1, note='The Coin')]
         turnOffset = 1
     else:
-        logging.info("We are going second")
+        logging.info("You are going second")
         Hand.hand = [Hand.card(-1, note='Mulliganned') for _ in range(3)]
         turnOffset = 0
