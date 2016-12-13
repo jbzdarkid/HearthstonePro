@@ -2,8 +2,8 @@
 # Use Toplevel() in construction, and root.lift() as a backup
 
 import logging
-# CRITICAL: No logging (errors only)
-# ERROR: Unused
+# CRITICAL: Unused
+# ERROR: Errors (duh)
 # WARNING: Minimal logging; Game start/end and hand at start of turn
 # INFO: Heavy logging; all events -- still reads like english
 # DEBUG: Full logging; all partial states (Warning: slow) -- code jargon everywhere
@@ -89,8 +89,10 @@ def parseFile(line_generator, config, *args):
         if source == 'GameState.DebugPrintPower()' and type =='TAG_CHANGE':
             if data['tag'] == 'PLAYER_ID':
                 if data['Entity'] == config['username']:
+                    logging.debug('You are player %s' % data['value'])
                     Utilities.us = data['value']
                 else:
+                    logging.debug('Opponent is player %s' % data['value'])
                     Utilities.them = data['value']
         if source == 'GameState.DebugPrintEntitiesChosen()':
             # Cards that were not mulliganed
@@ -99,6 +101,7 @@ def parseFile(line_generator, config, *args):
                     Hand.keep(data.values()[0])
         if showEntity is not None:
             if type:
+                logging.debug('Ended a showEntity block')
                 showEntity = None
             elif 'tag' in data and data['tag'] == 'ZONE' and data['value'] == 'GRAVEYARD':
                 Hand.discard(showEntity)
