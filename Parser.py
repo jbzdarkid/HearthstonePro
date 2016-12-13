@@ -1,6 +1,15 @@
 # Displaying with tk:
 # Use Toplevel() in construction, and root.lift() as a backup
 
+import logging
+# CRITICAL: No logging (errors only)
+# ERROR: Unused
+# WARNING: Minimal logging; Game start/end and hand at start of turn
+# INFO: Heavy logging; all events -- still reads like english
+# DEBUG: Full logging; all partial states (Warning: slow) -- code jargon everywhere
+logging.getLogger().setLevel(logging.INFO)
+logging.basicConfig(format='%(message)s')
+
 import Cards, Dragons, Hand, Legendaries, Utilities
 def parse(data, start=0, DEBUG=False):
     '''
@@ -11,58 +20,43 @@ def parse(data, start=0, DEBUG=False):
     thrown on improperly formatted input.
     '''
     data = data.strip()
-    if DEBUG:
-        print 'Parsing line:'
-        print data
     out = {}
     index = start
     possible = start
     i = start
     recursed = True
     while i < len(data):
-        if DEBUG:
-            print i, data[i]
+        logging.debug(i, data[i])
         if data[i] == '[' and data[i-1] == '=':
-            if DEBUG:
-                print 'Recursing...'
+            logging.debug('Recursing...')
             out[key], i = parse(data, i+1)
             possible = start
             recursed = True
-            if DEBUG:
-                print 'Recursion returned:', out[key]
+            logging.debug('Recursion returned:', out[key])
         elif data[i] == ']':
             if not recursed:
                 value = data[index:i]
-                if DEBUG:
-                    print '<1>Value: data[%d:%d]=%s' \
-                        % (index, i, value)
+                logging.debug('<1>Value: data[%d:%d]=%s', (index, i, value))
                 out[key] = value
                 return (out, i)
         elif data[i] == ' ':
             possible = i+1
-            if DEBUG:
-                print 'Possible value: data[%d:%d]=%s' \
-                    % (index, possible-1, data[index:possible-1])
+            logging.debug('Possible value: data[%d:%d]=%s',
+                (index, possible-1, data[index:possible-1]))
         elif data[i] == '=':
             if not recursed:
                 out[key] = data[index:possible-1]
-                if DEBUG:
-                    print '<2>Value: data[%d:%d]=%s' \
-                        % (index, possible-1, out[key])
+                logging.debug('<2>Value: data[%d:%d]=%s',
+                    (index, possible-1, out[key]))
             key = data[possible:i]
-            if DEBUG:
-                print 'Key: data[%d:%d]=%s' \
-                    % (possible, i, key)
+            logging.debug('Key: data[%d:%d]=%s', (possible, i, key))
             index = i+1
             recursed = False
         i += 1
     if not recursed: # The last k,v pair
         out[key] = data[index:]
-        if DEBUG:
-            print '<3>Value: data[%d:]=%s' % (index, out[key])
-    if DEBUG:
-        print 'Finished parsing, result:'
-        print out
+        logging.debug('<3>Value: data[%d:]=%s', (index, out[key]))
+    logging.debug('Finished parsing, result:' +str(out))
     return out
 
 def parseFile(line_generator, config, *args):
