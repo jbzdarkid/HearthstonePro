@@ -1,5 +1,5 @@
 # Contains a lot of one-offs that aren't easy to deal with.
-
+import logging
 import Hand
 def reset():
     global overload, resources, combo, numMinions, turn, turnOffset, us, them
@@ -17,8 +17,10 @@ reset()
 def wentFirst(truth):
     global turnOffset
     if truth:
+        logging.info("We are going first")
         Hand.hand = [Hand.card(-1, note='Mulliganned') for _ in range(4)] + [Hand.card(-1, note='The Coin')]
         turnOffset = 1
     else:
+        logging.info("We are going second")
         Hand.hand = [Hand.card(-1, note='Mulliganned') for _ in range(3)]
         turnOffset = 0

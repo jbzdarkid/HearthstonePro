@@ -1,6 +1,9 @@
+import logging
 from sys import argv
 from os import sep
 import Parser
+
+# logging.getLogger().setLevel(logging.DEBUG)
 
 rootDir = __file__.rpartition(sep)[0]
 # If rootDir is nothing, then ''+'/' = '/', which is not the current directory.
@@ -29,9 +32,10 @@ for file in files:
     try:
         Parser.parseFile(line_generator, {'username':'darkid'}, fullName)
     except Exception as e: # pragma: no cover
-        print 'Failed for file %s on line %d:' % (file, lineNo)
+        logging.error('Failed for file %s on line %d:' % (file, lineNo))
         with open(fullName, 'rb') as f:
-            print f.read().split('\n')[lineNo]
+            line = f.read().split('\n')[lineNo]
+            logging.error(line)
         raise
 
 assert Parser.parse('') == {}
@@ -50,3 +54,4 @@ assert Parser.parse('a[b]=c d') == {'a[b]':'c d'}
 assert Parser.parse('a[b]=c d=e') == {'a[b]':'c', 'd':'e'}
 assert Parser.parse('a[b]=c d e=f') == {'a[b]':'c d', 'e':'f'}
 assert Parser.parse('a[b]=c d=[e=f]') == {'a[b]':'c', 'd':{'e':'f'}}
+logging.info('Passed all tests!')
