@@ -14,3 +14,4 @@ Planned Features:
 - Tracking Reno Jackson
 - Tracking which cards aren't (or might be) dragons
 - Tracking secrets
+- https://developer.github.com/v3/issues/#create-an-issue
