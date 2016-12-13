@@ -25,38 +25,47 @@ def parse(data, start=0, DEBUG=False):
     possible = start
     i = start
     recursed = True
+    key = None
     while i < len(data):
-        logging.debug(i, data[i])
-        if data[i] == '[' and data[i-1] == '=':
+        if data[i] == '[':
             logging.debug('Recursing...')
-            out[key], i = parse(data, i+1)
-            possible = start
-            recursed = True
-            logging.debug('Recursion returned:', out[key])
+            ret = parse(data, i+1)
+            if isinstance(ret, tuple):
+                logging.debug('Recursion returned: ' + str(ret))
+                out[key], i = ret
+                possible = start
+                recursed = True
+            else:
+                logging.debug('Recursion returned a signal, continuing key')
+                i = ret
         elif data[i] == ']':
-            if not recursed:
-                value = data[index:i]
-                logging.debug('<1>Value: data[%d:%d]=%s', (index, i, value))
-                out[key] = value
-                return (out, i)
+            if key is None:
+                logging.debug('No key found during recursion')
+                return i
+            logging.debug('<1>Value: data[%d:%d]=%s' % \
+                (index, i, data[index:i]))
+            value = data[index:i]
+            out[key] = value
+            return (out, i)
         elif data[i] == ' ':
+            logging.debug('Possible value: data[%d:%d]=%s' % \
+                (index, i, data[index:i]))
             possible = i+1
-            logging.debug('Possible value: data[%d:%d]=%s',
-                (index, possible-1, data[index:possible-1]))
         elif data[i] == '=':
             if not recursed:
+                logging.debug('<2>Value: data[%d:%d]=%s' % \
+                    (index, possible-1, data[index:possible-1]))
                 out[key] = data[index:possible-1]
-                logging.debug('<2>Value: data[%d:%d]=%s',
-                    (index, possible-1, out[key]))
+            logging.debug('Key: data[%d:%d]=%s' % \
+                (possible, i, data[possible:i]))
             key = data[possible:i]
-            logging.debug('Key: data[%d:%d]=%s', (possible, i, key))
             index = i+1
             recursed = False
         i += 1
     if not recursed: # The last k,v pair
         out[key] = data[index:]
-        logging.debug('<3>Value: data[%d:]=%s', (index, out[key]))
-    logging.debug('Finished parsing, result:' +str(out))
+        logging.debug('<3>Value: data[%d:]=%s' % (index, out[key]))
+    logging.debug('Finished parsing, result:' + str(out))
     return out
 
 def parseFile(line_generator, config, *args):

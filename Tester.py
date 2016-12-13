@@ -4,6 +4,23 @@ from os import sep
 import Parser
 
 # logging.getLogger().setLevel(logging.DEBUG)
+assert Parser.parse('') == {}
+assert Parser.parse('a=b') == {'a':'b'}
+assert Parser.parse('a=b c') == {'a':'b c'}
+assert Parser.parse('a=[b=c]') == {'a':{'b':'c'}}
+assert Parser.parse('a=b c=d') == {'a':'b', 'c':'d'}
+assert Parser.parse('a=[b=c d]') == {'a':{'b':'c d'}}
+assert Parser.parse('a=[b=c] d=e') == {'a':{'b':'c'}, 'd':'e'}
+assert Parser.parse('a=[b=c d=e]') == {'a':{'b':'c', 'd':'e'}}
+assert Parser.parse('a=b c d=e') == {'a':'b c', 'd':'e'}
+assert Parser.parse('a=b c=[d=e] f=g') == {'a':'b', 'c':{'d':'e'}, 'f':'g'}
+assert Parser.parse('a=[b=c d=e] f=g') == {'a':{'b':'c', 'd':'e'}, 'f':'g'}
+assert Parser.parse('a[b]=c') == {'a[b]':'c'}
+assert Parser.parse('a[b]=c d') == {'a[b]':'c d'}
+assert Parser.parse('a[b]=c d=e') == {'a[b]':'c', 'd':'e'}
+assert Parser.parse('a[b]=c d e=f') == {'a[b]':'c d', 'e':'f'}
+assert Parser.parse('a[b]=c d=[e=f]') == {'a[b]':'c', 'd':{'e':'f'}}
+assert Parser.parse('a[b]=c d=e f[g]=h') == {'a[b]':'c', 'd':'e', 'f[g]':'h'}
 
 rootDir = __file__.rpartition(sep)[0]
 # If rootDir is nothing, then ''+'/' = '/', which is not the current directory.
@@ -37,21 +54,4 @@ for file in files:
             line = f.read().split('\n')[lineNo]
             logging.error(line)
         raise
-
-assert Parser.parse('') == {}
-assert Parser.parse('a=b') == {'a':'b'}
-assert Parser.parse('a=b c') == {'a':'b c'}
-assert Parser.parse('a=[b=c]') == {'a':{'b':'c'}}
-assert Parser.parse('a=b c=d') == {'a':'b', 'c':'d'}
-assert Parser.parse('a=[b=c d]') == {'a':{'b':'c d'}}
-assert Parser.parse('a=[b=c] d=e') == {'a':{'b':'c'}, 'd':'e'}
-assert Parser.parse('a=[b=c d=e]') == {'a':{'b':'c', 'd':'e'}}
-assert Parser.parse('a=b c d=e') == {'a':'b c', 'd':'e'}
-assert Parser.parse('a=b c=[d=e] f=g') == {'a':'b', 'c':{'d':'e'}, 'f':'g'}
-assert Parser.parse('a=[b=c d=e] f=g') == {'a':{'b':'c', 'd':'e'}, 'f':'g'}
-assert Parser.parse('a[b]=c') == {'a[b]':'c'}
-assert Parser.parse('a[b]=c d') == {'a[b]':'c d'}
-assert Parser.parse('a[b]=c d=e') == {'a[b]':'c', 'd':'e'}
-assert Parser.parse('a[b]=c d e=f') == {'a[b]':'c d', 'e':'f'}
-assert Parser.parse('a[b]=c d=[e=f]') == {'a[b]':'c', 'd':{'e':'f'}}
 logging.info('Passed all tests!')
