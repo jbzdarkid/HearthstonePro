@@ -33,9 +33,10 @@ reset()
 
 def draw(entity, position=None, note=None, cost=None):
     global hand
-    if len(hand) == 10:
-        return
     if entity['player'] == Utilities.them:
+        if len(hand) == 10:
+            logging.info('Opponent drew a card with 10 cards in hand')
+            return
         if position and position < len(hand):
             logging.info('Opponent mulligans card #%d' % position)
             hand[position].id = entity['id']
