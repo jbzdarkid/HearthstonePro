@@ -134,6 +134,7 @@ def parseFile(line_generator, config, *args):
                 if data['tag'] == 'JUST_PLAYED':
                     if data['Entity']['zone'] == 'HAND':
                         Hand.play(data['Entity']) # When a card is removed from a player's hand
+                        Dragons.play(data['Entity'])
                 elif data['tag'] == 'NUM_TURNS_IN_PLAY':
                     if data['value'] == '1':
                         Dragons.play4(data['Entity'])

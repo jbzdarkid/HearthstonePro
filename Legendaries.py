@@ -1,6 +1,15 @@
-# Contains more long-term tracking cards.
-
+'''
+Legendary cards tend to break the established rules, and
+can do some pretty complicated things to the
+cards in the hand.
+The code to track them is therefore in a separate file, so as
+to not overly clutter other files.
+Warning: The code in this file is very non-standard, since
+most of these effects are one-offs.
+'''
 import Utilities
+
+# TODO: Chromaggus, The Curator, Gazlowe, Wilfred Fizzlebang, Gallywix, Lorewalker Cho, Saraad, Skeleton Knight, Dragonwing
 
 def reset():
     global reno, renoDuplicates, cthun, nzoth, yogg, varianWrynn

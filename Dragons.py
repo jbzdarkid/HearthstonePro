@@ -51,11 +51,11 @@ def removeEntity(id):
     return False
 
 def hasDragon():
-    sets.append([card.id for card in Hand.hand])
+    sets.append(list(Hand.hand))
 
 def noDragon():
-    for card in hand:
-        removeEntity(card.id)
+    for card in Hand.hand:
+        removeEntity(card)
 
 def turnover():
     for set in sets:
