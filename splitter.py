@@ -33,9 +33,9 @@ if __name__ == '__main__': # pragma: no cover
                     buffer = ''
                     cards = set()
                 else:
-                    if 'PLAYER_ID' in data[i] and 'GameState.DebugPrintPower()' in data[i]:
+                    if 'ChoiceType=MULLIGAN' in data[i] and 'GameState.DebugPrintEntityChoices()' in data[i]:
                         if config['username'] in data[i]:
-                            us = data[i][-2]
+                            us = data[i][60]
                     if 'Entity=[name=' in data[i] and 'player='+us not in data[i]:
                         card = data[i].split('name=', 1)[1].split('=', 1)[0][:-3]
                         if '"'+card+'"' in cardspy:
