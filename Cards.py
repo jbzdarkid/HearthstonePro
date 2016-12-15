@@ -64,7 +64,7 @@ def play2(entity):
             Legendaries.varianWrynn = True
 
         elif entity['name'] == "A Light in the Darkness":
-            Hand.draw(entity, source='random', type='minion', buff=1)
+            Hand.draw(entity, source='random', kind='minion', buff=+1)
         elif entity['name'] == "Arch-Thief Rafaam":
             Hand.draw(entity, note='A powerful artifact')
         elif entity['name'] == "Babbling Book":
