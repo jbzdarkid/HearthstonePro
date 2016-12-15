@@ -22,7 +22,7 @@ def wentFirst(truth):
     global turnOffset
     if truth:
         logging.info("You are going first")
-        Hand.hand = [Hand.card('Mulliganned') for _ in range(4)] + [Hand.card(-1, note='The Coin')]
+        Hand.hand = [Hand.card('Mulliganned') for _ in range(4)] + [Hand.card('The Coin')]
         turnOffset = 1
     else:
         logging.info("You are going second")
