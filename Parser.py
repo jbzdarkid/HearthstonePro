@@ -10,7 +10,7 @@ import logging
 # 5: Stupid levels of printout (basically only for the parser)
 logging.basicConfig(format='%(message)s', level=logging.INFO)
 
-import Cards, Dragons, Hand, Legendaries, Utilities
+import Cards, Hand, Legendaries, Utilities
 def parse(data, start=0, DEBUG=False):
     '''
     This function parses a hearthstone line and returns
@@ -113,17 +113,14 @@ def parseFile(line_generator, config, *args):
                         if data['Entity']['zone'] == 'GRAVEYARD':
                             Cards.die(data['Entity'])
                             Legendaries.die(data['Entity'])
-                            Dragons.die(data['Entity'])
                         elif data['Entity']['zone'] == 'PLAY':
                             Cards.trigger(data['Entity'])
                 elif data['BlockType'] == 'POWER': # When a card actually hits the board
                     if 'Target' in data and isinstance(data['Target'], dict):
                         Cards.play3(data['Entity'], data['Target']) # A card targets another card.
-                        Dragons.play3(data['Entity'], data['Target'])
                         Legendaries.play3(data['Entity'], data['Target'])
                     else:
                         Cards.play2(data['Entity'])
-                        Dragons.play2(data['Entity'])
                         Legendaries.play2(data['Entity'])
             elif type == 'SHOW_ENTITY': # Start of a SHOW_ENTITY block of data
                 showEntity = data['Entity']
@@ -134,10 +131,6 @@ def parseFile(line_generator, config, *args):
                 if data['tag'] == 'JUST_PLAYED':
                     if data['Entity']['zone'] == 'HAND':
                         Hand.play(data['Entity']) # When a card is removed from a player's hand
-                        Dragons.play(data['Entity'])
-                elif data['tag'] == 'NUM_TURNS_IN_PLAY':
-                    if data['value'] == '1':
-                        Dragons.play4(data['Entity'])
                 elif data['tag'] == 'RESOURCES':
                     if data['Entity'] != config['username']:
                         Utilities.resources = data['value']
