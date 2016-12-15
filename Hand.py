@@ -34,7 +34,7 @@ class card():
             params += ', note=\'%s\'' % self.note
         if self.cost:
             params += ', cost=%d' % self.cost
-        return 'card(%s%s)' % (self.id, params)
+        return 'card(%s)' % params
 
 def reset():
     logging.debug('Resetting hand')
