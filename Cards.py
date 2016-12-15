@@ -169,7 +169,7 @@ def play3(entity, target):
         elif entity['name'] == "Sap":
             Hand.draw(target, note=target['name'])
     if target['player'] == Utilities.them:
-        if entity['name'] in ["Dream", "Kindapper"]: 
+        if entity['name'] in ["Dream", "Kindapper"]:
             Hand.draw(target, note=target['name'])
 
 def die(entity):

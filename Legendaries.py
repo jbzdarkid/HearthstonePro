@@ -9,8 +9,6 @@ most of these effects are one-offs.
 '''
 import Utilities
 
-# TODO: Chromaggus, The Curator, Gazlowe, Wilfred Fizzlebang, Gallywix, Lorewalker Cho, Saraad, Skeleton Knight, Dragonwing
-
 def reset():
     global reno, renoDuplicates, cthun, nzoth, yogg, varianWrynn
     reno = []
