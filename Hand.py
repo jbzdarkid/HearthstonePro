@@ -75,7 +75,7 @@ def reset():
 
 reset()
 
-def draw(entity, position=None, note='', cost=0):
+def draw(entity, position=None, **kwargs):
     global hand
     if entity['player'] == Utilities.them:
         if len(hand) == 10:
@@ -84,7 +84,7 @@ def draw(entity, position=None, note='', cost=0):
         if position and position < len(hand):
             logging.info('Opponent mulligans card #%d' % position)
         else:
-            c = card(note=note, cost=cost)
+            c = card(**kwargs)
             if Legendaries.varianWrynn and Utilities.numMinions != 7:
                 c.kind = 'Spell or Weapon'
             hand.append(c)
