@@ -17,24 +17,54 @@ import Utilities, Legendaries
 # Each printout, any sets with 2 or 1 members should be mentioned.
 
 class card():
-    def __init__(self, note=None, cost=0):
+    def __init__(self, note='', cost=0, source='', hero='', kind='', buff=0):
         global notes
         self.turn = Utilities.turn/2
-        if note:
-            self.note = note
-        elif len(notes) > 0:
-            self.note = notes.pop()
-        else:
-            self.note = ''
-        self.cost = cost
+        self.note = note
+        if len(notes) > 0:
+            self.note += ' '+notes.pop()
+        self.cost = cost # Cost modifier for freezing trap / thaurissan
+        self.hero = hero
+        self.source = source
+        self.kind = kind # minion, spell, weapon
+        self.buff = buff # +1/+1, e.g.
 
-    def __repr__(self): # pragma: no cover
-        params = ''
-        if self.note:
-            params += ', note=\'%s\'' % self.note
-        if self.cost:
-            params += ', cost=%d' % self.cost
-        return 'card(%s)' % params
+    # def __repr__(self): # pragma: no cover
+    #     params = []
+    #     if self.note != '':
+    #         params.append("note='%s'" % self.note)
+    #     if self.cost != 0:
+    #         params.append("cost='%d'" % self.cost)
+    #     if self.hero != '':
+    #         params.append("hero='%s'" % self.hero)
+    #     if self.kind != '':
+    #         params.append("kind='%s'" % self.kind)
+    #     if self.buff != 0:
+    #         params.append("buff='%d" % self.buff)
+    #     return 'card(%s)' % (', '.join(params))
+
+    def __str__(self):
+        params = []
+        if self.note != '':
+            params.append(self.note)
+        elif self.source != '' or self.hero != '' or self.kind != '' or self.buff != 0:
+            description = 'A'
+            if self.source != '':
+                description += ' ' + self.source
+            if self.hero != '':
+                description += ' ' + self.hero
+            if self.kind != '':
+                description += ' ' + self.kind
+            else:
+                description += ' card'
+            if self.buff != 0:
+                description += ' with +%d/+%d' % (buff, buff)
+        if self.cost > 0:
+            params.append('costs %d more' % cost)
+        elif self.cost < 0:
+            params.append('costs %d less' % cost)
+
+        return params.join(', ')
 
 def reset():
     logging.debug('Resetting hand')
@@ -45,7 +75,7 @@ def reset():
 
 reset()
 
-def draw(entity, position=None, note=None, cost=None):
+def draw(entity, position=None, note='', cost=0):
     global hand
     if entity['player'] == Utilities.them:
         if len(hand) == 10:
@@ -53,32 +83,23 @@ def draw(entity, position=None, note=None, cost=None):
             return
         if position and position < len(hand):
             logging.info('Opponent mulligans card #%d' % position)
-            hand[position].id = entity['id']
         else:
-            logging.info('Opponent draws a card (id %s)' % entity['id'])
-            c = card()
-            if note:
-                c.note += note
+            c = card(note=note, cost=cost)
             if Legendaries.varianWrynn and Utilities.numMinions != 7:
-                if note:
-                    c.note += ', '
-                c.note += 'Not a minion'
-            if cost:
-                c.cost += cost
+                c.kind = 'Spell or Weapon'
             hand.append(c)
+            logging.info('Opponent draws a card. Cards in hand: %d' % len(hand))
             logging.debug('Hand after draw: ' + str(hand))
 
 # When a card is removed from a player's hand
 def play(entity):
     global hand
     if entity['player'] == Utilities.them:
-        logging.info('Opponent plays card #%d' % (int(entity['zonePos'])-1))
         hand.pop(int(entity['zonePos'])-1)
 
 def discard(entity):
     global hand
     if entity['player'] == Utilities.them:
-        logging.info('Opponent discards card #%d' % (int(entity['zonePos'])-1))
         hand.pop(int(entity['zonePos'])-1)
 
 # The mulligan works backwards, with cards that are kept appearing in the log file. Thus I initialize the cards in hand to be 'Mulliganned', and replace them if they appear.
