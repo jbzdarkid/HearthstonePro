@@ -20,7 +20,6 @@ Special:
 "Lorewalker Cho"
 "Sea Reaver"
 "Shadowfiend"
-"Shaku, the Collector"
 "Small-Time Recruits"
 "Thistle Tea"
 "Tinkertown Technician"
@@ -33,7 +32,6 @@ Special:
 # Deathrattle: "Infest", "Explorer's Hat", "Voidcaller", "The Skeleton Knight"
 # Discard: "Succubus", "Soulfire", "Darkshire Librarian", "Doomguard", "Astral Communion", "Dark Bargain", "Deathwing"
 # Buff: "Smuggler's Crate", "Hidden Cache", "Trogg Beastrager", "Grimscale Chum", "Grimestreet Outfitter", "Grimestreet Enforcer", "Grimestreet Gadgeteer", "Stolen Goods", "Grimestreet Pawnbroker", "Brass Knuckles", "Hobart Grapplehammer", "Grimestreet Smuggler", "Don Han'Cho"
-
 
 # Within this file, I've separated out names of cards in "double quotes", so that I can search for them via splitter.py.
 # It also means there won't be any \'s in card names.
@@ -218,10 +216,12 @@ def trigger(entity):
                 card.cost -= 1
         elif entity['name'] == "Gazlowe":
             Hand.draw(source='random', kind='mech minion')
-        elif entity['name'] == "Mech-Bear-Cat":
-            Hand.draw(note='Spare Part', kind='spell')
         elif entity['name'] == "Kabal Trafficker":
             Hand.draw(source='random', kind='demon minion')
+        elif entity['name'] == "Mech-Bear-Cat":
+            Hand.draw(note='Spare Part', kind='spell')
+        elif entity['name'] == "Shaku, the Collector":
+            Hand.draw(source='random', hero='[your class]') # FIXME
         elif entity['name'] == "Ysera":
             Hand.draw(note='A Dream card', kind='spell')
 

@@ -127,7 +127,6 @@ def parseFile(line_generator, config, *args):
             elif type == 'SHOW_ENTITY': # Start of a SHOW_ENTITY block of data
                 showEntity = data['Entity']
             elif type == 'TAG_CHANGE':
-            
                 if data['tag'] == 'FIRST_PLAYER':
                     logging.warning('New game started')
                     Utilities.wentFirst(data['Entity'] == config['username'])
@@ -144,7 +143,7 @@ def parseFile(line_generator, config, *args):
                         Utilities.reset()
                         Legendaries.reset()
                         Dragons.reset()
-                        print 'Game Over'
+                        logging.warning('Game Over')
                     if data['value'] == 'MAIN_READY':
                         if Utilities.ourTurn():
                             Hand.turnover()
