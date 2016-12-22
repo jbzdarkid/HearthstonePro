@@ -41,7 +41,8 @@ def blockEnd():
 # When a card is played and we can see its position in the hand
 def play(entity):
     global cardId
-    cardId = id(hand[int(entity['zonePos'])-1])
+    if entity['player'] == Utilities.them:
+        cardId = id(Hand.hand[int(entity['zonePos'])-1])
 
 # When a card is played and we can see its name, and it has no targets
 def play2(entity):
