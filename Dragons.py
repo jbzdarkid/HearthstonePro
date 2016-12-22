@@ -64,7 +64,7 @@ def play3(entity, target):
             isDragon(cardId)
         else:
             isNotDragon(cardId)
-        if entity['name'] == ["Blackwing Corruptor", "Bookwyrm", "Rend Blackhand"]:
+        if entity['name'] == ["Blackwing Corruptor", "Book Wyrm", "Rend Blackhand"]:
             hasDragon()
 
 # When a triggered ability enters play, usually attatched to another creature.

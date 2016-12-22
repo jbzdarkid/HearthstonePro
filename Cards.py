@@ -152,21 +152,21 @@ def play3(entity, target):
     if entity['player'] == Utilities.them:
         logging.info('Opponent plays %s targetting %s' % (entity['name'], target['name']))
         if entity['name'] in ["Ancient Brewmaster", "Convert", "Gadgetzan Ferryman", "Time Rewinder", "Youthful Brewmaster"]:
-            Hand.draw(target, note=target['name'], kind='minion')
+            Hand.draw(note=target['name'], kind='minion')
         elif entity['name'] in ["Bloodthistle Toxin", "Shadowstep"]:
-            Hand.draw(target, note=target['name'], kind='minion', cost=-2)
+            Hand.draw(note=target['name'], kind='minion', cost=-2)
         elif entity['name'] == "Convert":
-            Hand.draw(target, note=target['name'], kind='minion')
+            Hand.draw(note=target['name'], kind='minion')
         elif entity['name'] == "Shadowcaster":
-            Hand.draw(target, note='A 1/1 copy of %s which costs (1)' % target['name'], kind='minion')
+            Hand.draw(note='A 1/1 copy of %s which costs (1)' % target['name'], kind='minion')
     elif entity['player'] == Utilities.us:
         if entity['name'] == "Freezing Trap":
-            Hand.draw(target, note=target['name'], kind='minion', cost=+2)
+            Hand.draw(note=target['name'], kind='minion', cost=+2)
         elif entity['name'] == "Sap":
-            Hand.draw(target, note=target['name'], kind='minion')
+            Hand.draw(note=target['name'], kind='minion')
     if target['player'] == Utilities.them:
         if entity['name'] in ["Dream", "Kindapper"]:
-            Hand.draw(target, note=target['name'], kind='minion')
+            Hand.draw(note=target['name'], kind='minion')
 
 def die(entity):
     if entity['player'] == Utilities.them:
