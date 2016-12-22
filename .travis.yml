@@ -9,7 +9,7 @@ python:
   - "3.5"
 os:
   - windows
-  - osx
+  # - osx
   - linux
 before_install:
   - pip install coverage
