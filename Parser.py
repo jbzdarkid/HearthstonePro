@@ -79,7 +79,7 @@ def parseFile(line_generator, config, *args):
     showEntity = None
     for line in line_generator(*args):
         lineNo += 1
-        line_parts = match('^D \d{2}:\d{2}:\d{2}\.\d{7} ([a-zA-Z]*\.[a-zA-Z]*\(\)) -\s*([A-Z_]{2,}|)(.*)', line)
+        line_parts = match(b'^D \d{2}:\d{2}:\d{2}\.\d{7} ([a-zA-Z]*\.[a-zA-Z]*\(\)) -\s*([A-Z_]{2,}|)(.*)', line)
         if line_parts is None: # Any of the error messages won't match, but it's not safe to use them
             continue
         source = line_parts.group(1)
