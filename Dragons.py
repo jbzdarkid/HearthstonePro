@@ -7,22 +7,22 @@ import Hand, Utilities
 # Each printout, any sets with 2 or 1 members should be mentioned.
 
 DRAGONS = [
-    "Alextrasza", "Azure Drake",
-    "Black Whelp", "Book Wyrm",
-    "Chillmaw", "Chromaggus", "Coldarra Drake",
-    "Deathwing", "Deathwing, Dragonlord", "Dragon Consort", "Dragonkin Sorceror", "Drakanoid Crusher", "Drakanoid Operative",
-    "Emerald Drake",
-    "Faerie Dragon",
-    "Hungry Dragon",
-    "Malygos",
-    "Midnight Drake",
-    "Nefarian", "Nozdormu",
-    "Onyxia",
-    "Scaled Nightmare",
-    "Twilight Drake", "Twilight Guardian", "Twilight Whelp",
-    "Volcanic Drake",
-    "Whelp",
-    "Ysera",
+    'Alextrasza', 'Azure Drake',
+    'Black Whelp', 'Book Wyrm',
+    'Chillmaw', 'Chromaggus', 'Coldarra Drake',
+    'Deathwing', 'Deathwing, Dragonlord', 'Dragon Consort', 'Dragonkin Sorceror', 'Drakanoid Crusher', 'Drakanoid Operative',
+    'Emerald Drake',
+    'Faerie Dragon',
+    'Hungry Dragon',
+    'Malygos',
+    'Midnight Drake',
+    'Nefarian', 'Nozdormu',
+    'Onyxia',
+    'Scaled Nightmare',
+    'Twilight Drake', 'Twilight Guardian', 'Twilight Whelp',
+    'Volcanic Drake',
+    'Whelp',
+    'Ysera',
 ]
 
 def reset():
