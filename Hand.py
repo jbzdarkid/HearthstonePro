@@ -48,22 +48,23 @@ reset()
 
 def draw(entity=None, position=None, **kwargs):
     global hand
-    new_card = None
-    if entity == None: # Passed from Cards.py, probably
+    if entity == None: # Passed from Cards.py
         new_card = card(**kwargs)
     elif entity['player'] == Utilities.them:
-        if len(hand) == 10:
-            logging.info('Opponent drew a card with 10 cards in hand')
-            return
-        if position is None or position >= len(hand): # A card was drawn
-            new_card = card()
-            if Legendaries.varianWrynn and Utilities.numMinions != 7:
-                new_card.kind = 'Spell or Weapon'
-    if new_card:
-        hand.append(new_card)
-        logging.info('Opponent draws %s' % new_card)
-        logging.info('Cards in hand: %d' % len(hand))
-        logging.debug('Hand after draw: '+'|'.join([str(c) for c in hand]))
+        new_card = card()
+        if Legendaries.varianWrynn and Utilities.numMinions != 7:
+            new_card.kind = 'Spell or Weapon'
+    else: # We drew a card, nobody cares
+        return
+    if position is not None and position < len(hand):
+        return # A replacement card (for any reason)
+    if len(hand) == 10:
+        logging.info('Opponent drew a card with 10 cards in hand')
+        return
+    hand.append(new_card)
+    logging.info('Opponent draws %s' % new_card)
+    logging.info('Cards in hand: %d' % len(hand))
+    logging.debug('Hand after draw: '+'|'.join([str(c) for c in hand]))
 
 # When a card is removed from a player's hand
 def play(entity):

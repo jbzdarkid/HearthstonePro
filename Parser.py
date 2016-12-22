@@ -124,6 +124,12 @@ def parseFile(line_generator, config, *args):
                         Cards.play2(data['Entity'])
                         Legendaries.play2(data['Entity'])
                         Dragons.play2(data['Entity'])
+            elif type == 'FULL_ENTITY':
+                data = data[None] # Always starts with 'Updating'
+                if data['zone'] == 'HAND':
+                    # A backup for Princess Huhuran. All that is revealed in the log
+                    # is the target, but this line always appears when a card is drawn.
+                    Hand.draw(position=int(data['zonePos'])-1)
             elif type == 'SHOW_ENTITY': # Start of a SHOW_ENTITY block of data
                 showEntity = data['Entity']
             elif type == 'TAG_CHANGE':
