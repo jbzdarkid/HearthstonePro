@@ -22,7 +22,7 @@ if __name__ == '__main__': # pragma: no cover
         with open(rootDir+'tests'+sep+file, 'rb') as f:
             for line in f:
                 buffer += line
-                if line[19:] == 'PowerTaskList.DebugPrintPower() -     TAG_CHANGE Entity=GameEntity tag=STEP value=FINAL_GAMEOVER\n':
+                if line[19:115] == 'PowerTaskList.DebugPrintPower() -     TAG_CHANGE Entity=GameEntity tag=STEP value=FINAL_GAMEOVER':
                     name = ', '.join(sorted(cards))
                     with open(rootDir+'tests'+sep+name+'.log', 'wb') as g:
                         g.write(buffer)
