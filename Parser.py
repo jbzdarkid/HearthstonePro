@@ -191,9 +191,11 @@ if __name__ == '__main__': # pragma: no cover
         config = {}
 
     if any(key not in config for key in ['logconfig', 'log', 'username']):
-        print 'Config incomplete or corrupted, (re)generating. This might take a while...'
+        logging.warning('Config incomplete or corrupted, (re)generating.')
+        logging.warning('This might take a while...')
         from platform import system
         from os import walk
+ 
         if system() == 'Windows':
             config['logconfig'] = expanduser('~')+'\AppData\Local'
             appName = 'Hearthstone.exe'
@@ -240,7 +242,7 @@ if __name__ == '__main__': # pragma: no cover
         g.write(f)
         g.close()
 
-    print 'Startup complete.'
+    logging.warning('Startup complete.')
 
     def tail():
         from time import sleep
@@ -249,7 +251,7 @@ if __name__ == '__main__': # pragma: no cover
         except:
             pass
         if not exists(config['log']+'Power.log'):
-            print 'Please (re)start Hearthstone before running this script.'
+            logging.error('Please (re)start Hearthstone before running this script.')
             exit(-1)
         with open(config['log']+'Power.log') as f:
             f.seek(0, 2)
