@@ -63,8 +63,8 @@ def play2(entity):
         elif entity['name'] == "Babbling Book":
             Hand.draw(source='random', hero='mage', kind='spell')
         elif entity['name'] == "Burgle":
-            Hand.draw(source='random', hero='[your class]') # FIXME
-            Hand.draw(source='random', hero='[your class]') # FIXME
+            Hand.draw(source='random', hero=Utilities.our_hero)
+            Hand.draw(source='random', hero=Utilities.our_hero)
         elif entity['name'] == "Cabalist's Tomb":
             Hand.draw(source='random', hero='mage', kind='spell')
             Hand.draw(source='random', hero='mage', kind='spell')
@@ -100,8 +100,8 @@ def play2(entity):
             # I'm ignoring "Tentacles For Arms" because it's bad
             Hand.draw(note='A deathrattle card', kind='minion')
         elif entity['name'] == "Nefarian":
-            Hand.draw(source='random', hero='[your class]') # FIXME
-            Hand.draw(source='random', hero='[your class]') # FIXME
+            Hand.draw(source='random', hero=Utilities.our_hero)
+            Hand.draw(source='random', hero=Utilities.our_hero)
         elif entity['name'] == "Neptulon":
             Hand.draw(source='random', kind='murloc minion')
             Hand.draw(source='random', kind='murloc minion')
@@ -113,7 +113,7 @@ def play2(entity):
             Hand.draw(kind='demon minion')
             Hand.draw(kind='demon minion')
         elif entity['name'] == "Swashburglar":
-            Hand.draw(source='random', hero='[your class]') # FIXME
+            Hand.draw(source='random', hero=Utilities.our_hero)
         elif entity['name'] == "Thoughtsteal":
             Hand.draw(note='A random card from your deck')
             Hand.draw(note='A random card from your deck')
@@ -142,6 +142,8 @@ def play2(entity):
     # if entity['player'] in [Utilities.us, Utilities.them]:
     if entity['name'] == "Elite Tauren Chieftain":
         Hand.draw(kind='Power Chord spell')
+    elif entity['name'] == "Lord Jaraxxus":
+        Utilities.set_hero(entity)
     elif entity['name'] == "Spellslinger":
         Hand.draw(source='random', kind='spell')
 
@@ -192,14 +194,16 @@ def die(entity):
         elif entity['name'] == "Toshley":
             Hand.draw(note='Spare Part', kind='spell')
         elif entity['name'] == "Undercity Huckster":
-            Hand.draw(source='random', hero='[your class]') # FIXME
+            Hand.draw(source='random', hero=Utilities.our_hero)
         elif entity['name'] == "Xaril, Poisoned Mind":
-            Hand.draw(source='random', kind='toxin')
+            Hand.draw(source='random', kind='toxin spell')
         elif entity['name'] == "Webspinner":
             Hand.draw(source='random', kind='beast minion')
     # if entity['player'] in [Utilities.us, Utilities.them]:
     if entity['name'] == "Mechanical Yeti":
         Hand.draw(note='Spare Part', kind='spell')
+    elif entity['name'] == "Majordomo Executus":
+        Utilities.set_hero(entity)
 
 # Be careful of Blessing of Wisdom (others?) which can 'trigger' an effect on a card that already has a triggered effect.
 def trigger(entity):
@@ -221,7 +225,7 @@ def trigger(entity):
         elif entity['name'] == "Mech-Bear-Cat":
             Hand.draw(note='Spare Part', kind='spell')
         elif entity['name'] == "Shaku, the Collector":
-            Hand.draw(source='random', hero='[your class]') # FIXME
+            Hand.draw(source='random', hero=Utilities.our_hero)
         elif entity['name'] == "Ysera":
             Hand.draw(note='A Dream card', kind='spell')
 

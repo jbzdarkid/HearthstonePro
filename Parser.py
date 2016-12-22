@@ -140,6 +140,9 @@ def parseFile(line_generator, config, *args):
                     if data['Entity']['zone'] == 'HAND':
                         Dragons.play(data['Entity']) # List before Hand.play
                         Hand.play(data['Entity']) # When a card is removed from a player's hand
+                elif data['tag'] == 'NUM_TURNS_IN_PLAY':
+                    # A number of things, including which player has which hero.
+                    Utilities.set_hero(data['Entity'])
                 elif data['tag'] == 'RESOURCES':
                     if data['Entity'] != config['username']:
                         Utilities.resources = data['value']
