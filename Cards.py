@@ -29,8 +29,8 @@ Special:
 "Wrathion"
 '''
 # Inspire: "Recruiter", "Nexus-Champion Saraad", "Colliseum Manager"
-# Deathrattle: "Infest", "Explorer's Hat", "Voidcaller", "The Skeleton Knight"
-# Discard: "Succubus", "Soulfire", "Darkshire Librarian", "Doomguard", "Astral Communion", "Dark Bargain", "Deathwing"
+# Deathrattle: "Voidcaller", "The Skeleton Knight"
+# Discard: "Succubus", "Darkshire Librarian", "Astral Communion", "Dark Bargain", "Deathwing"
 # Buff: "Smuggler's Crate", "Hidden Cache", "Trogg Beastrager", "Grimscale Chum", "Grimestreet Outfitter", "Grimestreet Enforcer", "Grimestreet Gadgeteer", "Stolen Goods", "Grimestreet Pawnbroker", "Brass Knuckles", "Hobart Grapplehammer", "Grimestreet Smuggler", "Don Han'Cho"
 
 # Within this file, I've separated out names of cards in "double quotes", so that I can search for them via splitter.py.
@@ -178,7 +178,7 @@ def die(entity):
         elif entity['name'] == "Explorer's Hat":
             Hand.draw(note='Explorer\'s Hat', hero='Hunter', kind='spell')
         elif entity['name'] == "Nerubian Spores": # "Infest"
-            Hand.draw()
+            Hand.draw(source='random', kind='beast minion')
         elif entity['name'] == "Rhonin":
             Hand.draw(note='Arcane Missles', hero='mage', kind='spell')
             Hand.draw(note='Arcane Missles', hero='mage', kind='spell')
