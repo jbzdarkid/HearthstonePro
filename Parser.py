@@ -136,7 +136,7 @@ def parseFile(line_generator, config, *args):
                 if data['tag'] == 'FIRST_PLAYER':
                     logging.warning('New game started')
                     Utilities.wentFirst(data['Entity'] == config['username'])
-                if data['tag'] == 'JUST_PLAYED':
+                elif data['tag'] == 'JUST_PLAYED':
                     if data['Entity']['zone'] == 'HAND':
                         Dragons.play(data['Entity']) # List before Hand.play
                         Hand.play(data['Entity']) # When a card is removed from a player's hand

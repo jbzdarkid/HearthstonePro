@@ -55,7 +55,7 @@ def ourTurn():
 def wentFirst(truth):
     global turnOffset
     if truth:
-        logging.info("You are going first")
+        logging.warning("You are going first")
         Hand.hand = [Hand.card('Mulliganned') for _ in range(4)] + [Hand.card('The Coin')]
         turnOffset = 1
     else:
