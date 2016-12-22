@@ -122,4 +122,4 @@ def turnover():
         for i, card in enumerate(Hand.hand):
             if id(card) in set:
                 card_ids.append(str(i+1))
-        print 'One of cards #' + ', '.join(card_ids)  + ' is a dragon'
+        logging.info('One of cards #' + ', '.join(card_ids)  + ' is a dragon')
