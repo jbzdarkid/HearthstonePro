@@ -6,10 +6,10 @@ notifications:
 python:
   - "2.6"
   - "2.7"
-  # - "3.5"
+  - "3.5"
 os:
   - windows
-  # - osx
+  - osx
   - linux
 before_install:
   - pip install coverage
