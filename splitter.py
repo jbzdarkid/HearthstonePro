@@ -29,7 +29,7 @@ if __name__ == '__main__': # pragma: no cover
                         g.write(buffer)
                     buffer = ''
                     cards = set()
-                elif 'ChoiceType=MULLIGAN' in line and config['username'] in line:
+                elif 'ChoiceType=MULLIGAN' in line and config['username'] in line.decode('utf-8'):
                     us = line[60]
                 elif 'Entity=[name=' in line and 'player='+us not in line:
                     card = line.split('=')[3][:-3]

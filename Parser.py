@@ -88,7 +88,7 @@ def parseFile(line_generator, config, *args):
 
         if source == 'GameState.DebugPrintEntityChoices()':
             if 'ChoiceType' in data and data['ChoiceType'] == 'MULLIGAN':
-                if data['Player'] == config['username']:
+                if data['Player'].decode('utf-8') == config['username']:
                     logging.debug('You are player id %s' % data['id'])
                     Utilities.us = data['id']
                 else:
