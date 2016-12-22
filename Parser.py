@@ -101,7 +101,7 @@ def parseFile(line_generator, config, *args):
                     Hand.keep(data.values()[0])
         if source == 'GameState.DebugPrintPower()':
             if type == 'TAG_CHANGE':
-                if tag == 'ZONE' and value == 'REMOVEDFROMGAME':
+                if data['tag'] == 'ZONE' and data['value'] == 'REMOVEDFROMGAME':
                     Cards.die(data['Entity']) # Enchantment death
         if showEntity is not None:
             if type:
