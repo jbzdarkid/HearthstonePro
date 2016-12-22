@@ -227,5 +227,5 @@ def trigger(entity):
 
 def turnover():
     if Utilities.overload != 0:
-        print 'Overload next turn:', Utilities.overload
+        logging.info('Overload next turn: %d' % Utilities.overload)
         Utilities.overload = 0
