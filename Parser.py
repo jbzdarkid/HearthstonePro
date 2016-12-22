@@ -119,9 +119,11 @@ def parseFile(line_generator, config, *args):
                     if 'Target' in data and isinstance(data['Target'], dict):
                         Cards.play3(data['Entity'], data['Target']) # A card targets another card.
                         Legendaries.play3(data['Entity'], data['Target'])
+                        Dragons.play3(data['Entity'], data['Target'])
                     else:
                         Cards.play2(data['Entity'])
                         Legendaries.play2(data['Entity'])
+                        Dragons.play2(data['Entity'])
             elif type == 'SHOW_ENTITY': # Start of a SHOW_ENTITY block of data
                 showEntity = data['Entity']
             elif type == 'TAG_CHANGE':
@@ -130,7 +132,11 @@ def parseFile(line_generator, config, *args):
                     Utilities.wentFirst(data['Entity'] == config['username'])
                 if data['tag'] == 'JUST_PLAYED':
                     if data['Entity']['zone'] == 'HAND':
+                        Dragons.play(data['Entity']) # List before Hand.play
                         Hand.play(data['Entity']) # When a card is removed from a player's hand
+                elif data['tag'] == 'NUM_TURNS_IN_PLAY':
+                    if data['value'] == '1':
+                        Dragons.play4(data['Entity'])
                 elif data['tag'] == 'RESOURCES':
                     if data['Entity'] != config['username']:
                         Utilities.resources = data['value']
@@ -139,12 +145,14 @@ def parseFile(line_generator, config, *args):
                         Hand.reset()
                         Utilities.reset()
                         Legendaries.reset()
+                        Dragons.reset()
                         print 'Game Over'
                     if data['value'] == 'MAIN_READY':
                         if Utilities.ourTurn():
                             Hand.turnover()
                             Cards.turnover()
                             Legendaries.turnover()
+                            Dragons.turnover()
                 elif data['tag'] == 'TURN':
                     Utilities.turn = int(data['value'])
                 elif data['tag'] == 'ZONE_POSITION':
