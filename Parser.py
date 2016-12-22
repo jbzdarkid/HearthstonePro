@@ -99,10 +99,6 @@ def parseFile(line_generator, config, *args):
             if data.keys()[0][:8] == 'Entities': # Entities[0], e.g.
                 if data.values()[0]['zone'] == 'HAND':
                     Hand.keep(data.values()[0])
-        if source == 'GameState.DebugPrintPower()':
-            if type == 'TAG_CHANGE':
-                if data['tag'] == 'ZONE' and data['value'] == 'REMOVEDFROMGAME':
-                    Cards.die(data['Entity']) # Enchantment death
         if showEntity is not None:
             if type:
                 showEntity = None
@@ -163,9 +159,12 @@ def parseFile(line_generator, config, *args):
                     if 'zone' in data['Entity'] and data['Entity']['zone'] == 'DECK':
                         Hand.draw(data['Entity'], int(data['value'])-1)
                 elif data['tag'] == 'ZONE':
-                    if 'zone' in data['Entity'] and data['Entity']['zone'] == 'SETASIDE':
-                        Dragons.setaside(data['Entity'])
-                        
+                    if 'zone' in data['Entity']:
+                        if data['value'] == 'PLAY':
+                            Dragons.setaside(data['Entity'])
+                        if data['value'] == 'REMOVEDFROMGAME':
+                            Cards.die(data['Entity']) # Enchantment death
+
 # Setup scripts.
 if __name__ == '__main__': # pragma: no cover
     from json import load, dump

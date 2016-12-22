@@ -177,6 +177,8 @@ def die(entity):
             Hand.draw(note='Spare Part', kind='spell')
         elif entity['name'] == "Deadly Fork":
             Hand.draw(note='Sharp Fork', kind='weapon')
+        elif entity['name'] == "Explorer's Hat":
+            Hand.draw(note='Explorer\'s Hat', hero='Hunter', kind='spell')
         elif entity['name'] == "Nerubian Spores": # "Infest"
             Hand.draw()
         elif entity['name'] == "Rhonin":
