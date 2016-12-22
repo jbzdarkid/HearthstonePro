@@ -28,27 +28,14 @@ class card():
         self.source = source
         self.kind = kind # minion, spell, weapon
         self.buff = buff # +1/+1, e.g.
-
-    # def __repr__(self): # pragma: no cover
-    #     params = []
-    #     if self.note != '':
-    #         params.append("note='%s'" % self.note)
-    #     if self.cost != 0:
-    #         params.append("cost='%d'" % self.cost)
-    #     if self.hero != '':
-    #         params.append("hero='%s'" % self.hero)
-    #     if self.kind != '':
-    #         params.append("kind='%s'" % self.kind)
-    #     if self.buff != 0:
-    #         params.append("buff='%d" % self.buff)
-    #     return 'card(%s)' % (', '.join(params))
+        self.isDragon = False
 
     def __str__(self):
-        params = []
+        description = ''
         if self.note != '':
-            params.append(self.note)
-        elif self.source != '' or self.hero != '' or self.kind != '' or self.buff != 0:
-            description = 'A'
+            description += self.note
+        else:
+            description += 'A'
             if self.source != '':
                 description += ' ' + self.source
             if self.hero != '':
@@ -57,14 +44,13 @@ class card():
                 description += ' ' + self.kind
             else:
                 description += ' card'
-            if self.buff != 0:
-                description += ' with +%d/+%d' % (buff, buff)
+        if self.buff != 0:
+            description += ' with +%d/+%d' % (self.buff, self.buff)
         if self.cost > 0:
-            params.append('costs %d more' % cost)
+            description += ' which costs %d more' % self.cost
         elif self.cost < 0:
-            params.append('costs %d less' % cost)
-
-        return params.join(', ')
+            description += ' which costs %d less' % self.cost
+        return description
 
 def reset():
     logging.debug('Resetting hand')
@@ -75,21 +61,24 @@ def reset():
 
 reset()
 
-def draw(entity, position=None, **kwargs):
+def draw(entity=None, position=None, **kwargs):
     global hand
-    if entity['player'] == Utilities.them:
+    new_card = None
+    if entity == None: # Passed from Cards.py, probably
+        new_card = card(**kwargs)
+    elif entity['player'] == Utilities.them:
         if len(hand) == 10:
             logging.info('Opponent drew a card with 10 cards in hand')
             return
-        if position and position < len(hand):
-            logging.info('Opponent mulligans card #%d' % position)
-        else:
-            c = card(**kwargs)
+        if position is None or position >= len(hand): # A card was drawn
+            new_card = card()
             if Legendaries.varianWrynn and Utilities.numMinions != 7:
-                c.kind = 'Spell or Weapon'
-            hand.append(c)
-            logging.info('Opponent draws a card. Cards in hand: %d' % len(hand))
-            logging.debug('Hand after draw: ' + str(hand))
+                new_card.kind = 'Spell or Weapon'
+    if new_card:
+        hand.append(new_card)
+        logging.info('Opponent draws %s' % new_card)
+        logging.info('Cards in hand: %d' % len(hand))
+        logging.debug('Hand after draw: '+'|'.join([str(c) for c in hand]))
 
 # When a card is removed from a player's hand
 def play(entity):
@@ -106,7 +95,7 @@ def discard(entity):
 def keep(entity):
     global hand
     if entity['player'] == Utilities.them:
-        logging.info('Opponent keeps card #%d' % (int(entity['zonePos'])-1))
+        logging.info('Opponent keeps card #%d' % int(entity['zonePos']))
         hand[int(entity['zonePos'])-1] = card()
 
 def turnover():
@@ -118,5 +107,5 @@ def turnover():
         logging.warning(' %s | %s | %s %s' % (
         ('%d' % (i+1)).ljust(7),
         ('%d' % hand[i].turn).ljust(4),
-        hand[i].note,
+        '' if str(hand[i]) == 'A card' else hand[i],
         '' if hand[i].cost == 0 else 'cost %d' % hand[i].cost))

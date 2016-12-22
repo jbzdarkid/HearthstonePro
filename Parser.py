@@ -10,7 +10,7 @@ import logging
 # 5: Stupid levels of printout (basically only for the parser)
 logging.basicConfig(format='%(message)s', level=logging.INFO)
 
-import Cards, Hand, Legendaries, Utilities
+import Cards, Hand, Legendaries, Utilities, Dragons
 def parse(data, start=0, DEBUG=False):
     '''
     This function parses a hearthstone line and returns
