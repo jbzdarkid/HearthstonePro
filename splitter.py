@@ -13,7 +13,8 @@ if __name__ == '__main__': # pragma: no cover
     elif len(argv) > 1:
         files = argv[1:]
     config = load(open(rootDir+'config.cfg'))
-    cardspy = open(rootDir+'Cards.py', 'rb').read()
+    card_list = open(rootDir+'Cards.py', 'rb').read()
+    card_list += open(rootDir+'Dragons.py', 'rb').read()
     for file in files:
         if file[-4:] != '.log':
             continue
@@ -32,5 +33,5 @@ if __name__ == '__main__': # pragma: no cover
                     us = line[60]
                 elif 'Entity=[name=' in line and 'player='+us not in line:
                     card = line.split('=')[3][:-3]
-                    if '"'+card+'"' in cardspy:
+                    if '"'+card+'"' in card_list:
                         cards.add(card)
