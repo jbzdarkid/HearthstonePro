@@ -34,6 +34,7 @@ reset()
 
 # End of a block
 def blockEnd(): 
+    global noDragonBlock
     if noDragonBlock: # Block should have had a dragon effect
         noDragon()
         noDragonBlock = False
@@ -46,6 +47,7 @@ def play(entity):
 
 # When a card is played and we can see its name, and it has no targets
 def play2(entity):
+    global noDragonBlock
     if entity['player'] == Utilities.them:
         if entity['name'] in DRAGONS:
             isDragon(cardId)
@@ -66,25 +68,32 @@ def play3(entity, target):
             hasDragon()
 
 # When a triggered ability enters play, usually attatched to another creature.
-def play4(entity):
+def setaside(entity):
+    global noDragonBlock
     if entity['player'] == Utilities.them:
-        if entity['name'] in ["Alexstrasza's Boon", "Bring it on!", "Dragon Blood", "Twilight's Embrace", "Twilight Endurance"]:
+        if noDragonBlock:
             noDragonBlock = False
             hasDragon()
 
 def die(entity):
+    global noDragonBlock
     if entity['player'] == Utilities.them:
-        if entity['name'] == "Chillmaw": # Need the name of the death trigger
+        # Need the name of the death trigger
+        if entity['name'] == "Chillmaw":
             noDragonBlock = True
+        elif entity['name'] == "Deathwing, Dragonlord":
+            pass
 
 # The hand has a dragon, so we create a new set of cards, one of which must be a dragon
 def hasDragon():
+    logging.info('Opponent has a dragon in their hand')
     global sets
     sets.append([id(card) for card in Hand.hand])
 
 # The hand has no dragons, so we wipe all information about sets.
 def noDragon():
     global sets
+    logging.info('Opponent does not have a dragon in their hand')
     sets = []
 
 # A card is revealed to be a dragon, so we wipe all sets it was a part of
@@ -102,4 +111,11 @@ def isNotDragon(id):
             pass
 
 def turnover():
-    print 'Dragons.py<104>', sets
+    for set in sets:
+        # if len(set) > 2:
+            # continue
+        card_ids = []
+        for i, card in enumerate(Hand.hand):
+            if id(card) in set:
+                card_ids.append(str(i+1))
+        print 'One of cards #' + ', '.join(card_ids)  + ' is a dragon'

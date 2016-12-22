@@ -127,6 +127,7 @@ def parseFile(line_generator, config, *args):
             elif type == 'SHOW_ENTITY': # Start of a SHOW_ENTITY block of data
                 showEntity = data['Entity']
             elif type == 'TAG_CHANGE':
+            
                 if data['tag'] == 'FIRST_PLAYER':
                     logging.warning('New game started')
                     Utilities.wentFirst(data['Entity'] == config['username'])
@@ -134,9 +135,6 @@ def parseFile(line_generator, config, *args):
                     if data['Entity']['zone'] == 'HAND':
                         Dragons.play(data['Entity']) # List before Hand.play
                         Hand.play(data['Entity']) # When a card is removed from a player's hand
-                elif data['tag'] == 'NUM_TURNS_IN_PLAY':
-                    if data['value'] == '1':
-                        Dragons.play4(data['Entity'])
                 elif data['tag'] == 'RESOURCES':
                     if data['Entity'] != config['username']:
                         Utilities.resources = data['value']
@@ -158,7 +156,10 @@ def parseFile(line_generator, config, *args):
                 elif data['tag'] == 'ZONE_POSITION':
                     if 'zone' in data['Entity'] and data['Entity']['zone'] == 'DECK':
                         Hand.draw(data['Entity'], int(data['value'])-1)
-
+                elif data['tag'] == 'ZONE':
+                    if 'zone' in data['Entity'] and data['Entity']['zone'] == 'SETASIDE':
+                        Dragons.setaside(data['Entity'])
+                        
 # Setup scripts.
 if __name__ == '__main__': # pragma: no cover
     from json import load, dump
