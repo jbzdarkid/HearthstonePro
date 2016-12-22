@@ -5,23 +5,19 @@ Special:
 "Burgly Bully"
 "Captain's Parrot"
 "Chromaggus"
-"Cutpurse"
 "Echo of Mediv"
 "Ethereal Peddler"
 "Flame Leviathan"
-"Gazlowe"
 "Getaway Kodo"
 "Gnomish Experimenter"
 "Headcrack"
 "Holy Wrath"
 "Ivory Knight"
 "Kazakus"
-"Kidnapper"
 "King's Elekk"
 "Krul the Unshackled"
 "Lock and Load"
 "Lorewalker Cho"
-"Mech-Bear-Cat"
 "Sea Reaver"
 "Shadowfiend"
 "Shaku, the Collector"
@@ -208,13 +204,20 @@ def die(entity):
 # Be careful of Blessing of Wisdom (others?) which can 'trigger' an effect on a card that already has a triggered effect.
 def trigger(entity):
     if entity['player'] == Utilities.them:
+        logging.info('Opponent\'s %s triggers' % entity['name'])
         if entity['name'] == "Alarm-o-Bot":
             Hand.draw(note='Alarm-o-Bot', kind='minion')
         elif entity['name'] == "Archmage Antonidas":
             Hand.draw(note='Fireball', hero='mage', kind='spell')
+        elif entity['name'] == "Cutpurse":
+            Hand.draw(note='The Coin', kind='spell')
         elif entity['name'] == "Emperor Thaurissan":
             for card in Hand.hand:
                 card.cost -= 1
+        elif entity['name'] == "Gazlowe":
+            Hand.draw(source='random', kind='mech minion')
+        elif entity['name'] == "Mech-Bear-Cat":
+            Hand.draw(note='Spare Part', kind='spell')
         elif entity['name'] == "Kabal Trafficker":
             Hand.draw(source='random', kind='demon minion')
         elif entity['name'] == "Ysera":
