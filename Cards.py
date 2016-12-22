@@ -14,7 +14,6 @@ Special:
 "Gnomish Experimenter"
 "Headcrack"
 "Holy Wrath"
-"Infest"
 "Ivory Knight"
 "Kazakus"
 "Kidnapper"
@@ -182,6 +181,8 @@ def die(entity):
             Hand.draw(note='Spare Part', kind='spell')
         elif entity['name'] == "Deadly Fork":
             Hand.draw(note='Sharp Fork', kind='weapon')
+        elif entity['name'] == "Nerubian Spores": # "Infest"
+            Hand.draw()
         elif entity['name'] == "Rhonin":
             Hand.draw(note='Arcane Missles', hero='mage', kind='spell')
             Hand.draw(note='Arcane Missles', hero='mage', kind='spell')
