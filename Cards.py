@@ -79,7 +79,7 @@ def play2(entity):
         elif entity['name'] == "Grand Crusader":
             Hand.draw(source='random', hero='paladin')
         elif entity['name'] == "Grimestreet Informant":
-            Hand.draw(source='discovered' hero='hunter, paladin, or warrior')
+            Hand.draw(source='discovered', hero='hunter, paladin, or warrior')
         elif entity['name'] == "I Know a Guy":
             Hand.draw(source='discovered', kind='taunt minion')
         elif entity['name'] == "Jeweled Scarab":
