@@ -28,7 +28,6 @@ Special:
 "Wilfred Fizzlebang"
 "Wrathion"
 '''
-# Inspire: "Recruiter", "Nexus-Champion Saraad", "Colliseum Manager"
 # Deathrattle: "Voidcaller", "The Skeleton Knight"
 # Discard: "Succubus", "Darkshire Librarian", "Astral Communion", "Dark Bargain", "Deathwing"
 # Buff: "Smuggler's Crate", "Hidden Cache", "Trogg Beastrager", "Grimscale Chum", "Grimestreet Outfitter", "Grimestreet Enforcer", "Grimestreet Gadgeteer", "Stolen Goods", "Grimestreet Pawnbroker", "Brass Knuckles", "Hobart Grapplehammer", "Grimestreet Smuggler", "Don Han'Cho"
@@ -70,27 +69,29 @@ def play2(entity):
             Hand.draw(source='random', hero='mage', kind='spell')
             Hand.draw(source='random', hero='mage', kind='spell')
         elif entity['name'] == "Dark Peddler":
-            Hand.draw(note='A 1-cost card')
+            Hand.draw(source='discovered', note='A 1-cost card')
         elif entity['name'] == "Ethereal Conjurer":
             Hand.draw(source='discovered', hero='mage', kind='spell')
         elif entity['name'] == "Finders Keepers":
-            Hand.draw(hero='shaman', note='A card with overload')
+            Hand.draw(source='discovered', hero='shaman', note='A card with overload')
         elif entity['name'] == "Gorillabot A-3":
-            Hand.draw(kind='mech minion')
+            Hand.draw(source='discovered', kind='mech minion')
         elif entity['name'] == "Grand Crusader":
             Hand.draw(source='random', hero='paladin')
         elif entity['name'] == "Grimestreet Informant":
-            Hand.draw(hero='hunter, paladin, or warrior')
+            Hand.draw(source='discovered' hero='hunter, paladin, or warrior')
         elif entity['name'] == "I Know a Guy":
-            Hand.draw(kind='taunt minion')
+            Hand.draw(source='discovered', kind='taunt minion')
         elif entity['name'] == "Jeweled Scarab":
-            Hand.draw(note='A 3-cost card')
+            Hand.draw(source='discovered', note='A 3-cost card')
         elif entity['name'] == "Journey Below":
-            Hand.draw(note='A deathrattle card')
+            Hand.draw(source='discovered', note='A deathrattle card')
         elif entity['name'] == "Kabal Chemist":
-            Hand.draw(kind='potion spell')
+            Hand.draw(source='random', kind='potion spell')
+        elif entity['name'] == "Kabal Courier":
+            Hand.draw(source='discovered', hero='mage, priest, or warlock')
         elif entity['name'] == "Lotus Agents":
-            Hand.draw(hero='druid, rogue, or shaman')
+            Hand.draw(source='discovered', hero='druid, rogue, or shaman')
         elif entity['name'] == "Mind Vision":
             Hand.draw(note='A card from your hand')
         elif entity['name'] == "Mukla, Tyrant of the Vale":
@@ -98,7 +99,7 @@ def play2(entity):
             Hand.draw(note='Banana', kind='spell')
         elif entity['name'] == "Museum Curator":
             # I'm ignoring "Tentacles For Arms" because it's bad
-            Hand.draw(note='A deathrattle card', kind='minion')
+            Hand.draw(source='discovered', note='A deathrattle card', kind='minion')
         elif entity['name'] == "Nefarian":
             Hand.draw(source='random', hero=Utilities.our_hero)
             Hand.draw(source='random', hero=Utilities.our_hero)
@@ -108,7 +109,7 @@ def play2(entity):
             Hand.draw(source='random', kind='murloc minion')
             Hand.draw(source='random', kind='murloc minion')
         elif entity['name'] == "Raven Idol":
-            Hand.draw(kind='minion or spell')
+            Hand.draw(source='discovered', kind='minion or spell')
         elif entity['name'] == "Sense Demons":
             Hand.draw(kind='demon minion')
             Hand.draw(kind='demon minion')
@@ -118,7 +119,7 @@ def play2(entity):
             Hand.draw(note='A random card from your deck')
             Hand.draw(note='A random card from your deck')
         elif entity['name'] == "Tomb Spider":
-            Hand.draw(kind='beast minion')
+            Hand.draw(source='discovered', kind='beast minion')
         elif entity['name'] == "Toshley":
             Hand.draw(note='Spare Part', kind='spell')
         elif entity['name'] == "Unstable Portal":
@@ -213,6 +214,8 @@ def trigger(entity):
             Hand.draw(note='Alarm-o-Bot', kind='minion')
         elif entity['name'] == "Archmage Antonidas":
             Hand.draw(note='Fireball', hero='mage', kind='spell')
+        elif entity['name'] == "Colliseum Manager":
+            Hand.draw(note='Colliseum Manager', kind='minion')
         elif entity['name'] == "Cutpurse":
             Hand.draw(note='The Coin', kind='spell')
         elif entity['name'] == "Emperor Thaurissan":
@@ -224,6 +227,10 @@ def trigger(entity):
             Hand.draw(source='random', kind='demon minion')
         elif entity['name'] == "Mech-Bear-Cat":
             Hand.draw(note='Spare Part', kind='spell')
+        elif entity['name'] == "Nexus-Champion Saraad":
+            Hand.draw(source='random', kind='spell')
+        elif entity['name'] == "Recruiter":
+            Hand.draw(note='Squire', kind='minion')
         elif entity['name'] == "Shaku, the Collector":
             Hand.draw(source='random', hero=Utilities.our_hero)
         elif entity['name'] == "Ysera":
