@@ -42,15 +42,15 @@ import Hand, Utilities, Legendaries
 def play2(entity):
     if entity['player'] == Utilities.them:
         logging.info('Opponent plays %s' % entity['name'])
-        if entity['name'] in ["Crackle", "Fireguard Destroyer", "Lightning Bolt", "Stormcrack", "Stormforged Axe", "Totem Golem", "Dunemaul Shaman", "Siltfin Spiritwalker"]:
+        if entity['name'] in ["Crackle", "Dunemaul Shaman", "Finders Keepers", "Fireguard Destroyer", "Jinyu Waterspeaker", "Lightning Bolt", "Siltfin Spiritwalker", "Stormforged Axe", "Stormcrack", "Totem Golem"]:
             Utilities.overload += 1
-        elif entity['name'] in ["Ancestral Knowledge", "Dust Devil", "Flamewreathed Faceless", "Forked Lightning", "Feral Spirit", "Lava Burst", "Lightning Storm", "Doomhammer"]:
+        elif entity['name'] in ["Ancestral Knowledge", "Doomhammer", "Dust Devil", "Feral Spirit", "Flamewreathed Faceless", "Forked Lightning", "Lava Burst", "Lightning Storm"]:
             Utilities.overload += 2
         elif entity['name'] in ["Earth Elemental", "Neptulon"]:
             Utilities.overload += 3
         elif entity['name'] in ["Elemental Destruction"]:
             Utilities.overload += 5
-        elif entity['name'] in ["Lava Shock", "Eternal Sentinel"]:
+        elif entity['name'] in ["Eternal Sentinel", "Lava Shock"]:
             Utilities.overload = 0
 
         elif entity['name'] == "Varian Wrynn":
