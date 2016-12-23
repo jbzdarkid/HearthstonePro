@@ -160,7 +160,7 @@ def parseFile(line_generator, config, *args):
                             Legendaries.turnover()
                             Dragons.turnover()
                         else:
-                            logging.info('End of our turn')
+                            logging.info('End of your turn')
                 elif data['tag'] == 'TURN':
                     Utilities.turn = int(data['value'])
                 elif data['tag'] == 'ZONE_POSITION':
