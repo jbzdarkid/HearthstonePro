@@ -30,9 +30,9 @@ def line_generator(file):
         yield line
         lineNo += 1
 
-logging.critical(__file__)
 rootDir = __file__.rpartition(sep)[0]
-logging.critical('\nrootDir: ' + str(rootDir))
+if rootDir == '':
+    rootir = '.'
 
 if len(argv) == 1 or argv[1] == 'all':
     from os import listdir
@@ -42,6 +42,7 @@ if len(argv) == 1 or argv[1] == 'all':
 else: # pragma: no cover
     files = argv[1:]
 
+logging.critical('\nrootDir: ' + str(rootDir))
 logging.critical('\nfiles: ' + str(files))
 logging.critical('\nfiles[0]: ' + str(files[0]))
 logging.critical('\nfullName: ' + str(rootDir+sep+files[0]))
