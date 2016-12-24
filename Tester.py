@@ -30,6 +30,7 @@ def line_generator(file):
         yield line
         lineNo += 1
 
+logging.critical(__file__)
 rootDir = __file__.rsplit(sep)[0]
 
 if len(argv) == 1 or argv[1] == 'all':
