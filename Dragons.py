@@ -33,6 +33,7 @@ def reset():
     global sets, noDragonBlock, cardId
     sets = []
     noDragonBlock = False
+    cardId = None
 
 reset()
 
@@ -55,7 +56,7 @@ def play2(entity):
     if entity['player'] == Utilities.them:
         if entity['name'] in DRAGONS:
             isDragon(cardId)
-        else:
+        elif cardId:
             isNotDragon(cardId)
         if entity['name'] in ["Blackwing Corruptor", "Rend Blackhand"]:
             noDragon()
@@ -66,7 +67,7 @@ def play3(entity, target):
     if entity['player'] == Utilities.them:
         if entity['name'] in DRAGONS:
             isDragon(cardId)
-        else:
+        elif cardId:
             isNotDragon(cardId)
         if entity['name'] == ["Blackwing Corruptor", "Book Wyrm", "Rend Blackhand"]:
             hasDragon()
