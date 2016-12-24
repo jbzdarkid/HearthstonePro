@@ -91,8 +91,7 @@ def turnover():
     if len(hand) > 0:
         logging.warning('Card No. | Turn | Notes')
     for i in range(len(hand)):
-        logging.warning(' %s | %s | %s %s' % (
+        logging.warning(' %s | %s | %s' % (
         ('%d' % (i+1)).ljust(7),
         ('%d' % hand[i].turn).ljust(4),
-        '' if str(hand[i]) == 'A card' else hand[i],
-        '' if hand[i].cost == 0 else 'cost %d' % hand[i].cost))
+        '' if str(hand[i]) == 'A card' else hand[i]))
