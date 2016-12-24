@@ -8,8 +8,9 @@ if __name__ == '__main__': # pragma: no cover
         rootDir += sep
     if len(argv) == 1 or argv[1] == 'all':
         files = listdir(rootDir+'tests')
-    # elif argv[1] == 'latest':
-    #   from os.path import getmtime
+    elif argv[1] == 'import': # pragma: no cover
+        config = load(open(rootDir+sep+'config.cfg'))
+        files = [config['log']]
     elif len(argv) > 1:
         files = argv[1:]
     config = load(open(rootDir+'config.cfg'))
