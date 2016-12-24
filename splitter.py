@@ -20,9 +20,16 @@ if __name__ == '__main__': # pragma: no cover
             continue
         buffer = ''
         cards = set()
+        spectating = False
         with open(rootDir+'tests'+sep+file, 'rb') as f:
             for line in f:
                 buffer += line
+                if line[19:54] == '================== Begin Spectating':
+                    spectating = True
+                elif line[19:75] == '================== End Spectator Mode ==================':
+                    spectating = False
+                elif spectating:
+                    continue
                 if line[19:115] == 'PowerTaskList.DebugPrintPower() -     TAG_CHANGE Entity=GameEntity tag=STEP value=FINAL_GAMEOVER':
                     name = ', '.join(sorted(cards))
                     with open(rootDir+'tests'+sep+name+'.log', 'wb') as g:
