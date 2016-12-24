@@ -22,11 +22,6 @@ assert Parser.parse('a[b]=c d e=f') == {'a[b]':'c d', 'e':'f'}
 assert Parser.parse('a[b]=c d=[e=f]') == {'a[b]':'c', 'd':{'e':'f'}}
 assert Parser.parse('a[b]=c d=e f[g]=h') == {'a[b]':'c', 'd':'e', 'f[g]':'h'}
 
-rootDir = __file__.rpartition(sep)[0]
-# If rootDir is nothing, then ''+'/' = '/', which is not the current directory.
-if rootDir: # pragma: no cover
-    rootDir += sep
-
 def line_generator(file):
     global lineNo
     lineNo = 0
@@ -35,13 +30,20 @@ def line_generator(file):
         yield line
         lineNo += 1
 
+rootDir = __file__.rsplit(sep)[0]
+
 if len(argv) == 1 or argv[1] == 'all':
     from os import listdir
-    files = ['tests'+sep+file for file in listdir(rootDir+'tests')]
+    files = ['tests'+sep+file for file in listdir(rootDir+sep+'tests')]
 # elif argv[1] == 'latest': # pragma: no cover
 #   from os.path import getmtime
 else: # pragma: no cover
     files = argv[1:]
+
+logging.critical('\nrootDir: ' + str(rootDir))
+logging.critical('\nfiles: ' + str(files))
+logging.critical('\nfiles[0]: ' + str(files[0]))
+logging.critical('\nfullName: ' + str(rootDir+sep+files[0]))
 
 config = {'username':'darkid'}
 for file in files:
