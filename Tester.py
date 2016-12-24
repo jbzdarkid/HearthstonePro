@@ -46,6 +46,7 @@ else: # pragma: no cover
 config = {'username':'darkid'}
 for file in files:
     fullName = rootDir+sep+file
+    logging.critical(fullName)
     try:
         Parser.parseFile(line_generator, {'username':'darkid'}, fullName)
     except Exception as e: # pragma: no cover
