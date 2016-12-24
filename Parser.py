@@ -109,6 +109,7 @@ def parseFile(line_generator, config, *args):
                         if data['Entity']['zone'] == 'GRAVEYARD':
                             Cards.die(data['Entity'])
                             Legendaries.die(data['Entity'])
+                            Dragons.die(data['Entity'])
                         elif data['Entity']['zone'] == 'PLAY':
                             Cards.trigger(data['Entity'])
                 elif data['BlockType'] == 'POWER': # When a card actually hits the board

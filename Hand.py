@@ -1,5 +1,5 @@
 import logging
-import Utilities, Legendaries
+import Utilities, Legendaries, Dragons
 
 class card():
     def __init__(self, note='', cost=0, source='', hero='', kind='', buff=0):
@@ -12,8 +12,9 @@ class card():
         self.hero = hero
         self.source = source
         self.kind = kind # minion, spell, weapon
+        if self.note in Dragons.DRAGONS:
+            self.kind = 'dragon minion'
         self.buff = buff # +1/+1, e.g.
-        self.isDragon = False
 
     def __str__(self):
         description = ''

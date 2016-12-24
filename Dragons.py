@@ -5,10 +5,10 @@ import Hand, Utilities
 # 1. When a card is played that has a triggered effect, >= 1 card in hand must be a dragon.
 # 1a. If (at some later date) a card is played from that set which is a dragon, no information is known about the remaining cards.
 # 1b. If (at some later date) all cards but one are played from that set and are not dragons, then the remaining card is a dragon.
-# 1c. Info from 1b. may be relevant with 2 cards remaining.
 # 2. When a card is played that fails to have a triggered effect, 0 cards in hand are dragons.
 # 2a. If (at some later date) a card is played which does have a triggered effect, these cards are excluded from the set.
 # 3. If a card which is not a dragon is returned to hand, we know that it still isn't a dragon.
+# 4. If a card which is a dragon is returned to hand, we know that it still is a dragon.
 
 DRAGONS = [
     'Alextrasza', 'Azure Drake',
@@ -92,7 +92,12 @@ def die(entity):
 def hasDragon():
     logging.info('Opponent has a dragon in their hand')
     global sets
-    sets.append([id(card) for card in Hand.hand])
+    new_set = []
+    for card in Hand.hand:
+        if card.kind == 'dragon minion':
+            return # Hand contains a known dragon
+        new_set.append(id(card))
+    sets.append(new_set)
 
 # The hand has no dragons, so we wipe all information about sets.
 def noDragon():
