@@ -40,7 +40,10 @@ import Hand, Utilities, Legendaries
 # When a card hits the board, and we can see what its name is
 def play2(entity):
     if entity['player'] == Utilities.them:
-        logging.info('Opponent plays %s' % entity['name'])
+        if entity['name'] in ['Armor Up!', 'Ballista Shot', 'Dagger Mastery', 'DIE, INSECT!', 'Dire Shapeshift', 'INFERNO!', 'Life Tap', 'Poisoned Daggers', 'Reinforce', 'Shapeshift', 'Soul Tap', 'Steady Shot', 'Tank Up!', 'The Silver Hand', 'The Tidal Hand', 'Totemic Call', 'Totemic Slam']:
+            logging.info('Opponent uses their hero power')
+        else:
+            logging.info('Opponent plays %s' % entity['name'])
         if entity['name'] in ["Crackle", "Dunemaul Shaman", "Finders Keepers", "Fireguard Destroyer", "Jinyu Waterspeaker", "Lightning Bolt", "Siltfin Spiritwalker", "Stormforged Axe", "Stormcrack", "Totem Golem"]:
             Utilities.overload += 1
         elif entity['name'] in ["Ancestral Knowledge", "Doomhammer", "Dust Devil", "Feral Spirit", "Flamewreathed Faceless", "Forked Lightning", "Lava Burst", "Lightning Storm"]:
@@ -154,7 +157,10 @@ def play2(entity):
 # When a card hits the board and we can see what its name and its target's name is.
 def play3(entity, target):
     if entity['player'] == Utilities.them:
-        logging.info('Opponent plays %s targetting %s' % (entity['name'], target['name']))
+        if entity['name'] in ['Fireblast', 'Fireblast Rank 2', 'Lesser Heal', 'Lightning Jolt', 'Mind Shatter', 'Mind Spike', 'Heal']:
+            logging.info('Opponent uses their hero power, targetting %s' % target['name'])
+        else:
+            logging.info('Opponent plays %s targetting %s' % (entity['name'], target['name']))
         if entity['name'] == "Soulfire":
             global showentity
             showentity = discard
