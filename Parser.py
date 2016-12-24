@@ -99,13 +99,9 @@ def parseFile(line_generator, config, *args):
             if data.keys()[0][:8] == 'Entities': # Entities[0], e.g.
                 if data.values()[0]['zone'] == 'HAND':
                     Hand.keep(data.values()[0])
-        if showEntity is not None:
-            if type:
-                showEntity = None
-            elif 'tag' in data and data['tag'] == 'ZONE' and data['value'] == 'GRAVEYARD':
-                Hand.discard(showEntity)
         if source == 'PowerTaskList.DebugPrintPower()':
             if type == 'BLOCK_END':
+                Cards.blockEnd()
                 Legendaries.blockEnd()
             elif type == 'BLOCK_START':
                 if data['BlockType'] == 'TRIGGER':
@@ -131,7 +127,7 @@ def parseFile(line_generator, config, *args):
                     # is the target, but this line always appears when a card is drawn.
                     Hand.draw(position=int(data['zonePos'])-1)
             elif type == 'SHOW_ENTITY': # Start of a SHOW_ENTITY block of data
-                showEntity = data['Entity']
+                Cards.showentity(data)
             elif type == 'TAG_CHANGE':
                 if data['tag'] == 'FIRST_PLAYER':
                     logging.warning('New game started')

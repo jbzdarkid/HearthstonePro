@@ -52,6 +52,9 @@ def play2(entity):
         elif entity['name'] in ["Eternal Sentinel", "Lava Shock"]:
             Utilities.overload = 0
 
+        elif entity['name'] in ["Astral Communion", "Dark Bargain", "Darkshire Librarian", "Deathwing", "Doomguard", "Soulfire", "Succubus"]:
+            global showentity
+            showentity = discard
         elif entity['name'] == "Varian Wrynn":
             Legendaries.varianWrynn = True
 
@@ -152,6 +155,10 @@ def play2(entity):
 def play3(entity, target):
     if entity['player'] == Utilities.them:
         logging.info('Opponent plays %s targetting %s' % (entity['name'], target['name']))
+        if entity['name'] == "Soulfire":
+            global showentity
+            showentity = discard
+
         if entity['name'] in ["Ancient Brewmaster", "Convert", "Gadgetzan Ferryman", "Time Rewinder", "Youthful Brewmaster"]:
             Hand.draw(note=target['name'], kind='minion')
         elif entity['name'] in ["Bloodthistle Toxin", "Shadowstep"]:
@@ -236,6 +243,19 @@ def trigger(entity):
         elif entity['name'] == "Ysera":
             Hand.draw(note='A Dream card', kind='spell')
 
+# Show Entity blocks are used for a number of things. Here, this is used for
+# getting the hand position of discarded cards, and determining cards drawn for
+# King's Elekk Joust victories.
+def blockEnd():
+    global showentity
+    def showentity(data):
+        pass
+
+blockEnd()
+
+def discard(data):
+    logging.info('Opponent discards %s' % data['CardID'])
+    Hand.hand.pop(int(data['Entity']['zonePos'])-1)
 def turnover():
     if Utilities.overload != 0:
         logging.info('Overload next turn: %d' % Utilities.overload)
