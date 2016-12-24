@@ -37,7 +37,7 @@ def line_generator(file):
 
 if len(argv) == 1 or argv[1] == 'all':
     from os import listdir
-    files = listdir(rootDir+'tests')
+    files = ['tests'+sep+file for file in listdir(rootDir+'tests')]
 # elif argv[1] == 'latest': # pragma: no cover
 #   from os.path import getmtime
 else: # pragma: no cover
@@ -45,7 +45,7 @@ else: # pragma: no cover
 
 config = {'username':'darkid'}
 for file in files:
-    fullName = rootDir+'tests'+sep+file
+    fullName = rootDir+sep+file
     try:
         Parser.parseFile(line_generator, {'username':'darkid'}, fullName)
     except Exception as e: # pragma: no cover
