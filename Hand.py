@@ -7,7 +7,7 @@ class card():
         self.turn = Utilities.turn/2
         self.note = note
         if len(notes) > 0:
-            self.note += ' '+notes.pop()
+            self.note = (self.note+' '+notes.pop()).strip()
         self.cost = cost # Cost modifier for freezing trap / thaurissan
         self.hero = hero
         self.source = source
