@@ -185,10 +185,6 @@ def die(entity):
             Hand.draw(note='Spare Part', kind='spell')
         elif entity['name'] == "Deadly Fork":
             Hand.draw(note='Sharp Fork', kind='weapon')
-        elif entity['name'] == "Explorer's Hat":
-            Hand.draw(note='Explorer\'s Hat', hero='Hunter', kind='spell')
-        elif entity['name'] == "Nerubian Spores": # "Infest"
-            Hand.draw(source='random', kind='beast minion')
         elif entity['name'] == "Rhonin":
             Hand.draw(note='Arcane Missles', hero='mage', kind='spell')
             Hand.draw(note='Arcane Missles', hero='mage', kind='spell')
@@ -212,6 +208,13 @@ def die(entity):
         Hand.draw(note='Spare Part', kind='spell')
     elif entity['name'] == "Majordomo Executus":
         Utilities.set_hero(entity)
+
+def die2(entity):
+    if entity['player'] == Utilities.them:
+        if entity['name'] == "Explorer's Hat":
+            Hand.draw(note='Explorer\'s Hat', hero='Hunter', kind='spell')
+        elif entity['name'] == "Nerubian Spores": # "Infest"
+            Hand.draw(source='random', kind='beast minion')
 
 # Be careful of Blessing of Wisdom (others?) which can 'trigger' an effect on a card that already has a triggered effect.
 def trigger(entity):

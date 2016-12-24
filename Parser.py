@@ -168,7 +168,7 @@ def parseFile(line_generator, config, *args):
                         if data['value'] == 'PLAY':
                             Dragons.setaside(data['Entity'])
                         if data['value'] == 'REMOVEDFROMGAME':
-                            Cards.die(data['Entity']) # Enchantment death
+                            Cards.die2(data['Entity']) # Enchantment death
 
 # Setup scripts.
 if __name__ == '__main__': # pragma: no cover
