@@ -34,6 +34,8 @@ rootDir = __file__.rpartition(sep)[0]
 logging.critical('"'+rootDir+'"')
 if rootDir == '':
     rootir = '.'
+logging.critical('"'+rootDir+'"')
+logging.critical('"'+rootDir+sep+'tests'+'"')
 
 if len(argv) == 1 or argv[1] == 'all':
     from os import listdir
@@ -47,6 +49,8 @@ logging.critical('\nrootDir: ' + str(rootDir))
 logging.critical('\nfiles: ' + str(files))
 logging.critical('\nfiles[0]: ' + str(files[0]))
 logging.critical('\nfullName: ' + str(rootDir+sep+files[0]))
+
+exit(0)
 
 config = {'username':'darkid'}
 for file in files:
