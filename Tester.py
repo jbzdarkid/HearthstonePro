@@ -31,11 +31,8 @@ def line_generator(file):
         lineNo += 1
 
 rootDir = __file__.rpartition(sep)[0]
-logging.critical('"'+rootDir+'"')
-logging.critical(len(rootDir))
-for char in rootDir:
-    logging.critical(ord(char))
-if rootDir == '':
+logging.critical(rootDir == '')
+if len(rootDir) == 0:
     rootir = '.'
 logging.critical('"'+rootDir+'"')
 logging.critical('"'+rootDir+sep+'tests'+'"')
