@@ -35,7 +35,7 @@ class card():
         if self.cost > 0:
             description += ' which costs %d more' % self.cost
         elif self.cost < 0:
-            description += ' which costs %d less' % self.cost
+            description += ' which costs %d less' % -self.cost
         return description
 
 def reset():
