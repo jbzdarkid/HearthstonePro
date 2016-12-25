@@ -147,6 +147,10 @@ def parseFile(line_generator, config, *args):
                             Legendaries.turnover()
                 elif data['tag'] == 'TURN':
                     Utilities.turn = int(data['value'])
+                elif data['tag'] == 'ZONE':
+                    print data
+                    if 'value' == 'REMOVEDFROMGAME':
+                        Cards.removed_from_game(data['Entity'])
                 elif data['tag'] == 'ZONE_POSITION':
                     if 'zone' in data['Entity'] and data['Entity']['zone'] == 'DECK':
                         Hand.draw(data['Entity'], int(data['value'])-1)
@@ -190,6 +194,7 @@ if __name__ == '__main__': # pragma: no cover
                 for f in files:
                     if 'battle.net' in f:
                         f = open(root+sep+files[0]).read()
+                        # FIXME don't need to re-open f?
                         m = search('m_battleTag: (.*?)#', f)
                         config['username'] = m.group(1)
                         break
@@ -205,6 +210,7 @@ if __name__ == '__main__': # pragma: no cover
     with open(rootDir+'config.cfg', 'wb') as f:
         dump(config, f)
 
+    # FIXME why am I checking contents if I overwrite anyways
     f = open(rootDir+'log.config', 'rb').read()
     try:
         g = open(config['logconfig'], 'rb').read()
@@ -231,7 +237,7 @@ if __name__ == '__main__': # pragma: no cover
             print 'Please (re)start Hearthstone before running this script.'
             exit(-1)
         with open(config['log']+'Power.log') as f:
-            f.seek(0, 2)
+            f.seek(0, 2) # Go to EOF
             while True:
                 lastLine = f.readline()
                 if not lastLine:
