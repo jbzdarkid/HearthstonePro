@@ -154,9 +154,11 @@ def parseFile(line_generator, config, *args):
 # Setup scripts.
 if __name__ == '__main__': # pragma: no cover
     from json import load, dump
-    from os import sep
+    from os import sep, walk
     from os.path import expanduser, exists
-    from subprocess import PIPE
+    from platform import system
+    from re import search
+    from time import sleep
     rootDir = __file__.rpartition(sep)[0]
     # If rootDir is nothing, then ''+'/' = '/', which is not the current directory.
     if rootDir:
@@ -173,8 +175,6 @@ if __name__ == '__main__': # pragma: no cover
 
     if any(key not in config for key in ['logconfig', 'log', 'username']):
         print 'Config incomplete or corrupted, (re)generating. This might take a while...'
-        from platform import system
-        from os import walk
         if system() == 'Windows':
             config['logconfig'] = expanduser('~')+'\AppData\Local'
             appName = 'Hearthstone.exe'
@@ -189,7 +189,6 @@ if __name__ == '__main__': # pragma: no cover
             if root.rsplit(sep)[-1] == 'Logs':
                 for f in files:
                     if 'battle.net' in f:
-                        from re import search
                         f = open(root+sep+files[0]).read()
                         m = search('m_battleTag: (.*?)#', f)
                         config['username'] = m.group(1)
@@ -224,7 +223,6 @@ if __name__ == '__main__': # pragma: no cover
     print 'Startup complete.'
 
     def tail():
-        from time import sleep
         try: # Create the file if it doesn't exist
             open(config['log']+'Power.log', 'w')
         except:
