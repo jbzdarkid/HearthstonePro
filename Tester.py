@@ -22,11 +22,6 @@ assert Parser.parse('a[b]=c d e=f') == {'a[b]':'c d', 'e':'f'}
 assert Parser.parse('a[b]=c d=[e=f]') == {'a[b]':'c', 'd':{'e':'f'}}
 assert Parser.parse('a[b]=c d=e f[g]=h') == {'a[b]':'c', 'd':'e', 'f[g]':'h'}
 
-rootDir = __file__.rpartition(sep)[0]
-# If rootDir is nothing, then ''+'/' = '/', which is not the current directory.
-if rootDir: # pragma: no cover
-    rootDir += sep
-
 def line_generator(file):
     global lineNo
     lineNo = 0
@@ -35,22 +30,24 @@ def line_generator(file):
         yield line
         lineNo += 1
 
+rootDir = __file__.rpartition(sep)[0]
+if rootDir == '':
+    rootDir = '.'
+rootDir += sep + 'tests'
+    
 if len(argv) == 1 or argv[1] == 'all':
     from os import listdir
-    files = listdir(rootDir+'tests')
-# elif argv[1] == 'latest': # pragma: no cover
-#   from os.path import getmtime
+    files = [rootDir+sep+file for file in listdir(rootDir)]
 else: # pragma: no cover
-    files = argv[1:]
+    files = [rootDir+sep+file for file in argv[1:]]
 
 config = {'username':'darkid'}
 for file in files:
-    fullName = rootDir+'tests'+sep+file
     try:
-        Parser.parseFile(line_generator, {'username':'darkid'}, fullName)
+        Parser.parseFile(line_generator, {'username':'darkid'}, file)
     except Exception as e: # pragma: no cover
         logging.error('Failed for file %s on line %d:' % (file, lineNo))
-        with open(fullName, 'rb') as f:
+        with open(file, 'rb') as f:
             line = f.read().split('\n')[lineNo]
             logging.error(line)
         raise

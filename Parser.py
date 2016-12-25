@@ -10,7 +10,7 @@ import logging
 # 5: Stupid levels of printout (basically only for the parser)
 logging.basicConfig(format='%(message)s', level=logging.INFO)
 
-import Cards, Hand, Legendaries, Utilities
+import Cards, Hand, Legendaries, Utilities, Dragons
 def parse(data, start=0, DEBUG=False):
     '''
     This function parses a hearthstone line and returns
@@ -79,7 +79,7 @@ def parseFile(line_generator, config, *args):
     showEntity = None
     for line in line_generator(*args):
         lineNo += 1
-        line_parts = match('^D \d{2}:\d{2}:\d{2}\.\d{7} ([a-zA-Z]*\.[a-zA-Z]*\(\)) -\s*([A-Z_]{2,}|)(.*)', line)
+        line_parts = match(b'^D \d{2}:\d{2}:\d{2}\.\d{7} ([a-zA-Z]*\.[a-zA-Z]*\(\)) -\s*([A-Z_]{2,}|)(.*)', line)
         if line_parts is None: # Any of the error messages won't match, but it's not safe to use them
             continue
         source = line_parts.group(1)
@@ -88,7 +88,7 @@ def parseFile(line_generator, config, *args):
 
         if source == 'GameState.DebugPrintEntityChoices()':
             if 'ChoiceType' in data and data['ChoiceType'] == 'MULLIGAN':
-                if data['Player'] == config['username']:
+                if data['Player'].decode('utf-8') == config['username']:
                     logging.debug('You are player id %s' % data['id'])
                     Utilities.us = data['id']
                 else:
@@ -99,13 +99,9 @@ def parseFile(line_generator, config, *args):
             if data.keys()[0][:8] == 'Entities': # Entities[0], e.g.
                 if data.values()[0]['zone'] == 'HAND':
                     Hand.keep(data.values()[0])
-        if showEntity is not None:
-            if type:
-                showEntity = None
-            elif 'tag' in data and data['tag'] == 'ZONE' and data['value'] == 'GRAVEYARD':
-                Hand.discard(showEntity)
         if source == 'PowerTaskList.DebugPrintPower()':
             if type == 'BLOCK_END':
+                Cards.blockEnd()
                 Legendaries.blockEnd()
             elif type == 'BLOCK_START':
                 if data['BlockType'] == 'TRIGGER':
@@ -113,24 +109,37 @@ def parseFile(line_generator, config, *args):
                         if data['Entity']['zone'] == 'GRAVEYARD':
                             Cards.die(data['Entity'])
                             Legendaries.die(data['Entity'])
+                            Dragons.die(data['Entity'])
                         elif data['Entity']['zone'] == 'PLAY':
                             Cards.trigger(data['Entity'])
                 elif data['BlockType'] == 'POWER': # When a card actually hits the board
                     if 'Target' in data and isinstance(data['Target'], dict):
                         Cards.play3(data['Entity'], data['Target']) # A card targets another card.
                         Legendaries.play3(data['Entity'], data['Target'])
+                        Dragons.play3(data['Entity'], data['Target'])
                     else:
                         Cards.play2(data['Entity'])
                         Legendaries.play2(data['Entity'])
+                        Dragons.play2(data['Entity'])
+            elif type == 'FULL_ENTITY':
+                data = data[None] # Always starts with 'Updating'
+                if data['zone'] == 'HAND':
+                    # A backup for Princess Huhuran. All that is revealed in the log
+                    # is the target, but this line always appears when a card is drawn.
+                    Hand.draw(position=int(data['zonePos'])-1)
             elif type == 'SHOW_ENTITY': # Start of a SHOW_ENTITY block of data
-                showEntity = data['Entity']
+                Cards.showentity(data)
             elif type == 'TAG_CHANGE':
                 if data['tag'] == 'FIRST_PLAYER':
                     logging.warning('New game started')
                     Utilities.wentFirst(data['Entity'] == config['username'])
-                if data['tag'] == 'JUST_PLAYED':
+                elif data['tag'] == 'JUST_PLAYED':
                     if data['Entity']['zone'] == 'HAND':
+                        Dragons.play(data['Entity']) # List before Hand.play
                         Hand.play(data['Entity']) # When a card is removed from a player's hand
+                elif data['tag'] == 'NUM_TURNS_IN_PLAY':
+                    # A number of things, including which player has which hero.
+                    Utilities.set_hero(data['Entity'])
                 elif data['tag'] == 'RESOURCES':
                     if data['Entity'] != config['username']:
                         Utilities.resources = data['value']
@@ -139,12 +148,16 @@ def parseFile(line_generator, config, *args):
                         Hand.reset()
                         Utilities.reset()
                         Legendaries.reset()
-                        print 'Game Over'
+                        Dragons.reset()
+                        logging.warning('Game Over')
                     if data['value'] == 'MAIN_READY':
                         if Utilities.ourTurn():
                             Hand.turnover()
                             Cards.turnover()
                             Legendaries.turnover()
+                            Dragons.turnover()
+                        else:
+                            logging.info('End of your turn')
                 elif data['tag'] == 'TURN':
                     Utilities.turn = int(data['value'])
                 elif data['tag'] == 'ZONE':
@@ -154,6 +167,12 @@ def parseFile(line_generator, config, *args):
                 elif data['tag'] == 'ZONE_POSITION':
                     if 'zone' in data['Entity'] and data['Entity']['zone'] == 'DECK':
                         Hand.draw(data['Entity'], int(data['value'])-1)
+                elif data['tag'] == 'ZONE':
+                    if 'zone' in data['Entity']:
+                        if data['value'] == 'PLAY':
+                            Dragons.setaside(data['Entity'])
+                        if data['value'] == 'REMOVEDFROMGAME':
+                            Cards.die2(data['Entity']) # Enchantment death
 
 # Setup scripts.
 if __name__ == '__main__': # pragma: no cover
@@ -178,7 +197,9 @@ if __name__ == '__main__': # pragma: no cover
         config = {}
 
     if any(key not in config for key in ['logconfig', 'log', 'username']):
-        print 'Config incomplete or corrupted, (re)generating. This might take a while...'
+        logging.warning('Config incomplete or corrupted, (re)generating.')
+        logging.warning('This might take a while...')
+
         if system() == 'Windows':
             config['logconfig'] = expanduser('~')+'\AppData\Local'
             appName = 'Hearthstone.exe'
@@ -226,7 +247,7 @@ if __name__ == '__main__': # pragma: no cover
         g.write(f)
         g.close()
 
-    print 'Startup complete.'
+    logging.warning('Startup complete.')
 
     def tail():
         try: # Create the file if it doesn't exist
@@ -234,7 +255,7 @@ if __name__ == '__main__': # pragma: no cover
         except:
             pass
         if not exists(config['log']+'Power.log'):
-            print 'Please (re)start Hearthstone before running this script.'
+            logging.error('Please (re)start Hearthstone before running this script.')
             exit(-1)
         with open(config['log']+'Power.log') as f:
             f.seek(0, 2) # Go to EOF
